@@ -1,0 +1,21 @@
+:root {
+  --page: yellow;
+  --pen-color: #204d74;
+}
+
+$ratio = 297/210;
+
+.pad {
+  background: var(--page);
+  height: 100%;
+  width: 100%;
+
+}
+
+.points {
+  pointer-events: all;
+  -ms-pointer-events: all;
+  fill: none;
+  stroke: var(--pen-color);
+  stroke-width: 3;
+}
