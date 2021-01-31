@@ -81,6 +81,7 @@ function Sketch(page) {
   function redraw () {
     let g = page.children[1];
     let path = newSVGNode('path',{d: optimize(decimate(6, points), bezier)});
+    path.classList.add('strokes');
     g.appendChild(path);
 
     strokePoints.setAttribute('points', '');

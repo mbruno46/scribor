@@ -1,6 +1,12 @@
 
+.highlighter {
+  fill: none;
+  stroke-width: 3;
+}
+
 .strokes {
   fill: none;
   stroke: var(--pen-color);
   stroke-width: 1;
+  stroke-linecap: round;
 }

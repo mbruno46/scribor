@@ -1,13 +1,19 @@
 
+.page-background {
+  fill: var(--page);
+  stroke: black;
+  stroke-width: 0.1
+}
+
 .rule {
-  stroke-width: 0.2;
+  stroke-width: 0.4;
   fill: none;
 }
 
 .hrule {
-  stroke: #01f;
+  stroke: var(--hrule);
 }
 
 .vrule {
-  stroke: red;
+  stroke: var(--vrule);
 }

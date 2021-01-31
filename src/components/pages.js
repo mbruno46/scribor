@@ -15,11 +15,10 @@ function newPage() {
   page.id = 'page ' + pages.length + 1;
 
   let g = newSVGNode('g');
-  // ,{transform: "translate(0 -62.362)"});
   g.id = 'layer0';
 
-  let bg = newSVGNode('rect', {x:0,y:0,width: viewport.width, height: viewport.height,
-    fill:"yellow", stroke: "black", "stroke-width": "0.1"});
+  let bg = newSVGNode('rect', {x:0,y:0,width: viewport.width, height: viewport.height});
+  bg.classList.add('page-background');
   g.appendChild(bg);
 
   let nlines = 32;
@@ -43,7 +42,12 @@ function newPage() {
 
   let g1 = newSVGNode('g');
   g1.id = 'layer1';
-  g1.classList.add('strokes');
+  g1.classList.add('highlighter');
+  page.appendChild(g1);
+
+  let g2 = newSVGNode('g');
+  g2.id = 'layer2';
+  g2.classList.add('strokes');
   page.appendChild(g1);
 
   let polyline = newSVGNode('polyline');
@@ -72,9 +76,6 @@ function zoomPages(sign) {
     page.setAttribute('view-box','0 0 ' + viewport.width*viewport.scale + ' ' +
       viewport.height*viewport.scale);
 
-    // layer0
-    // page.children[0].setAttribute('transform','scale(' +
-      // viewport.scale + ' ' + viewport.scale + ')');
     for (j=0;j<page.children.length;j++) {
       page.children[j].setAttribute('transform','scale(' +
         viewport.scale + ' ' + viewport.scale + ')');

@@ -1,6 +1,8 @@
 :root {
-  --page: yellow;
+  --page: rgb(240,230,180);
   --pen-color: #204d74;
+  --vrule: rgb(220,156,126);
+  --hrule: rgb(160,190,200);
 }
 
 /* padding and border are included in the total width and height of the elements */
