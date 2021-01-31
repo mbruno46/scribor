@@ -5,20 +5,23 @@
     <title>Hello World!</title>
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
 
+    <link rel="stylesheet" href="css/water.css">
     <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/pages.css">
 
 
 </head>
-<body style="background: white;">
-    <h1>Hello World!</h1>
-
-    <div id="sketch">
-      <svg id="pad" class="pad">
-         <!-- xmlns="http://www.w3.org/2000/svg"> -->
-        <polyline id ="points" class="points"/>
-      </svg>
+<body>
+  <div class="main">
+    <div id="header">
+      <button id="zoom_in" class="btn">Zoom+</button>
+      <button id="zoom_out" class="btn">Zoom-</button>
     </div>
+    <div id="notebook" class="notebook"></div>
+    <div id="footer">
+    </div>
+  </div>
 
-    <script src="renderer.js"></script>
+  <script src="renderer.js"></script>
 </body>
 </html>

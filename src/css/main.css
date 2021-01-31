@@ -3,13 +3,27 @@
   --pen-color: #204d74;
 }
 
-$ratio = 297/210;
+/* padding and border are included in the total width and height of the elements */
+* {
+  box-sizing: border-box;
+}
 
-.pad {
-  background: var(--page);
-  height: 100%;
-  width: 100%;
+body {
+  padding: 0;
+  margin: 0;
+}
 
+.main {
+  display: grid;
+  grid-template-rows: 3rem 1fr 3rem;
+  height: 100vh;
+  width: 100vw;
+}
+
+.notebook {
+  background-color: var(--background);
+  padding: 16px;
+  overflow: auto;
 }
 
 .points {

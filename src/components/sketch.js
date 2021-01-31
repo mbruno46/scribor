@@ -1,4 +1,5 @@
-const strokePoints = document.getElementById('points');
+const {newSVGNode} = require('./utils.js');
+
 const smoothing = 0.15;
 
 function line (a, b) {
@@ -49,16 +50,25 @@ function distance(p1, p2) {
 }
 
 
-function Sketch(pad) {
+function Sketch(page) {
   var sketching = false;
   var strokes = [];
   var points = [];
   var previous = null;
   let ns = 'http://www.w3.org/2000/svg';
+  var strokePoints;
+
+  var i;
+  for (i=0; i< page.children.length; i++) {
+    if (page.children[i].id == 'points') {
+      strokePoints = page.children[i];
+      break;
+    }
+  }
 
   function position(event) {
     var touches = event.touches;
-    var rect = pad.getBoundingClientRect();
+    var rect = page.getBoundingClientRect();
     return {
       x: Math.round((touches ? touches[0].clientX : event.clientX) - rect.left),
       y: Math.round((touches ? touches[0].clientY : event.clientY) - rect.top),
@@ -77,10 +87,10 @@ function Sketch(pad) {
     }
     console.log(g, path);
 
-    pad.appendChild(g);
+    page.appendChild(g);
     g.classList.add('strokes');
-    // create('g', pad, svgns, false, 'strokes');
-    pad.setAttribute('viewBox', '0,0,'+ pad.getBoundingClientRect().width +','+ pad.getBoundingClientRect().height);
+    // create('g', page, svgns, false, 'strokes');
+    // page.setAttribute('viewBox', '0,0,'+ page.getBoundingClientRect().width +','+ page.getBoundingClientRect().height);
     path.setAttribute('d', optimize(decimate(6, points), bezier) );
 
     g.setAttribute('fill','none');
@@ -94,22 +104,21 @@ function Sketch(pad) {
   return {
     start(event) {
       event.preventDefault();
-
       event = event || event.originalEvent || window.event;
-      // let pad = (event.target || event.currentTarget);
+      if (event.target.parentElement != page &&
+        event.target.parentElement.parentElement != page) {
+        return;
+      }
 
       sketching = true;
-
-      // start = Date.now();
       let pointer = position(event);
       var stroke = {
         x: pointer.x,
         y: pointer.y,
-        // time: start,
         delta: 0,
-        // elapsed: 0,
         pressure: pointer.pressure
       };
+
       points   = [[pointer.x, pointer.y]];
       strokes  = [stroke];
       previous = stroke;
@@ -122,22 +131,16 @@ function Sketch(pad) {
 
       event.preventDefault();
 
-      // var time = Date.now();
-      // var elapsed = time - previous.time;
-
       let pointer = position(event);
       var stroke = {
         x: pointer.x,
         y: pointer.y,
-        // time: time,
         delta: previous.delta + distance(previous, event),
-        // elapsed: elapsed,
         pressure: pointer.pressure
       };
       previous = stroke;
       strokes.push(stroke);
       points.push([pointer.x, pointer.y]);
-      // requestAF(draw);
 
       strokePoints.setAttribute('points', points);
     },
@@ -150,10 +153,8 @@ function Sketch(pad) {
 
       console.log(strokes);
       // strokePoints.setAttribute('points', points);
-      // var duration = (Date.now() - startTime) / 1000;
-      var length = strokes[strokes.length - 1].delta;
-      // requestAF(redraw);
-      redraw();
+      // var length = strokes[strokes.length - 1].delta;
+      // redraw();
       sketching = false;
     }
 

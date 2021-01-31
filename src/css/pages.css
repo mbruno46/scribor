@@ -1,0 +1,13 @@
+
+.rule {
+  stroke-width: 0.2;
+  fill: none;
+}
+
+.hrule {
+  stroke: #01f;
+}
+
+.vrule {
+  stroke: red;
+}

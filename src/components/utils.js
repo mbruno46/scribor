@@ -1,3 +1,6 @@
+
+let ns = "http://www.w3.org/2000/svg";
+
 function pointerEventListener (events, el, handler, add = true, options = false) {
   if (typeof events === 'string'){
     var s = events.split(/[\s,;]+/);
@@ -41,4 +44,15 @@ function pointerEventListener (events, el, handler, add = true, options = false)
   }
 };
 
+function newSVGNode(type, attrs) {
+  el = document.createElementNS(ns, type);
+  for (var a in attrs) {
+    el.setAttributeNS(null, a.replace(/[A-Z]/g, function(m, a, o, s) {
+      return "-" + m.toLowerCase();
+    }), attrs[a]);
+  }
+  return el
+}
+
 exports.pointerEventListener = pointerEventListener;
+exports.newSVGNode = newSVGNode;
