@@ -1,0 +1,6 @@
+
+.strokes {
+  fill: none;
+  stroke: var(--pen-color);
+  stroke-width: 1;
+}

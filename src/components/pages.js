@@ -41,10 +41,16 @@ function newPage() {
 
   page.appendChild(g);
 
+  let g1 = newSVGNode('g');
+  g1.id = 'layer1';
+  g1.classList.add('strokes');
+  page.appendChild(g1);
+
   let polyline = newSVGNode('polyline');
   polyline.id = 'points';
   polyline.classList.add('points');
   page.appendChild(polyline);
+
 
   pages.push(page);
 
@@ -66,14 +72,20 @@ function zoomPages(sign) {
     page.setAttribute('view-box','0 0 ' + viewport.width*viewport.scale + ' ' +
       viewport.height*viewport.scale);
 
+    // layer0
+    // page.children[0].setAttribute('transform','scale(' +
+      // viewport.scale + ' ' + viewport.scale + ')');
     for (j=0;j<page.children.length;j++) {
-      if (page.children[j].id.substring(0,5) == 'layer') {
-        page.children[j].setAttribute('transform','scale(' +
-          viewport.scale + ' ' + viewport.scale + ')');
-        }
+      page.children[j].setAttribute('transform','scale(' +
+        viewport.scale + ' ' + viewport.scale + ')');
     }
   }
 }
 
+function getScale() {
+  return viewport.scale;
+}
+
 exports.newPage = newPage;
 exports.zoomPages = zoomPages;
+exports.getScale = getScale;

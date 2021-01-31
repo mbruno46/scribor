@@ -1,4 +1,5 @@
 const {newSVGNode} = require('./utils.js');
+const {getScale} = require('./pages');
 
 const smoothing = 0.15;
 
@@ -69,33 +70,17 @@ function Sketch(page) {
   function position(event) {
     var touches = event.touches;
     var rect = page.getBoundingClientRect();
+    var scale = getScale();
     return {
-      x: Math.round((touches ? touches[0].clientX : event.clientX) - rect.left),
-      y: Math.round((touches ? touches[0].clientY : event.clientY) - rect.top),
+      x: Math.round((touches ? touches[0].clientX : event.clientX) - rect.left)/scale,
+      y: Math.round((touches ? touches[0].clientY : event.clientY) - rect.top)/scale,
       pressure: (touches ? touches[0].force : event.pressure || 0.5)
     }
   }
 
   function redraw () {
-    var path = document.getElementById('path');
-    if (!path) {
-      var path = document.createElementNS(ns,'path');
-    }
-    var g = document.getElementById('g');
-    if (!g) {
-      g = document.createElementNS(ns, 'g');
-    }
-    console.log(g, path);
-
-    page.appendChild(g);
-    g.classList.add('strokes');
-    // create('g', page, svgns, false, 'strokes');
-    // page.setAttribute('viewBox', '0,0,'+ page.getBoundingClientRect().width +','+ page.getBoundingClientRect().height);
-    path.setAttribute('d', optimize(decimate(6, points), bezier) );
-
-    g.setAttribute('fill','none');
-    g.setAttribute('stroke','currentColor');
-    g.setAttribute('stroke-width', 3);
+    let g = page.children[1];
+    let path = newSVGNode('path',{d: optimize(decimate(6, points), bezier)});
     g.appendChild(path);
 
     strokePoints.setAttribute('points', '');
@@ -151,10 +136,7 @@ function Sketch(page) {
       }
       event.preventDefault();
 
-      console.log(strokes);
-      // strokePoints.setAttribute('points', points);
-      // var length = strokes[strokes.length - 1].delta;
-      // redraw();
+      redraw();
       sketching = false;
     }
 
