@@ -51,21 +51,15 @@ function distance(p1, p2) {
 }
 
 
-function Sketch(page) {
+function Sketch() {
   var sketching = false;
   var strokes = [];
   var points = [];
   var previous = null;
   let ns = 'http://www.w3.org/2000/svg';
   var strokePoints;
-
-  var i;
-  for (i=0; i< page.children.length; i++) {
-    if (page.children[i].id == 'points') {
-      strokePoints = page.children[i];
-      break;
-    }
-  }
+  var page = null;
+  var mode = null;
 
   function position(event) {
     var touches = event.touches;
@@ -78,8 +72,18 @@ function Sketch(page) {
     }
   }
 
+  function findLayer(name) {
+    var i;
+    for (i=0;i<page.children.length;i++) {
+      if (page.children[i].id == 'layer-' + name) {
+        return page.children[i];
+      }
+    }
+    return null;
+  }
+
   function redraw () {
-    let g = page.children[1];
+    let g = findLayer('pen');
     let path = newSVGNode('path',{d: optimize(decimate(6, points), bezier)});
     path.classList.add('strokes');
     g.appendChild(path);
@@ -87,7 +91,28 @@ function Sketch(page) {
     strokePoints.setAttribute('points', '');
   }
 
+  function erase(target) {
+    let g = findLayer('pen');
+    if (target.parentElement == g) {
+      g.removeChild(target);
+    }
+  }
+
   return {
+    init(_page) {
+      page = _page;
+
+      var i;
+      for (i=0; i< page.children.length; i++) {
+        if (page.children[i].id == 'points') {
+          strokePoints = page.children[i];
+          break;
+        }
+      }
+    },
+    setMode(_mode) {
+      mode = _mode;
+    },
     start(event) {
       event.preventDefault();
       event = event || event.originalEvent || window.event;
@@ -97,6 +122,12 @@ function Sketch(page) {
       }
 
       sketching = true;
+
+      // no need to collect stroke points
+      if (mode=='eraser') {
+        return;
+      }
+
       let pointer = position(event);
       var stroke = {
         x: pointer.x,
@@ -109,13 +140,17 @@ function Sketch(page) {
       strokes  = [stroke];
       previous = stroke;
     },
-    draw(event) {
+    move(event) {
       event = event || event.originalEvent || window.event;
       if(!sketching) {
         return;
       }
-
       event.preventDefault();
+
+      if (mode=='eraser') {
+        erase(event.target);
+        return;
+      }
 
       let pointer = position(event);
       var stroke = {
@@ -136,9 +171,11 @@ function Sketch(page) {
         return;
       }
       event.preventDefault();
-
-      redraw();
       sketching = false;
+
+      if (mode=='pen') {
+        redraw();
+      }
     }
 
   }

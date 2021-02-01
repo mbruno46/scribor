@@ -15,7 +15,7 @@ function newPage() {
   page.id = 'page ' + pages.length + 1;
 
   let g = newSVGNode('g');
-  g.id = 'layer0';
+  g.id = 'layer-bg';
 
   let bg = newSVGNode('rect', {x:0,y:0,width: viewport.width, height: viewport.height});
   bg.classList.add('page-background');
@@ -41,14 +41,14 @@ function newPage() {
   page.appendChild(g);
 
   let g1 = newSVGNode('g');
-  g1.id = 'layer1';
+  g1.id = 'layer-hlighter';
   g1.classList.add('highlighter');
   page.appendChild(g1);
 
   let g2 = newSVGNode('g');
-  g2.id = 'layer2';
+  g2.id = 'layer-pen';
   g2.classList.add('strokes');
-  page.appendChild(g1);
+  page.appendChild(g2);
 
   let polyline = newSVGNode('polyline');
   polyline.id = 'points';
@@ -61,13 +61,8 @@ function newPage() {
   return page;
 }
 
-function zoomPages(sign) {
-  if (sign == '+') {
-    viewport.scale *= 1.4;
-  }
-  if (sign == '-') {
-    viewport.scale /= 1.4;
-  }
+function rescalePages(new_width) {
+  viewport.scale = Math.round(new_width/viewport.width*100)/100;
 
   var i, j;
   for (i=0;i<pages.length;i++) {
@@ -88,5 +83,5 @@ function getScale() {
 }
 
 exports.newPage = newPage;
-exports.zoomPages = zoomPages;
+exports.rescalePages = rescalePages;
 exports.getScale = getScale;

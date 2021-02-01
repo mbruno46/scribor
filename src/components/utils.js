@@ -54,5 +54,10 @@ function newSVGNode(type, attrs) {
   return el
 }
 
+function px2int(str) {
+  return parseInt(str.substring(0,str.lastIndexOf('px')));
+}
+
 exports.pointerEventListener = pointerEventListener;
 exports.newSVGNode = newSVGNode;
+exports.px2int = px2int;
