@@ -59,7 +59,9 @@ function Sketch() {
   let ns = 'http://www.w3.org/2000/svg';
   var strokePoints;
   var page = null;
-  var mode = null;
+  var mode = 'pen';
+  var color = 'var(--pen-color-blue)';
+  var size = 0.8;
 
   function position(event) {
     var touches = event.touches;
@@ -84,8 +86,11 @@ function Sketch() {
 
   function redraw () {
     let g = findLayer('pen');
-    let path = newSVGNode('path',{d: optimize(decimate(6, points), bezier)});
+    let path = newSVGNode('path',{d: optimize(decimate(2, points), bezier)});
     path.classList.add('strokes');
+    path.setAttribute('stroke',color);
+    path.setAttribute('stroke-width',size);
+
     g.appendChild(path);
 
     strokePoints.setAttribute('points', '');
@@ -98,29 +103,41 @@ function Sketch() {
     }
   }
 
-  return {
-    init(_page) {
-      page = _page;
+  function init(_page) {
+    if (page == _page) {
+      return;
+    }
 
-      var i;
-      for (i=0; i< page.children.length; i++) {
-        if (page.children[i].id == 'points') {
-          strokePoints = page.children[i];
-          break;
-        }
+    page = _page;
+
+    var i;
+    for (i=0; i< page.children.length; i++) {
+      if (page.children[i].id == 'points') {
+        strokePoints = page.children[i];
+        break;
       }
-    },
+    }
+  }
+
+  return {
     setMode(_mode) {
       mode = _mode;
+    },
+    setColor(_color) {
+      color = _color;
+    },
+    setSize(_size) {
+      size = _size;
     },
     start(event) {
       event.preventDefault();
       event = event || event.originalEvent || window.event;
-      if (event.target.parentElement != page &&
-        event.target.parentElement.parentElement != page) {
+      let p = event.target.parentElement.parentElement
+      if (p.id.substring(0,4) != 'page') {
         return;
       }
 
+      init(p);
       sketching = true;
 
       // no need to collect stroke points
@@ -164,6 +181,7 @@ function Sketch() {
       points.push([pointer.x, pointer.y]);
 
       strokePoints.setAttribute('points', points);
+      strokePoints.setAttribute('stroke-width',size);
     },
     end(event) {
       event = event || event.originalEvent || window.event;
@@ -176,6 +194,13 @@ function Sketch() {
       if (mode=='pen') {
         redraw();
       }
+    },
+    getFocusPage() {
+      let fp = page.id;
+      return parseInt(fp.substring(5));
+    },
+    setFocusPage(p) {
+      init(p);
     }
 
   }

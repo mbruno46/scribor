@@ -1,6 +1,6 @@
 const {newSVGNode} = require('./utils.js');
 
-let pages = [];
+var pages = [];
 var viewport = {
   width: 210,
   height: 297,
@@ -11,13 +11,14 @@ function newPage() {
   // width + height define viewport
   // viewbox defines coordinate system; we want them equal
   let page = newSVGNode('svg', {width: viewport.width, height: viewport.height,
-    viewBox: "0 0 210 297", preserveAspectRatio: "none"});
-  page.id = 'page ' + pages.length + 1;
+    viewBox: "0 0 " + viewport.width + ' ' + viewport.height,
+    preserveAspectRatio: "none"});
+  page.id = 'page ' + (pages.length + 1);
 
   let g = newSVGNode('g');
   g.id = 'layer-bg';
 
-  let bg = newSVGNode('rect', {x:0,y:0,width: viewport.width, height: viewport.height});
+  let bg = newSVGNode('rect', {x:0, y:0, width: viewport.width, height: viewport.height});
   bg.classList.add('page-background');
   g.appendChild(bg);
 
@@ -58,6 +59,9 @@ function newPage() {
 
   pages.push(page);
 
+  let s = getScale();
+  rescalePages(s*viewport.width);
+
   return page;
 }
 
@@ -66,13 +70,13 @@ function rescalePages(new_width) {
 
   var i, j;
   for (i=0;i<pages.length;i++) {
-    page.setAttribute('width',viewport.width*viewport.scale);
-    page.setAttribute('height',viewport.height*viewport.scale);
-    page.setAttribute('view-box','0 0 ' + viewport.width*viewport.scale + ' ' +
+    pages[i].setAttribute('width',viewport.width*viewport.scale);
+    pages[i].setAttribute('height',viewport.height*viewport.scale);
+    pages[i].setAttribute('view-box','0 0 ' + viewport.width*viewport.scale + ' ' +
       viewport.height*viewport.scale);
 
-    for (j=0;j<page.children.length;j++) {
-      page.children[j].setAttribute('transform','scale(' +
+    for (j=0;j<pages[i].children.length;j++) {
+      pages[i].children[j].setAttribute('transform','scale(' +
         viewport.scale + ' ' + viewport.scale + ')');
     }
   }
@@ -82,6 +86,16 @@ function getScale() {
   return viewport.scale;
 }
 
+function zoomPages(sign) {
+  if (sign=='+') {
+    rescalePages(viewport.scale*viewport.width*1.10);
+  }
+  else if (sign=='-') {
+    rescalePages(viewport.scale*viewport.width/1.10);
+  }
+}
+
 exports.newPage = newPage;
 exports.rescalePages = rescalePages;
 exports.getScale = getScale;
+exports.zoomPages = zoomPages;

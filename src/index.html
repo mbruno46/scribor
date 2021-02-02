@@ -6,6 +6,8 @@
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
 
     <link rel="stylesheet" href="css/water.css">
+    <link rel="stylesheet" href="../public/fontawesome/css/all.css">
+
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/pages.css">
     <link rel="stylesheet" href="css/sketch.css">
@@ -13,20 +15,50 @@
 
 </head>
 <body>
+
   <div class="main">
-    <div id="header">
-      <button id="eraser">Eraser</button>
-      <button id="pen">Pen</button>
-      <button id="highlighter">Highlighter</button>
+    <div id="header" class="header">
+      <div id="header-first-row">
+        <div class="btn-group float-left">
+          <button id="eraser" class="btn"><i class="fa fa-eraser fa-lg"></i><br><span>Eraser</span></button>
+          <button id="pen" class="btn"><i class="fa fa-pen-fancy fa-lg"></i><br><span>Pen</span></button>
+          <button id="highlighter" class="btn"><i class="fa fa-highlighter fa-lg"></i><br><span>Highlighter</span></button>
+        </div>
 
-      <span style="padding-left: 24px"></span>
+        <!-- <span style="padding-left: 24px"></span> -->
 
-      <button id="zoom_in" class="btn">Zoom+</button>
-      <button id="zoom_out" class="btn">Zoom-</button>
-      <button id="fit-width">Fit Width</button>
+        <div class="btn-group">
+          <button id="thin" class="btn"><i class="fa fa-slash fa-xs"></i></button>
+          <button id="medium" class="btn"><i class="fa fa-slash fa-sm"></i></button>
+          <button id="thick" class="btn"><i class="fa fa-slash fa-lg"></i></button>
+        </div>
+
+        <!-- <span style="padding-left: 24px"></span> -->
+
+        <div class="btn-group float-right">
+          <button id="red" class="btn"><i class="fa fa-square" style="color: var(--pen-color-red)"></i></button>
+          <button id="blue" class="btn"><i class="fa fa-square" style="color: var(--pen-color-blue)"></i></button>
+          <button id="black" class="btn"><i class="fa fa-square" style="color: black"></i></button>
+        </div>
+      </div>
+
+      <!-- <span style="padding-left: 24px"></span> -->
+
+      <div id="header-second-row">
+        <div class="btn-group">
+          <button id="zoom_in" class="fa fa-search-plus"></button>
+          <button id="zoom_out" class="fa fa-search-minus"></button>
+          <button id="fit-width">Fit Width</button>
+        </div>
+      </div>
     </div>
     <div id="notebook" class="notebook"></div>
     <div id="footer">
+      <div class="btn-group">
+        <span id="page-label"></span>
+        <button id="new-page" class="btn"><i class="fa fa-plus"></i><br><span>New Page</span></button>
+        <button id="del-page" class="btn"><i class="fa fa-minus"></i><br><span>Delete Page</span></button>
+      </div>
     </div>
   </div>
 
