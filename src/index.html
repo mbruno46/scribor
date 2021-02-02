@@ -18,8 +18,8 @@
 
   <div class="main">
     <div id="header" class="header">
-      <div id="header-first-row">
-        <div class="btn-group float-left">
+      <div id="header-first-row" style="display: flex">
+        <div class="btn-group">
           <button id="eraser" class="btn"><i class="fa fa-eraser fa-lg"></i><br><span>Eraser</span></button>
           <button id="pen" class="btn"><i class="fa fa-pen-fancy fa-lg"></i><br><span>Pen</span></button>
           <button id="highlighter" class="btn"><i class="fa fa-highlighter fa-lg"></i><br><span>Highlighter</span></button>
@@ -44,11 +44,17 @@
 
       <!-- <span style="padding-left: 24px"></span> -->
 
-      <div id="header-second-row">
+      <div id="header-second-row" style="display: flex">
         <div class="btn-group">
-          <button id="zoom_in" class="fa fa-search-plus"></button>
-          <button id="zoom_out" class="fa fa-search-minus"></button>
-          <button id="fit-width">Fit Width</button>
+          <button id="open" class="btn"><i class="fa fa-folder-open fa-lg"></i></button>
+          <button id="save" class="btn"><i class="fa fa-save fa-lg"></i></button>
+          <button id="export-pdf" class="btn"><i class="fa fa-file-pdf fa-lg"></i></button>
+        </div>
+
+        <div class="btn-group">
+          <button id="zoom_in" class="btn"><i class="fa fa-search-plus"></i></button>
+          <button id="zoom_out" class="btn"><i class="fa fa-search-minus"></i></button>
+          <button id="fit-width" class="btn">Fit Width</button>
         </div>
       </div>
     </div>

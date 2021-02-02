@@ -1,13 +1,16 @@
 const utils = require('./components/utils.js');
 const {newPage, rescalePages, zoomPages} = require('./components/pages.js');
 const {Sketch} = require('./components/sketch.js');
+const {exportPDF} = require('./components/exportpdf.js');
 
+// initialize notebook with empty page filling available width
 var page = newPage();
 const notebook = document.getElementById('notebook');
 notebook.appendChild(page);
 let s = Sketch();
 s.setFocusPage(page);
 refreshPageLabel();
+fit_width();
 
 utils.pointerEventListener('down', page, s.start);
 utils.pointerEventListener('move', document, s.move);
@@ -42,21 +45,27 @@ document.getElementById('black').onclick = ev => {
   s.setColor("black");
 }
 
-const zoom_in = document.getElementById('zoom_in');
-zoom_in.onclick = ev => {
+document.getElementById('export-pdf').onclick = ev => {
+  exportPDF(notebook, './temp.pdf');
+}
+
+document.getElementById('zoom_in').onclick = ev => {
   zoomPages('+');
 }
-const zoom_out = document.getElementById('zoom_out');
-zoom_out.onclick = ev => {
+document.getElementById('zoom_out').onclick = ev => {
   zoomPages('-');
 }
 
-const fit_width = document.getElementById('fit-width');
-fit_width.onclick = ev => {
+
+
+function fit_width() {
   const css = getComputedStyle(notebook);
   let w = notebook.offsetWidth -
-    utils.px2int(css.paddingLeft) - utils.px2int(css.paddingRight);
+    utils.px2int(css.paddingLeft) - utils.px2int(css.paddingRight)*2;
   rescalePages(w);
+}
+document.getElementById('fit-width').onclick = ev => {
+  fit_width();
 }
 
 

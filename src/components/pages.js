@@ -2,9 +2,14 @@ const {newSVGNode} = require('./utils.js');
 
 var pages = [];
 var viewport = {
-  width: 210,
-  height: 297,
+  width: 595,
+  height: 842,
   scale: 1,
+}
+var layout = {
+  vrule: 91, //32mm /210*595;
+  hrule: 20, //7.1mm
+  nlines: 36,
 }
 
 function newPage() {
@@ -22,20 +27,17 @@ function newPage() {
   bg.classList.add('page-background');
   g.appendChild(bg);
 
-  let nlines = 32;
-  let margin = 14;
-  let dh = (viewport.height-2*margin)/nlines;
+  let margin = Math.round((viewport.height-(layout.nlines-1)*layout.hrule)/2);
   var i;
-  for (i=0;i<nlines-1;i++) {
+  for (i=0;i<layout.nlines-1;i++) {
     let line = newSVGNode('path');
     line.classList.add('rule','hrule');
-    line.setAttribute('d','m0 ' + (margin + dh*(i+1)) + 'h' + viewport.width)
-    // line.setAttribute('d','m10.143 ' + (229.33 + i*dh) + 'h750.64');
+    line.setAttribute('d','m0 ' + (margin + layout.hrule*(i+1)) + 'h' + viewport.width)
     g.appendChild(line);
   }
   let line = newSVGNode('path');
   line.classList.add('rule','vrule');
-  line.setAttribute('d','m30 0 v' + viewport.height)
+  line.setAttribute('d','m' + layout.vrule + ' 0 v' + viewport.height)
   g.appendChild(line);
 
 
@@ -66,7 +68,7 @@ function newPage() {
 }
 
 function rescalePages(new_width) {
-  viewport.scale = Math.round(new_width/viewport.width*100)/100;
+  viewport.scale = Math.round(new_width/viewport.width*10000)/10000;
 
   var i, j;
   for (i=0;i<pages.length;i++) {

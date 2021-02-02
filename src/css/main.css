@@ -32,14 +32,14 @@ button {
   /* display: flex; */
   /* flex-wrap: wrap; */
   display: grid;
-  grid-template-rows: 32px 32px;
-  align-items: center;
+  grid-template-rows: 72px 72px;
+  /* align-items: center; */
 }
 
 .btn-group {
   /* height: min-content; */
   width: max-content;
-  margin: 0;
+  margin: auto 16px auto 16px;
   border-radius: 4px;
   padding: 4px;
   border: 1px solid var(--border);
