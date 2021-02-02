@@ -6,8 +6,8 @@ const { remote, globalShortcut } = require('electron');
 const {dialog} = remote;
 const fs = require('fs');
 
-// initialize notebook with empty page filling available width
-var page = pages.newPage();
+// initialize notebook with cover page filling available width
+var page = pages.newPage(true);
 const notebook = document.getElementById('notebook');
 notebook.appendChild(page);
 let s = Sketch();
@@ -23,6 +23,10 @@ utils.pointerEventListener('up leave', document, s.end);
 document.getElementById('eraser').onclick = ev => {
   s.setMode('eraser');
   notebook.classList.add('eraser-cursor');
+}
+document.getElementById('select').onclick = ev => {
+  s.setMode('select');
+  notebook.classList.remove('eraser-cursor');
 }
 document.getElementById('pen').onclick = ev => {
   s.setMode('pen');
@@ -105,7 +109,7 @@ document.getElementById('save').onclick = ev => {
   if (fname.substring(fname.length-6) != '.svgnb') {
     notebook_file = fname + '.svgnb';
   }
-  document.title = notebook_file;  
+  document.title = notebook_file;
   save_notebook();
 }
 
@@ -141,8 +145,9 @@ document.getElementById('fit-width').onclick = ev => {
 
 
 function refreshPageLabel() {
-  document.getElementById('page-label').textContent =
-    'Page ' + s.getFocusPage() + '/' + notebook.children.length;
+  let idx = s.getFocusPage();
+  let msg = (idx==0) ? 'cover' : 'Page ' + idx + '/' + (notebook.children.length-1);
+  document.getElementById('page-label').textContent = msg;
 }
 
 notebook.onclick = ev => {
@@ -159,13 +164,13 @@ function appendAtIndex(parent, child, index) {
 }
 
 document.getElementById('new-page').onclick = ev => {
-  let idx = s.getFocusPage()-1;
+  let idx = s.getFocusPage();
   let _new = pages.newPage();
   appendAtIndex(notebook, _new, idx+1);
 
   var i;
-  for (i=1;i<=notebook.children.length;i++) {
-    notebook.children[i-1].id = 'page ' + i;
+  for (i=0;i<notebook.children.length;i++) {
+    notebook.children[i].id = 'page ' + i;
   }
 
   s.setFocusPage(_new);
@@ -173,17 +178,16 @@ document.getElementById('new-page').onclick = ev => {
 }
 
 document.getElementById('del-page').onclick = ev => {
-  let idx = s.getFocusPage()-1;
-  notebook.removeChild(notebook.children[idx]);
+  let idx = s.getFocusPage();
   if (idx==0) {
-    notebook.appendChild(pages.newPage());
+    return;
   }
-
+  notebook.removeChild(notebook.children[idx]);
   var i;
-  for (i=1;i<=notebook.children.length;i++) {
-    notebook.children[i-1].id = 'page ' + i;
+  for (i=0;i<notebook.children.length;i++) {
+    notebook.children[i].id = 'page ' + i;
   }
 
-  s.setFocusPage(notebook.children[(idx>0) ? idx-1 : 0]);
+  s.setFocusPage(notebook.children[idx]);
   refreshPageLabel();
 }

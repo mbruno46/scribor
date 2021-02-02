@@ -153,7 +153,7 @@ function Sketch() {
       sketching = true;
 
       // no need to collect stroke points
-      if (mode=='eraser') {
+      if (mode=='eraser' || mode=='select') {
         return;
       }
 
@@ -180,6 +180,10 @@ function Sketch() {
       }
       event.preventDefault();
 
+      if (mode=='select') {
+        return;
+      }
+      
       if (mode=='eraser') {
         erase(event.target);
         return;
