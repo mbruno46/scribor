@@ -5,7 +5,9 @@
 
 .highlighter {
   fill: none;
-  stroke-width: 3;
+  stroke-width: 16;
+  stroke-linecap: round;
+  opacity: 0.7;
 }
 
 .strokes {

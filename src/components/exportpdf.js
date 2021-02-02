@@ -34,7 +34,7 @@ function exportPDF(nb, dest) {
 
           let tag = el.tagName.toLowerCase();
           let css = getComputedStyle(el);
-          console.log(css.stroke);
+          console.log(page.children[j].id);
 
           if (tag == 'rect') {
             doc.rect(el.getAttribute('x'), el.getAttribute('y'), el.getAttribute('width'), el.getAttribute('height'))
@@ -44,8 +44,11 @@ function exportPDF(nb, dest) {
           if (tag == 'path') {
             doc.path(el.getAttribute('d'))
               .lineWidth(utils.px2float(css.strokeWidth))
+              .lineCap(css.strokeLinecap)
+              .strokeOpacity(css.opacity)
               .strokeColor(rgb2hex(css.stroke))
               .stroke();
+            console.log(css.strokeLineCap);
           }
         }
       }

@@ -97,7 +97,16 @@ function zoomPages(sign) {
   }
 }
 
+function refreshPagesDatabaseFromNotebook(notebook) {
+  pages = []
+  var i;
+  for (i=0;i<notebook.children.length;i++) {
+    pages.push(notebook.children[i]);
+  }
+}
+
 exports.newPage = newPage;
 exports.rescalePages = rescalePages;
 exports.getScale = getScale;
 exports.zoomPages = zoomPages;
+exports.refreshPagesDatabaseFromNotebook = refreshPagesDatabaseFromNotebook;

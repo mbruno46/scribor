@@ -1,7 +1,11 @@
 :root {
   --page: rgb(240,230,180);
+  --pen-color-yellow: #FFFF33;
+  --pen-color-orange: #FFA500;
+  --pen-color-green: #98FB98;
   --pen-color-blue: #204d74;
   --pen-color-red: #ac3235;
+  --pen-color-cyan: #b4e7f8;
   --vrule: rgb(220,156,126);
   --hrule: rgb(160,190,200);
 }
@@ -84,4 +88,8 @@ button {
 
 .float-right {
   float: right;
+}
+
+.eraser-cursor {
+  cursor: url(./cursor/eraser.cur), auto;
 }

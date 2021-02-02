@@ -85,12 +85,20 @@ function Sketch() {
   }
 
   function redraw () {
-    let g = findLayer('pen');
     let path = newSVGNode('path',{d: optimize(decimate(2, points), bezier)});
-    path.classList.add('strokes');
-    path.setAttribute('stroke',color);
-    path.setAttribute('stroke-width',size);
+    var g;
 
+    if (mode == 'pen') {
+      g = findLayer('pen');
+      path.classList.add('strokes');
+      path.setAttribute('stroke-width',size);
+    }
+    else if (mode == 'highlighter') {
+      g = findLayer('hlighter');
+      path.classList.add('highlighter');
+      strokePoints.classList.remove('highlighter');
+    }
+    path.setAttribute('stroke',color);
     g.appendChild(path);
 
     strokePoints.setAttribute('points', '');
@@ -98,6 +106,10 @@ function Sketch() {
 
   function erase(target) {
     let g = findLayer('pen');
+    if (target.parentElement == g) {
+      g.removeChild(target);
+    }
+    g = findLayer('hlighter');
     if (target.parentElement == g) {
       g.removeChild(target);
     }
@@ -156,6 +168,10 @@ function Sketch() {
       points   = [[pointer.x, pointer.y]];
       strokes  = [stroke];
       previous = stroke;
+
+      if (mode == 'highlighter') {
+        strokePoints.classList.add('highlighter');
+      }
     },
     move(event) {
       event = event || event.originalEvent || window.event;
@@ -181,7 +197,9 @@ function Sketch() {
       points.push([pointer.x, pointer.y]);
 
       strokePoints.setAttribute('points', points);
-      strokePoints.setAttribute('stroke-width',size);
+      if (mode == 'pen') {
+        strokePoints.setAttribute('stroke-width',size);
+      }
     },
     end(event) {
       event = event || event.originalEvent || window.event;
@@ -191,7 +209,7 @@ function Sketch() {
       event.preventDefault();
       sketching = false;
 
-      if (mode=='pen') {
+      if (mode=='pen' || mode=='highlighter') {
         redraw();
       }
     },

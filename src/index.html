@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Hello World!</title>
+    <title>Empty notebook</title>
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
 
     <link rel="stylesheet" href="css/water.css">
@@ -11,8 +11,6 @@
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/pages.css">
     <link rel="stylesheet" href="css/sketch.css">
-
-
 </head>
 <body>
 
@@ -20,52 +18,69 @@
     <div id="header" class="header">
       <div id="header-first-row" style="display: flex">
         <div class="btn-group">
-          <button id="eraser" class="btn"><i class="fa fa-eraser fa-lg"></i><br><span>Eraser</span></button>
-          <button id="pen" class="btn"><i class="fa fa-pen-fancy fa-lg"></i><br><span>Pen</span></button>
-          <button id="highlighter" class="btn"><i class="fa fa-highlighter fa-lg"></i><br><span>Highlighter</span></button>
-        </div>
-
-        <!-- <span style="padding-left: 24px"></span> -->
-
-        <div class="btn-group">
-          <button id="thin" class="btn"><i class="fa fa-slash fa-xs"></i></button>
-          <button id="medium" class="btn"><i class="fa fa-slash fa-sm"></i></button>
-          <button id="thick" class="btn"><i class="fa fa-slash fa-lg"></i></button>
-        </div>
-
-        <!-- <span style="padding-left: 24px"></span> -->
-
-        <div class="btn-group float-right">
-          <button id="red" class="btn"><i class="fa fa-square" style="color: var(--pen-color-red)"></i></button>
-          <button id="blue" class="btn"><i class="fa fa-square" style="color: var(--pen-color-blue)"></i></button>
-          <button id="black" class="btn"><i class="fa fa-square" style="color: black"></i></button>
-        </div>
-      </div>
-
-      <!-- <span style="padding-left: 24px"></span> -->
-
-      <div id="header-second-row" style="display: flex">
-        <div class="btn-group">
           <button id="open" class="btn"><i class="fa fa-folder-open fa-lg"></i></button>
           <button id="save" class="btn"><i class="fa fa-save fa-lg"></i></button>
           <button id="export-pdf" class="btn"><i class="fa fa-file-pdf fa-lg"></i></button>
         </div>
 
         <div class="btn-group">
+          <span id="page-label" style="align-items: center;padding: 0 6px 0 6px"></span>
+          <button id="new-page" class="btn"><i class="fa fa-plus"></i><br></button>
+          <button id="del-page" class="btn"><i class="fa fa-minus"></i><br></button>
+        </div>
+
+        <div class="btn-group">
           <button id="zoom_in" class="btn"><i class="fa fa-search-plus"></i></button>
           <button id="zoom_out" class="btn"><i class="fa fa-search-minus"></i></button>
-          <button id="fit-width" class="btn">Fit Width</button>
+          <button id="fit-width" class="btn"><i class="fa fa-expand"></i></button>
+        </div>
+
+        <div class="btn-group">
+          <button id="zoom_in" class="btn"><i class="fas fa-bars"></i></button>
+        </div>
+
+      </div>
+
+      <div id="header-second-row" style="display: flex">
+        <div class="btn-group">
+          <!-- <button id="eraser" class="btn"><i class="fa fa-eraser fa-lg"></i><br><span>Eraser</span></button> -->
+          <button id="eraser" class="btn"><i class="fa fa-eraser fa-lg"></i></button>
+          <button id="eraser" class="btn"><i class="fa fa-arrows-alt fa-lg"></i></button>
+          <button id="eraser" class="btn"><i class="fa fa-mouse-pointer fa-lg"></i></button>
+        </div>
+
+        <div class="btn-group">
+          <!-- <button id="pen" class="btn"><i class="fa fa-pen-fancy fa-lg"></i><br><span>Pen</span></button> -->
+          <button id="pen" class="btn"><i class="fa fa-pen-fancy fa-lg"></i></button>
+          <button id="thin" class="btn"><i class="fa fa-slash fa-xs"></i></button>
+          <button id="medium" class="btn"><i class="fa fa-slash fa-sm"></i></button>
+          <button id="thick" class="btn"><i class="fa fa-slash fa-lg"></i></button>
+          <button id="red" class="btn"><i class="fa fa-square" style="color: var(--pen-color-red)"></i></button>
+          <button id="blue" class="btn"><i class="fa fa-square" style="color: var(--pen-color-blue)"></i></button>
+          <button id="black" class="btn"><i class="fa fa-square" style="color: black"></i></button>
+        </div>
+
+        <div class="btn-group float-right">
+          <!-- <button id="highlighter" class="btn"><i class="fa fa-highlighter fa-lg"></i><br><span>Highlighter</span></button> -->
+          <button id="highlighter" class="btn"><i class="fa fa-highlighter fa-lg"></i></button>
+          <button id="yellow" class="btn"><i class="fa fa-square" style="color: var(--pen-color-yellow)"></i></button>
+          <button id="orange" class="btn"><i class="fa fa-square" style="color: var(--pen-color-orange)"></i></button>
+          <button id="green" class="btn"><i class="fa fa-square" style="color: var(--pen-color-green)"></i></button>
+          <button id="cyan" class="btn"><i class="fa fa-square" style="color: var(--pen-color-cyan)"></i></button>
         </div>
       </div>
+
+      <!-- <span style="padding-left: 24px"></span> -->
+
+
+
     </div>
+
     <div id="notebook" class="notebook"></div>
+
     <div id="footer">
-      <div class="btn-group">
-        <span id="page-label"></span>
-        <button id="new-page" class="btn"><i class="fa fa-plus"></i><br><span>New Page</span></button>
-        <button id="del-page" class="btn"><i class="fa fa-minus"></i><br><span>Delete Page</span></button>
-      </div>
     </div>
+
   </div>
 
   <script src="renderer.js"></script>

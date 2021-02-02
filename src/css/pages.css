@@ -1,8 +1,9 @@
 
 .page-background {
-  fill: var(--page);
-  stroke: black;
-  stroke-width: 0.1
+  fill: white;
+  /* var(--page); */
+  /* stroke: black; */
+  /* stroke-width: 0.1 */
 }
 
 .rule {
