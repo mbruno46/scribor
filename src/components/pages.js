@@ -51,7 +51,7 @@ function newPage(coverPage = false) {
 
     let d = layout.label;
     let label = newSVGNode('rect', {x:d[0], y:d[1], width: d[2], height: d[3],
-      fill: 'white', stroke: 'black', "stroke-width": 2, rx: 5, ry: 5});
+      fill: 'white', stroke: 'black', "stroke-width": 2});
     g.appendChild(label);
 
     var i;

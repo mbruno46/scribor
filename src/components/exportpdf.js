@@ -34,12 +34,19 @@ function exportPDF(nb, dest) {
 
           let tag = el.tagName.toLowerCase();
           let css = getComputedStyle(el);
-          console.log(page.children[j].id);
 
           if (tag == 'rect') {
-            doc.rect(el.getAttribute('x'), el.getAttribute('y'), el.getAttribute('width'), el.getAttribute('height'))
-              .fill(rgb2hex(css.fill))
-              .stroke();
+            if (css.stroke != "none") {
+              doc.rect(el.getAttribute('x'), el.getAttribute('y'), el.getAttribute('width'), el.getAttribute('height'))
+                .lineWidth(utils.px2float(css.strokeWidth))
+                .fillAndStroke(rgb2hex(css.fill),rgb2hex(css.stroke))
+                .stroke();
+            }
+            else {
+              doc.rect(el.getAttribute('x'), el.getAttribute('y'), el.getAttribute('width'), el.getAttribute('height'))
+                .fill(rgb2hex(css.fill))
+                .stroke();
+            }
           }
           if (tag == 'path') {
             doc.path(el.getAttribute('d'))
@@ -48,7 +55,6 @@ function exportPDF(nb, dest) {
               .strokeOpacity(css.opacity)
               .strokeColor(rgb2hex(css.stroke))
               .stroke();
-            console.log(css.strokeLineCap);
           }
         }
       }
