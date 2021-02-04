@@ -60,9 +60,9 @@ function Sketch() {
   var strokePoints;
   var page = null;
   var mode = 'pen';
-  var color = 'var(--pen-color-blue)';
+  var color = ['var(--pen-color-blue)', 'var(--pen-color-orange)'];
   var size = 0.8;
-
+  
   function position(event) {
     var touches = event.touches;
     var rect = page.getBoundingClientRect();
@@ -85,20 +85,21 @@ function Sketch() {
   }
 
   function redraw () {
-    let path = newSVGNode('path',{d: optimize(decimate(2, points), bezier)});
+    let path = newSVGNode('path',{d: optimize(decimate(8, points), bezier)});
     var g;
 
     if (mode == 'pen') {
       g = findLayer('pen');
       path.classList.add('strokes');
+      path.setAttribute('stroke',color[0]);
       path.setAttribute('stroke-width',size);
     }
     else if (mode == 'highlighter') {
       g = findLayer('hlighter');
       path.classList.add('highlighter');
+      path.setAttribute('stroke',color[1]);
       strokePoints.classList.remove('highlighter');
     }
-    path.setAttribute('stroke',color);
     g.appendChild(path);
 
     strokePoints.setAttribute('points', '');
@@ -135,8 +136,11 @@ function Sketch() {
     setMode(_mode) {
       mode = _mode;
     },
-    setColor(_color) {
-      color = _color;
+    getMode() {
+      return mode;
+    },
+    setColor(_color, i=0) {
+      color[i] = _color;
     },
     setSize(_size) {
       size = _size;
@@ -183,7 +187,7 @@ function Sketch() {
       if (mode=='select') {
         return;
       }
-      
+
       if (mode=='eraser') {
         erase(event.target);
         return;

@@ -14,65 +14,120 @@ let s = Sketch();
 s.setFocusPage(page);
 refreshPageLabel();
 fit_width();
+s.setMode('pen');
+setActiveBtnGroup(document.getElementById('pen').parentElement);
 var notebook_file = null;
 
 utils.pointerEventListener('down', page, s.start);
 utils.pointerEventListener('move', document, s.move);
 utils.pointerEventListener('up leave', document, s.end);
 
+function setActiveBtnGroup(g) {
+  var el = document.getElementsByClassName('btn-group-active');
+  if (el && el[0]) {
+    el[0].classList.remove('btn-group-active');
+  }
+  g.classList.add('btn-group-active');
+}
+
 document.getElementById('eraser').onclick = ev => {
   s.setMode('eraser');
   notebook.classList.add('eraser-cursor');
+  setActiveBtnGroup(event.currentTarget.parentElement);
 }
 document.getElementById('select').onclick = ev => {
   s.setMode('select');
   notebook.classList.remove('eraser-cursor');
+  setActiveBtnGroup(event.currentTarget.parentElement);
 }
 document.getElementById('pen').onclick = ev => {
   s.setMode('pen');
-  s.setSize(1.0);
-  s.setColor("var(--pen-color-blue)");
   notebook.classList.remove('eraser-cursor');
+  setActiveBtnGroup(event.currentTarget.parentElement);
 }
 document.getElementById('highlighter').onclick = ev => {
   s.setMode('highlighter');
-  s.setColor("var(--pen-color-orange)");
   notebook.classList.remove('eraser-cursor');
+  setActiveBtnGroup(event.currentTarget.parentElement);
 }
-
+document.addEventListener("contextmenu", (ev) => {
+  if (s.getMode() == 'pen') {
+    s.setMode('eraser');
+    notebook.classList.add('eraser-cursor');
+    setActiveBtnGroup(document.getElementById('eraser').parentElement);
+  }
+  else {
+    s.setMode('pen');
+    notebook.classList.remove('eraser-cursor');
+    setActiveBtnGroup(document.getElementById('pen').parentElement);    
+  }
+});
 //
 
 document.getElementById('thin').onclick = ev => {
   s.setSize(1.0);
+  s.setMode('pen');
+  notebook.classList.remove('eraser-cursor');
+  setActiveBtnGroup(event.currentTarget.parentElement);
 }
 document.getElementById('medium').onclick = ev => {
   s.setSize(2.0);
+  s.setMode('pen');
+  notebook.classList.remove('eraser-cursor');
+  setActiveBtnGroup(event.currentTarget.parentElement);
 }
 document.getElementById('thick').onclick = ev => {
   s.setSize(3.0);
+  s.setMode('pen');
+  notebook.classList.remove('eraser-cursor');
+  setActiveBtnGroup(event.currentTarget.parentElement);
 }
 
-document.getElementById('yellow').onclick = ev => {
-  s.setColor("var(--pen-color-yellow)");
-}
-document.getElementById('orange').onclick = ev => {
-  s.setColor("var(--pen-color-orange)");
-}
-document.getElementById('green').onclick = ev => {
-  s.setColor("var(--pen-color-green)");
-}
-document.getElementById('cyan').onclick = ev => {
-  s.setColor("var(--pen-color-cyan)");
-}
 document.getElementById('red').onclick = ev => {
   s.setColor("var(--pen-color-red)");
+  s.setMode('pen');
+  notebook.classList.remove('eraser-cursor');
+  setActiveBtnGroup(event.currentTarget.parentElement);
 }
 document.getElementById('blue').onclick = ev => {
   s.setColor("var(--pen-color-blue)");
+  s.setMode('pen');
+  notebook.classList.remove('eraser-cursor');
+  setActiveBtnGroup(event.currentTarget.parentElement);
 }
 document.getElementById('black').onclick = ev => {
   s.setColor("black");
+  s.setMode('pen');
+  notebook.classList.remove('eraser-cursor');
+  setActiveBtnGroup(event.currentTarget.parentElement);
 }
+
+
+document.getElementById('yellow').onclick = ev => {
+  s.setColor("var(--pen-color-yellow)",1);
+  s.setMode('highlighter');
+  notebook.classList.remove('eraser-cursor');
+  setActiveBtnGroup(event.currentTarget.parentElement);
+}
+document.getElementById('orange').onclick = ev => {
+  s.setColor("var(--pen-color-orange)",1);
+  s.setMode('highlighter');
+  notebook.classList.remove('eraser-cursor');
+  setActiveBtnGroup(event.currentTarget.parentElement);
+}
+document.getElementById('green').onclick = ev => {
+  s.setColor("var(--pen-color-green)",1);
+  s.setMode('highlighter');
+  notebook.classList.remove('eraser-cursor');
+  setActiveBtnGroup(event.currentTarget.parentElement);
+}
+document.getElementById('cyan').onclick = ev => {
+  s.setColor("var(--pen-color-cyan)",1);
+  s.setMode('highlighter');
+  notebook.classList.remove('eraser-cursor');
+  setActiveBtnGroup(event.currentTarget.parentElement);
+}
+
 
 document.getElementById('open').onclick = ev => {
   opts = {title: 'Open notebook', properties: ['openFile'], filters: [{name: 'Notebooks', extensions: ['svgnb']}]};
@@ -90,10 +145,10 @@ document.getElementById('open').onclick = ev => {
     refreshPageLabel();
     fit_width();
   });
-  document.title = notebook_file;
+  document.title = 'SCRIBOR: ' + notebook_file;
 }
 
-function save_notebook() {
+function save_notebook(fname) {
   fs.writeFile(fname, notebook.innerHTML, (err) => {
     if (err) {
       alert('File could not be saved');
@@ -106,11 +161,10 @@ document.getElementById('save').onclick = ev => {
   let fname = dialog.showSaveDialogSync(remote.getCurrentWindow(), opts);
   if (!fname) {return;}
 
-  if (fname.substring(fname.length-6) != '.svgnb') {
-    notebook_file = fname + '.svgnb';
-  }
-  document.title = notebook_file;
-  save_notebook();
+  notebook_file = fname;
+  notebook_file += (fname.substring(fname.length-6) != '.svgnb') ? '.svgnb' : '';
+  document.title = 'SCRIBOR: ' + notebook_file;
+  save_notebook(notebook_file);
 }
 
 document.getElementById('export-pdf').onclick = ev => {

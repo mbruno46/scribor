@@ -51,16 +51,16 @@ button {
   /* flex-grow: row; */
 }
 
+.btn-group-active {
+  border: 1px solid var(--code);
+}
+
 .btn {
   /* display: flex; */
   /* flex-flow: column; */
   align-items: center;
   padding: 8px;
   margin: auto;
-}
-
-.btn:active {
-  color: var(--highlight);
 }
 
 .btn span {
