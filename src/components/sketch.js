@@ -41,6 +41,7 @@ function decimate(n, points) {
   for (var i = 0; i < points.length; i++) {
     if (i % n == 0) dec[dec.length] = points[i];
   }
+  dec[dec.length] = points[points.length-1];
   return dec;
 }
 
@@ -62,7 +63,8 @@ function Sketch() {
   var mode = 'pen';
   var color = ['var(--pen-color-blue)', 'var(--pen-color-orange)'];
   var size = 0.8;
-  
+  var path;
+
   function position(event) {
     var touches = event.touches;
     var rect = page.getBoundingClientRect();
@@ -84,8 +86,29 @@ function Sketch() {
     return null;
   }
 
-  function redraw () {
-    let path = newSVGNode('path',{d: optimize(decimate(8, points), bezier)});
+  // function redraw () {
+  //   let path = newSVGNode('path',{d: optimize(decimate(8, points), bezier)});
+  //   var g;
+  //
+  //   if (mode == 'pen') {
+  //     g = findLayer('pen');
+  //     path.classList.add('strokes');
+  //     path.setAttribute('stroke',color[0]);
+  //     path.setAttribute('stroke-width',size);
+  //   }
+  //   else if (mode == 'highlighter') {
+  //     g = findLayer('hlighter');
+  //     path.classList.add('highlighter');
+  //     path.setAttribute('stroke',color[1]);
+  //     strokePoints.classList.remove('highlighter');
+  //   }
+  //   g.appendChild(path);
+  //
+  //   strokePoints.setAttribute('points', '');
+  // }
+
+  function beginDraw() {
+    path = newSVGNode('path',{d: optimize(decimate(8, points), bezier)});
     var g;
 
     if (mode == 'pen') {
@@ -98,11 +121,8 @@ function Sketch() {
       g = findLayer('hlighter');
       path.classList.add('highlighter');
       path.setAttribute('stroke',color[1]);
-      strokePoints.classList.remove('highlighter');
     }
     g.appendChild(path);
-
-    strokePoints.setAttribute('points', '');
   }
 
   function erase(target) {
@@ -123,13 +143,13 @@ function Sketch() {
 
     page = _page;
 
-    var i;
-    for (i=0; i< page.children.length; i++) {
-      if (page.children[i].id == 'points') {
-        strokePoints = page.children[i];
-        break;
-      }
-    }
+    // var i;
+    // for (i=0; i< page.children.length; i++) {
+    //   if (page.children[i].id == 'points') {
+    //     // strokePoints = page.children[i];
+    //     break;
+    //   }
+    // }
   }
 
   return {
@@ -172,10 +192,7 @@ function Sketch() {
       points   = [[pointer.x, pointer.y]];
       strokes  = [stroke];
       previous = stroke;
-
-      if (mode == 'highlighter') {
-        strokePoints.classList.add('highlighter');
-      }
+      beginDraw();
     },
     move(event) {
       event = event || event.originalEvent || window.event;
@@ -204,10 +221,7 @@ function Sketch() {
       strokes.push(stroke);
       points.push([pointer.x, pointer.y]);
 
-      strokePoints.setAttribute('points', points);
-      if (mode == 'pen') {
-        strokePoints.setAttribute('stroke-width',size);
-      }
+      path.setAttribute('d',optimize(decimate(6, points), bezier));
     },
     end(event) {
       event = event || event.originalEvent || window.event;
@@ -218,7 +232,7 @@ function Sketch() {
       sketching = false;
 
       if (mode=='pen' || mode=='highlighter') {
-        redraw();
+        path.setAttribute('d',optimize(decimate(6, points), bezier));
       }
     },
     getFocusPage() {

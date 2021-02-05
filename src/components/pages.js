@@ -76,11 +76,10 @@ function newPage(coverPage = false) {
   g2.classList.add('strokes');
   page.appendChild(g2);
 
-  let polyline = newSVGNode('polyline');
-  polyline.id = 'points';
-  polyline.classList.add('points');
-  page.appendChild(polyline);
-
+  // let polyline = newSVGNode('polyline');
+  // polyline.id = 'points';
+  // polyline.classList.add('points');
+  // page.appendChild(polyline);
 
   pages.push(page);
 
