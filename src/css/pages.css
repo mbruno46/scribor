@@ -18,3 +18,11 @@
 .vrule {
   stroke: var(--vrule);
 }
+
+#dpi {
+  top: -100%;
+  left: -100%;
+  position: absolute;
+  width: 10mm;
+  height: 10mm;
+}

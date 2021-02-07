@@ -1,9 +1,10 @@
-const {newSVGNode} = require('./utils.js');
+const {newSVGNode, px2float} = require('./utils.js');
 
 var pages = [];
 var viewport = {
   width: 595,
   height: 842,
+  realwidth: 210, //mm
   scale: 1,
 }
 var layout = {
@@ -94,8 +95,8 @@ function rescalePages(new_width) {
 
   var i, j;
   for (i=0;i<pages.length;i++) {
-    pages[i].setAttribute('width',viewport.width*viewport.scale);
-    pages[i].setAttribute('height',viewport.height*viewport.scale);
+    pages[i].setAttribute('width',(viewport.width*viewport.scale));
+    pages[i].setAttribute('height',(viewport.height*viewport.scale));
     pages[i].setAttribute('view-box','0 0 ' + viewport.width*viewport.scale + ' ' +
       viewport.height*viewport.scale);
 
@@ -108,6 +109,21 @@ function rescalePages(new_width) {
 
 function getScale() {
   return viewport.scale;
+}
+
+function getAspectRatio() {
+  return viewport.width/viewport.height;
+}
+
+function getRealWidth() {
+  let div = document.createElement('div');
+  div.id = 'dpi'
+  document.body.appendChild(div);
+  let css = getComputedStyle(div);
+  let w = px2float(css.width) * viewport.realwidth/ 10.0;
+  console.log('here ',css.width, 10/px2float(css.width), w)
+  document.body.removeChild(div);
+  return Math.round(viewport.realwidth / 0.2); // 1 px = 0.2841 mm
 }
 
 function zoomPages(sign) {
@@ -130,5 +146,7 @@ function refreshPagesDatabaseFromNotebook(notebook) {
 exports.newPage = newPage;
 exports.rescalePages = rescalePages;
 exports.getScale = getScale;
+exports.getAspectRatio = getAspectRatio;
+exports.getRealWidth = getRealWidth;
 exports.zoomPages = zoomPages;
 exports.refreshPagesDatabaseFromNotebook = refreshPagesDatabaseFromNotebook;

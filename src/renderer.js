@@ -59,7 +59,7 @@ document.addEventListener("contextmenu", (ev) => {
   else {
     s.setMode('pen');
     notebook.classList.remove('eraser-cursor');
-    setActiveBtnGroup(document.getElementById('pen').parentElement);    
+    setActiveBtnGroup(document.getElementById('pen').parentElement);
   }
 });
 //
@@ -196,7 +196,18 @@ function fit_width() {
 document.getElementById('fit-width').onclick = ev => {
   fit_width();
 }
-
+document.getElementById('fit-height').onclick = ev => {
+  const css = getComputedStyle(notebook);
+  let h = notebook.offsetHeight -
+    utils.px2int(css.paddingTop) - utils.px2int(css.paddingBottom)*2;
+  pages.rescalePages(pages.getAspectRatio() * h);
+}
+document.getElementById('real-width').onclick = ev => {
+  const css = getComputedStyle(notebook);
+  let h = notebook.offsetHeight -
+    utils.px2int(css.paddingTop) - utils.px2int(css.paddingBottom)*2;
+  pages.rescalePages(pages.getRealWidth());
+}
 
 function refreshPageLabel() {
   let idx = s.getFocusPage();
