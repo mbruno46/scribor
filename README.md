@@ -1,2 +1,2 @@
 # scribor
-An intui cross-platform note-taking app
+An intuitive cross-platform note-taking app
