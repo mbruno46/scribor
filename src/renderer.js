@@ -210,7 +210,7 @@ document.getElementById('fit-width').onclick = ev => {
 document.getElementById('fit-height').onclick = ev => {
   const css = getComputedStyle(notebook);
   let h = notebook.offsetHeight -
-    utils.px2int(css.paddingTop) - utils.px2int(css.paddingBottom)*2;
+    utils.px2int(css.paddingTop) - utils.px2int(css.paddingBottom);
   pages.rescalePages(pages.getAspectRatio() * h);
 }
 document.getElementById('real-width').onclick = ev => {
