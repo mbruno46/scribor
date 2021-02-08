@@ -65,6 +65,8 @@ function Sketch() {
   var color = ['var(--pen-color-blue)', 'var(--pen-color-orange)'];
   var size = 0.8;
   var path;
+  var selbox;
+  var selection = []
 
   function position(event) {
     var touches = event.touches;
@@ -77,61 +79,93 @@ function Sketch() {
     }
   }
 
-  function findLayer(name) {
+  function findPageChild(id) {
     var i;
     for (i=0;i<page.children.length;i++) {
-      if (page.children[i].id == 'layer-' + name) {
+      if (page.children[i].id == id) {
         return page.children[i];
       }
     }
     return null;
   }
 
-  // function redraw () {
-  //   let path = newSVGNode('path',{d: optimize(decimate(8, points), bezier)});
-  //   var g;
-  //
-  //   if (mode == 'pen') {
-  //     g = findLayer('pen');
-  //     path.classList.add('strokes');
-  //     path.setAttribute('stroke',color[0]);
-  //     path.setAttribute('stroke-width',size);
-  //   }
-  //   else if (mode == 'highlighter') {
-  //     g = findLayer('hlighter');
-  //     path.classList.add('highlighter');
-  //     path.setAttribute('stroke',color[1]);
-  //     strokePoints.classList.remove('highlighter');
-  //   }
-  //   g.appendChild(path);
-  //
-  //   strokePoints.setAttribute('points', '');
-  // }
-
   function beginDraw() {
     path = newSVGNode('path',{d: optimize(decimate(8, points), bezier)});
     var g;
 
     if (mode == 'pen') {
-      g = findLayer('pen');
+      g = findPageChild('layer-pen');
       path.classList.add('strokes');
       path.setAttribute('stroke',color[0]);
       path.setAttribute('stroke-width',size);
     }
     else if (mode == 'highlighter') {
-      g = findLayer('hlighter');
+      g = findPageChild('layer-hlighter');
       path.classList.add('highlighter');
       path.setAttribute('stroke',color[1]);
     }
     g.appendChild(path);
   }
 
+  function drawSelection() {
+    let el = findPageChild('selection-box');
+    el.setAttribute('x',selbox.x);
+    el.setAttribute('y',selbox.y);
+    el.setAttribute('width',selbox.width);
+    el.setAttribute('height',selbox.height);
+  }
+
+  function SelectElements() {
+    var xmin = selbox.x + selbox.width;
+    var ymin = selbox.y + selbox.height;
+    var xmax = 0;
+    var ymax = 0;
+
+    _select(findPageChild('layer-pen'));
+    _select(findPageChild('layer-hlighter'));
+
+    if (selection.length == 0) {
+      selbox = {x: 0, y: 0, width: 0, height: 0};
+      drawSelection();
+      return;
+    }
+
+    var i;
+    for (i=0;i<selection.length;i++) {
+      let bbox = selection[i].getBBox();
+
+      xmin = (bbox.x < xmin) ? bbox.x : xmin;
+      ymin = (bbox.y < ymin) ? bbox.y : ymin;
+      xmax = (bbox.width+bbox.x < xmax) ? xmax : bbox.width+bbox.x;
+      ymax = (bbox.height+bbox.y < ymax) ? ymax : bbox.height+bbox.y;
+    }
+
+    selbox = {x: xmin, y: ymin, width: xmax-xmin, height: ymax-ymin};
+    drawSelection();
+
+    function _select(g) {
+      var i;
+      for (i=0;i<g.children.length;i++) {
+        let bbox = g.children[i].getBBox();
+        console.log(bbox,selbox);
+        if (bbox.x>=selbox.x && bbox.y>=selbox.y &&
+          (bbox.width+bbox.x)<=(selbox.width+selbox.x) &&
+          (bbox.height+bbox.y)<=(selbox.height+selbox.y)) {
+          if (selection.indexOf(g.children[i]) == -1) {
+            selection.push(g.children[i]);
+          }
+        }
+      }
+    }
+  }
+
+
   function erase(target) {
-    let g = findLayer('pen');
+    let g = findPageChild('layer-pen');
     if (target.parentElement == g) {
       g.removeChild(target);
     }
-    g = findLayer('hlighter');
+    g = findPageChild('layer-hlighter');
     if (target.parentElement == g) {
       g.removeChild(target);
     }
@@ -143,14 +177,6 @@ function Sketch() {
     }
 
     page = _page;
-
-    // var i;
-    // for (i=0; i< page.children.length; i++) {
-    //   if (page.children[i].id == 'points') {
-    //     // strokePoints = page.children[i];
-    //     break;
-    //   }
-    // }
   }
 
   return {
@@ -179,13 +205,26 @@ function Sketch() {
 
       init(p);
       sketching = true;
+      let pointer = position(event);
 
       // no need to collect stroke points
-      if (mode=='eraser' || mode=='select') {
+      if (mode=='eraser') {
         return;
       }
 
-      let pointer = position(event);
+      if (mode == 'select') {
+        selbox = {
+          x0: pointer.x,
+          y0: pointer.y,
+          x: 0,
+          y: 0,
+          width: 0,
+          height: 0
+        };
+        drawSelection();
+        return;
+      }
+
       var stroke = {
         x: pointer.x,
         y: pointer.y,
@@ -205,16 +244,26 @@ function Sketch() {
       }
       event.preventDefault();
 
-      if (mode=='select') {
-        return;
-      }
-
       if (mode=='eraser') {
         erase(event.target);
         return;
       }
 
       let pointer = position(event);
+
+      if (mode=='select') {
+        selbox = {
+          x0: selbox.x0,
+          y0: selbox.y0,
+          x: (pointer.x > selbox.x0) ? selbox.x0 : pointer.x,
+          y: (pointer.y > selbox.y0) ? selbox.y0 : pointer.y,
+          width: Math.abs(pointer.x-selbox.x0),
+          height: Math.abs(pointer.y-selbox.y0)
+        };
+        drawSelection();
+        return;
+      }
+
       var stroke = {
         x: pointer.x,
         y: pointer.y,
@@ -225,7 +274,7 @@ function Sketch() {
       strokes.push(stroke);
       points.push([pointer.x, pointer.y]);
 
-      path.setAttribute('d',optimize(decimate(6, points), bezier));
+      path.setAttribute('d',optimize(decimate(3, points), bezier));
     },
     end(event) {
       event = event || event.originalEvent || window.event;
@@ -236,8 +285,14 @@ function Sketch() {
       sketching = false;
 
       if (mode=='pen' || mode=='highlighter') {
-        path.setAttribute('d',optimize(decimate(6, points), bezier));
+        path.setAttribute('d',optimize(decimate(4, points), bezier));
       }
+
+      if (mode == 'select') {
+        SelectElements();
+        return;
+      }
+
       if (mode!=select) {
         history.recordState();
       }
@@ -248,6 +303,14 @@ function Sketch() {
     },
     setFocusPage(p) {
       init(p);
+    },
+    resetSelection() {
+      selection = [];
+      selbox = {x: 0, y: 0, width: 0, height: 0};
+      drawSelection();
+    },
+    getSelectedElements() {
+      return selection;
     }
 
   }

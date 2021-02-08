@@ -14,3 +14,11 @@
   fill: none;
   stroke-linecap: round;
 }
+
+.selection-box {
+  fill: gray;
+  fill-opacity: 0.5;
+  stroke: black;
+  stroke-width: 0.5;
+  stroke-dasharray: 4;
+}

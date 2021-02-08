@@ -84,6 +84,11 @@ function newPage(coverPage = false) {
 
   pages.push(page);
 
+  let selbox = newSVGNode('rect');
+  selbox.id = 'selection-box';
+  selbox.classList.add('selection-box');
+  page.appendChild(selbox);
+
   let s = getScale();
   rescalePages(s*viewport.width);
 
