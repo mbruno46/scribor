@@ -41,7 +41,11 @@ document.getElementById('eraser').onclick = ev => {
 }
 document.getElementById('select').onclick = ev => {
   s.setMode('select');
-  s.resetSelection();
+  notebook.classList.remove('eraser-cursor');
+  setActiveBtnGroup(event.currentTarget.parentElement);
+}
+document.getElementById('move').onclick = ev => {
+  s.setMode('move');
   notebook.classList.remove('eraser-cursor');
   setActiveBtnGroup(event.currentTarget.parentElement);
 }

@@ -17,8 +17,13 @@
 
 .selection-box {
   fill: gray;
-  fill-opacity: 0.5;
+  fill-opacity: 0.3;
   stroke: black;
   stroke-width: 0.5;
+  stroke-dasharray: 4;
+}
+
+.selected {
+  stroke: grey;
   stroke-dasharray: 4;
 }

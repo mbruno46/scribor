@@ -1,4 +1,4 @@
-const {newSVGNode} = require('./utils.js');
+const {newSVGNode, shiftSVGPath} = require('./utils.js');
 const {getScale} = require('./pages');
 const history = require('./history.js');
 
@@ -53,6 +53,7 @@ function distance(p1, p2) {
 }
 
 
+
 function Sketch() {
   var sketching = false;
   var strokes = [];
@@ -67,6 +68,7 @@ function Sketch() {
   var path;
   var selbox;
   var selection = []
+  var moveto;
 
   function position(event) {
     var touches = event.touches;
@@ -107,6 +109,16 @@ function Sketch() {
     g.appendChild(path);
   }
 
+  function resetSelection() {
+    var i;
+    for (i=0;i<selection.length;i++) {
+      selection[i].classList.remove('selected');
+    }
+    selection = [];
+    selbox = {x: 0, y: 0, width: 0, height: 0};
+    drawSelection();
+  };
+
   function drawSelection() {
     let el = findPageChild('selection-box');
     el.setAttribute('x',selbox.x);
@@ -116,38 +128,21 @@ function Sketch() {
   }
 
   function SelectElements() {
-    var xmin = selbox.x + selbox.width;
-    var ymin = selbox.y + selbox.height;
-    var xmax = 0;
-    var ymax = 0;
-
     _select(findPageChild('layer-pen'));
     _select(findPageChild('layer-hlighter'));
 
-    if (selection.length == 0) {
-      selbox = {x: 0, y: 0, width: 0, height: 0};
-      drawSelection();
-      return;
-    }
-
     var i;
     for (i=0;i<selection.length;i++) {
-      let bbox = selection[i].getBBox();
-
-      xmin = (bbox.x < xmin) ? bbox.x : xmin;
-      ymin = (bbox.y < ymin) ? bbox.y : ymin;
-      xmax = (bbox.width+bbox.x < xmax) ? xmax : bbox.width+bbox.x;
-      ymax = (bbox.height+bbox.y < ymax) ? ymax : bbox.height+bbox.y;
+      selection[i].classList.add('selected');
     }
 
-    selbox = {x: xmin, y: ymin, width: xmax-xmin, height: ymax-ymin};
+    selbox = {x: 0, y: 0, width: 0, height: 0};
     drawSelection();
 
     function _select(g) {
       var i;
       for (i=0;i<g.children.length;i++) {
         let bbox = g.children[i].getBBox();
-        console.log(bbox,selbox);
         if (bbox.x>=selbox.x && bbox.y>=selbox.y &&
           (bbox.width+bbox.x)<=(selbox.width+selbox.x) &&
           (bbox.height+bbox.y)<=(selbox.height+selbox.y)) {
@@ -159,6 +154,15 @@ function Sketch() {
     }
   }
 
+  function moveSelection() {
+    let dx = moveto.x - moveto.x0;
+    let dy = moveto.y - moveto.y0;
+    var i;
+    for (i=0;i<selection.length;i++) {
+      let d = shiftSVGPath(selection[i].getAttribute('d'),dx,dy);
+      selection[i].setAttribute('d', d);
+    }
+  }
 
   function erase(target) {
     let g = findPageChild('layer-pen');
@@ -182,6 +186,9 @@ function Sketch() {
   return {
     setMode(_mode) {
       mode = _mode;
+      if (mode!='move') {
+        resetSelection();
+      }
     },
     getMode() {
       return mode;
@@ -207,8 +214,13 @@ function Sketch() {
       sketching = true;
       let pointer = position(event);
 
-      // no need to collect stroke points
+      // no need to collect points
       if (mode=='eraser') {
+        return;
+      }
+
+      if (mode == 'move') {
+        moveto = {x0: pointer.x, y0: pointer.y};
         return;
       }
 
@@ -264,6 +276,15 @@ function Sketch() {
         return;
       }
 
+      if (mode=='move') {
+        moveto.x = pointer.x;
+        moveto.y = pointer.y;
+        moveSelection();
+        moveto.x0 = pointer.x;
+        moveto.y0 = pointer.y;
+        return;
+      }
+
       var stroke = {
         x: pointer.x,
         y: pointer.y,
@@ -303,11 +324,6 @@ function Sketch() {
     },
     setFocusPage(p) {
       init(p);
-    },
-    resetSelection() {
-      selection = [];
-      selbox = {x: 0, y: 0, width: 0, height: 0};
-      drawSelection();
     },
     getSelectedElements() {
       return selection;
