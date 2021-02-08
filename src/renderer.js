@@ -19,7 +19,7 @@ s.setMode('pen');
 setActiveBtnGroup(document.getElementById('pen').parentElement);
 var notebook_file = null;
 
-history.History(notebook);
+history.reset(notebook);
 history.recordState();
 
 utils.pointerEventListener('down', page, s.start);
@@ -155,6 +155,9 @@ document.getElementById('open').onclick = ev => {
     s.setFocusPage(notebook.children[0]);
     refreshPageLabel();
     fit_width();
+
+    history.reset(notebook);
+    history.recordState();
   });
   document.title = 'SCRIBOR: ' + notebook_file;
 }
