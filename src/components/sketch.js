@@ -1,5 +1,6 @@
 const {newSVGNode} = require('./utils.js');
 const {getScale} = require('./pages');
+const history = require('./history.js');
 
 const smoothing = 0.15;
 
@@ -167,6 +168,9 @@ function Sketch() {
     },
     start(event) {
       event.preventDefault();
+      // prevents drawing if right click
+      if (event.which == 3) {return;}
+
       event = event || event.originalEvent || window.event;
       let p = event.target.parentElement.parentElement
       if (p.id.substring(0,4) != 'page') {
@@ -233,6 +237,9 @@ function Sketch() {
 
       if (mode=='pen' || mode=='highlighter') {
         path.setAttribute('d',optimize(decimate(6, points), bezier));
+      }
+      if (mode!=select) {
+        history.recordState();
       }
     },
     getFocusPage() {

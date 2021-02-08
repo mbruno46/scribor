@@ -117,13 +117,12 @@ function getAspectRatio() {
 
 function getRealWidth() {
   let div = document.createElement('div');
-  div.id = 'dpi'
+  div.id = 'dpi';
   document.body.appendChild(div);
   let css = getComputedStyle(div);
-  let w = px2float(css.width) * viewport.realwidth/ 10.0;
-  console.log('here ',css.width, 10/px2float(css.width), w)
+  let w = px2float(css.width) * viewport.realwidth/ 10.0 * window.devicePixelRatio;
   document.body.removeChild(div);
-  return Math.round(viewport.realwidth / 0.2); // 1 px = 0.2841 mm
+  return Math.round(w);
 }
 
 function zoomPages(sign) {

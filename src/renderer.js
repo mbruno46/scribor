@@ -5,6 +5,7 @@ const {exportPDF} = require('./components/exportpdf.js');
 const { remote, globalShortcut } = require('electron');
 const {dialog} = remote;
 const fs = require('fs');
+const history = require('./components/history.js');
 
 // initialize notebook with cover page filling available width
 var page = pages.newPage(true);
@@ -17,6 +18,9 @@ fit_width();
 s.setMode('pen');
 setActiveBtnGroup(document.getElementById('pen').parentElement);
 var notebook_file = null;
+
+history.History(notebook);
+history.recordState();
 
 utils.pointerEventListener('down', page, s.start);
 utils.pointerEventListener('move', document, s.move);
@@ -50,7 +54,14 @@ document.getElementById('highlighter').onclick = ev => {
   notebook.classList.remove('eraser-cursor');
   setActiveBtnGroup(event.currentTarget.parentElement);
 }
-document.addEventListener("contextmenu", (ev) => {
+notebook.oncontextmenu = ev => {
+  // right click
+  if (event.which != 3) {
+    return true;
+  }
+  // prevents drawing on the page;
+  ev.stopPropagation();
+  console.log(event.which);
   if (s.getMode() == 'pen') {
     s.setMode('eraser');
     notebook.classList.add('eraser-cursor');
@@ -61,7 +72,7 @@ document.addEventListener("contextmenu", (ev) => {
     notebook.classList.remove('eraser-cursor');
     setActiveBtnGroup(document.getElementById('pen').parentElement);
   }
-});
+};
 //
 
 document.getElementById('thin').onclick = ev => {
@@ -203,9 +214,6 @@ document.getElementById('fit-height').onclick = ev => {
   pages.rescalePages(pages.getAspectRatio() * h);
 }
 document.getElementById('real-width').onclick = ev => {
-  const css = getComputedStyle(notebook);
-  let h = notebook.offsetHeight -
-    utils.px2int(css.paddingTop) - utils.px2int(css.paddingBottom)*2;
   pages.rescalePages(pages.getRealWidth());
 }
 
@@ -255,4 +263,11 @@ document.getElementById('del-page').onclick = ev => {
 
   s.setFocusPage(notebook.children[idx]);
   refreshPageLabel();
+}
+
+document.getElementById('undo').onclick = ev => {
+  history.getPreviousState();
+}
+document.getElementById('redo').onclick = ev => {
+  history.getNextState();
 }
