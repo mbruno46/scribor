@@ -34,9 +34,27 @@ function Listeners(add = true) {
 function setActiveBtnGroup(g) {
   var el = document.getElementsByClassName('btn-group-active');
   if (el && el[0]) {
+    if (el[0] == g) {return;}
+
+    _hide(el[0].children,true);
     el[0].classList.remove('btn-group-active');
   }
+  _hide(g.children, false);
   g.classList.add('btn-group-active');
+
+  function _hide(arr,hide) {
+    for (var i=0;i<arr.length;i++) {
+      let btn = arr[i];
+      if (btn.hasAttribute('hidable')) {
+        if (hide) {
+          btn.classList.add('hidden');
+        }
+        else {
+          btn.classList.remove('hidden');
+        }
+      }
+    }
+  };
 }
 
 function setCursorIcon(type = '') {
@@ -61,17 +79,62 @@ document.getElementById('move').onclick = ev => {
   setCursorIcon('move-cursor');
   setActiveBtnGroup(event.currentTarget.parentElement);
 }
+
+//
+// pen
+//
+new Map([
+  ['thin', 1.0],
+  ['medium', 2.0],
+  ['thick', 3.0],
+]).forEach(function(v,k) {
+  document.getElementById(k).onclick = ev => {
+    s.setSize(v);
+  }
+});
+
+new Map([
+  ['red', 'var(--pen-color-red)'],
+  ['blue', 'var(--pen-color-blue)'],
+  ['black', 'black'],
+]).forEach(function(v,k) {
+  document.getElementById(k).onclick = ev => {
+    s.setColor(v);
+  }
+});
+
+s.setSize(2.0);
+s.setColor('var(--pen-color-blue)');
+
 document.getElementById('pen').onclick = ev => {
   s.setMode('pen');
   setCursorIcon();
   setActiveBtnGroup(event.currentTarget.parentElement);
 }
+
+//
+// highlighter
+//
+['orange','yellow','cyan','green'].forEach(function(id) {
+  document.getElementById(id).onclick = ev => {
+    let color = "var(--pen-color-" + id + ")";
+    document.getElementById('highlighter').style.color = color;
+    s.setColor(color,1);
+  }
+});
+
+document.getElementById('highlighter').setAttribute('style','color: var(--pen-color-orange)')
+s.setColor("var(--pen-color-orange)",1);
+
 document.getElementById('highlighter').onclick = ev => {
   s.setMode('highlighter');
   setCursorIcon();
   setActiveBtnGroup(event.currentTarget.parentElement);
 }
 
+//
+// LaTeX
+//
 document.getElementById('latex').onclick = ev => {
   setCursorIcon();
   setActiveBtnGroup(event.currentTarget.parentElement);
@@ -79,8 +142,8 @@ document.getElementById('latex').onclick = ev => {
   fireLatexEditor(createLatex).then(function(resolve) {
     Listeners(true);
   });
-  function createLatex(text) {
-    s.appendSVG(TeXBox(text), 'layer-latex');
+  function createLatex(text, color, size) {
+    s.appendSVG(TeXBox(text, color, size), 'layer-latex');
   }
 }
 
@@ -89,6 +152,8 @@ document.getElementById('select-latex').onclick = ev => {
   setCursorIcon();
   setActiveBtnGroup(event.currentTarget.parentElement);
 }
+
+
 notebook.oncontextmenu = ev => {
   // right click
   if (event.which != 3) {
@@ -107,71 +172,6 @@ notebook.oncontextmenu = ev => {
     setActiveBtnGroup(document.getElementById('pen').parentElement);
   }
 };
-//
-
-document.getElementById('thin').onclick = ev => {
-  s.setSize(1.0);
-  s.setMode('pen');
-  setCursorIcon();
-  setActiveBtnGroup(event.currentTarget.parentElement);
-}
-document.getElementById('medium').onclick = ev => {
-  s.setSize(2.0);
-  s.setMode('pen');
-  setCursorIcon();
-  setActiveBtnGroup(event.currentTarget.parentElement);
-}
-document.getElementById('thick').onclick = ev => {
-  s.setSize(3.0);
-  s.setMode('pen');
-  setCursorIcon();
-  setActiveBtnGroup(event.currentTarget.parentElement);
-}
-
-document.getElementById('red').onclick = ev => {
-  s.setColor("var(--pen-color-red)");
-  s.setMode('pen');
-  setCursorIcon();
-  setActiveBtnGroup(event.currentTarget.parentElement);
-}
-document.getElementById('blue').onclick = ev => {
-  s.setColor("var(--pen-color-blue)");
-  s.setMode('pen');
-  setCursorIcon();
-  setActiveBtnGroup(event.currentTarget.parentElement);
-}
-document.getElementById('black').onclick = ev => {
-  s.setColor("black");
-  s.setMode('pen');
-  setCursorIcon();
-  setActiveBtnGroup(event.currentTarget.parentElement);
-}
-
-
-document.getElementById('yellow').onclick = ev => {
-  s.setColor("var(--pen-color-yellow)",1);
-  s.setMode('highlighter');
-  setCursorIcon();
-  setActiveBtnGroup(event.currentTarget.parentElement);
-}
-document.getElementById('orange').onclick = ev => {
-  s.setColor("var(--pen-color-orange)",1);
-  s.setMode('highlighter');
-  setCursorIcon();
-  setActiveBtnGroup(event.currentTarget.parentElement);
-}
-document.getElementById('green').onclick = ev => {
-  s.setColor("var(--pen-color-green)",1);
-  s.setMode('highlighter');
-  setCursorIcon();
-  setActiveBtnGroup(event.currentTarget.parentElement);
-}
-document.getElementById('cyan').onclick = ev => {
-  s.setColor("var(--pen-color-cyan)",1);
-  s.setMode('highlighter');
-  setCursorIcon();
-  setActiveBtnGroup(event.currentTarget.parentElement);
-}
 
 
 document.getElementById('open').onclick = ev => {

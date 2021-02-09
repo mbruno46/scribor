@@ -48,7 +48,7 @@ function createElementFromHTML(htmlString) {
   return div.firstChild;
 }
 
-function TeXBox(latex='') {
+function TeXBox(latex,color,scale=1) {
   //
   //  Typeset the math from the command line
   //
@@ -61,9 +61,10 @@ function TeXBox(latex='') {
 
   var el = createElementFromHTML(adaptor.outerHTML(node));
   // mjx-container.svg.g (stroke etcc).g(mml-data=math)
-  let newpaths = flattenSVG(el.children[0].children[0], ["translate(90,90) scale(0.025 0.025)"]);
+  scale *= 0.025;
+  let newpaths = flattenSVG(el.children[0].children[0], [`translate(90,90) scale(${scale} ${scale})`]);
 
-  var texbox = newSVGNode('g',{latex: latex});
+  var texbox = newSVGNode('g',{latex: latex, fill: color});
   for (var i=0;i<newpaths.length;i++) {
     texbox.appendChild(newpaths[i]);
   }

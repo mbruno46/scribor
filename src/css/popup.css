@@ -4,8 +4,8 @@
   left: 160px;
   top: 160px;
   position: absolute;
-  min-width: calc(100vw - 160px - 80px);
-  height: calc(100vh - 160px - 80px);
+  max-width: calc(100vw - 160px - 80px);
+  max-height: calc(100vh - 160px - 80px);
   display: flex;
   flex-flow: column;
 }

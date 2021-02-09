@@ -88,11 +88,25 @@ function fireLatexEditor(createLatex) {
     padding: '8px', borderBottom: '1px solid var(--border)'
   }, 'LaTeX');
 
+  let div1 = addEntry('Font color');
+  let s = create('select',{name: 'latex-font-color'});
+  s.appendChild(create('option',{value: 'var(--pen-color-blue)'},null,'Blue'));
+  s.appendChild(create('option',{value: 'var(--pen-color-red)'},null,'Red'));
+  s.appendChild(create('option',{value: 'black'},null,'Black'));
+  div1.appendChild(s);
+
+  let div2 = addEntry('Font size');
+  let s2 = create('select',{name: 'latex-font-color'});
+  s2.appendChild(create('option',{value: 1.0},null,'Medium'));
+  s2.appendChild(create('option',{value: 2.0},null,'Large'));
+  s2.appendChild(create('option',{value: 0.5},null,'Small'));
+  div2.appendChild(s2);
+
   let editor = create('textarea', {value: '', rows: 2, cols: 40}, {
-    width: '100%', padding: '8px', border: '1px solid var(--border)'});
+    margin: '8px', border: '1px solid var(--border)'});
 
   return new Promise(function(resolve, reject) {
-    let [popup, cancel, ok] = firePopup([t, editor]);
+    let [popup, cancel, ok] = firePopup([t, div1, div2, editor]);
 
     cancel.onclick = ev => {
       document.body.removeChild(popup);
@@ -100,7 +114,7 @@ function fireLatexEditor(createLatex) {
     }
 
     ok.onclick = ev => {
-      createLatex(editor.value);
+      createLatex(editor.value, s.value, s2.value);
       document.body.removeChild(popup);
       resolve("done");
     }

@@ -349,6 +349,7 @@ function Sketch() {
     appendSVG(svg, layer) {
       let g = findPageChild(layer);
       g.appendChild(svg);
+      selection = [];
       for (var i=0;i<svg.children.length;i++) {
         selection.push(svg.children[i]);
       }
