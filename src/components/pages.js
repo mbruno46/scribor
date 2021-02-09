@@ -44,6 +44,10 @@ function newPage(coverPage = false) {
     line.classList.add('rule','vrule');
     line.setAttribute('d','m' + layout.vrule + ' 0 v' + viewport.height)
     g.appendChild(line);
+
+    let pn = newSVGNode('text',{x: viewport.width-25, y: viewport.height-15});
+    pn.classList.add('page-number');
+    g.appendChild(pn);
   }
   else {
     let bg = newSVGNode('rect', {x:0, y:0, width: viewport.width, height: viewport.height});
@@ -62,7 +66,6 @@ function newPage(coverPage = false) {
       line.setAttribute('d','m' + (d[0]+d[4]) + ' ' + (d[1]+2*layout.hrule*(i+1)) + 'h' + (d[2]-2*d[4]))
       g.appendChild(line);
     }
-
   }
 
   page.appendChild(g);
@@ -71,6 +74,11 @@ function newPage(coverPage = false) {
   g1.id = 'layer-hlighter';
   g1.classList.add('highlighter');
   page.appendChild(g1);
+
+  let g3 = newSVGNode('g');
+  g3.id = 'layer-latex';
+  g3.classList.add('latex');
+  page.appendChild(g3);
 
   let g2 = newSVGNode('g');
   g2.id = 'layer-pen';
@@ -147,6 +155,16 @@ function refreshPagesDatabaseFromNotebook(notebook) {
   }
 }
 
+function refreshPageNumbers() {
+  var i;
+  for (i=0;i<pages.length;i++) {
+    let h = pages[i].children[0].children;
+    let pn = h[h.length-1];
+    pn.textContent = pages[i].id.split('page ')[1];
+  }
+}
+
+
 exports.newPage = newPage;
 exports.rescalePages = rescalePages;
 exports.getScale = getScale;
@@ -154,3 +172,4 @@ exports.getAspectRatio = getAspectRatio;
 exports.getRealWidth = getRealWidth;
 exports.zoomPages = zoomPages;
 exports.refreshPagesDatabaseFromNotebook = refreshPagesDatabaseFromNotebook;
+exports.refreshPageNumbers = refreshPageNumbers;

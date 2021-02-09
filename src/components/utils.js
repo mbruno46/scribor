@@ -1,3 +1,4 @@
+const svgpath = require('svgpath');
 
 let ns = "http://www.w3.org/2000/svg";
 
@@ -61,26 +62,69 @@ function px2float(str) {
   return parseFloat(str.substring(0,str.lastIndexOf('px')));
 }
 
-function shiftSVGPath(_d,dx,dy) {
-  let tmp = _d.split(/[MC, ]/)
+// function shiftSVGPath(_d,dx,dy) {
+//   let tmp = _d.split(/[MC, ]/)
+//
+//   let d = 'M ' + (parseFloat(tmp[2])+dx) + ',' + (parseFloat(tmp[3])+dy);
+//
+//   var i=4, j;
+//   while(i<tmp.length) {
+//     d += ' C'
+//     i+=2;
+//
+//     for (j=0;j<3;j++) {
+//       d += ' ' + (parseFloat(tmp[i])+dx) + ',' + (parseFloat(tmp[i+1])+dy);
+//       i += 2;
+//     }
+//   }
+//   return d;
+// }
 
-  let d = 'M ' + (parseFloat(tmp[2])+dx) + ',' + (parseFloat(tmp[3])+dy);
-
-  var i=4, j;
-  while(i<tmp.length) {
-    d += ' C'
-    i+=2;
-
-    for (j=0;j<3;j++) {
-      d += ' ' + (parseFloat(tmp[i])+dx) + ',' + (parseFloat(tmp[i+1])+dy);
-      i += 2;
-    }
+function flattenSVG(input, trafos = []) {
+  let t = input.getAttribute('transform');
+  if (t) {
+    trafos.push(t);
   }
-  return d;
+
+  let tag = input.tagName.toLowerCase();
+  var out;
+  if (tag=='g') {
+    out = flattenSVGGroup(input, trafos);
+  }
+  else if (tag=='path') {
+    out = flattenSVGPath(input, trafos);
+  }
+
+  if (t) {
+    trafos.pop();
+  }
+  return out;
+
+  function flattenSVGGroup(g, trafos) {
+    var newchildren = [];
+
+    for (var i=0;i<g.children.length;i++) {
+      newchildren.push.apply(newchildren, flattenSVG(g.children[i], trafos));
+    }
+
+    return newchildren;
+  }
+
+  function flattenSVGPath(path, trafos) {
+    var d = path.getAttribute('d');
+    for (var i=trafos.length-1;i>=0;i--) {
+      let _d = svgpath(d).transform(trafos[i]).round(10).toString();
+      d = _d;
+    }
+
+    let newpath = newSVGNode('path',{d: d});
+    return [newpath];
+  }
 }
+
 
 exports.pointerEventListener = pointerEventListener;
 exports.newSVGNode = newSVGNode;
-exports.shiftSVGPath = shiftSVGPath;
 exports.px2int = px2int;
 exports.px2float = px2float;
+exports.flattenSVG = flattenSVG;

@@ -1,4 +1,4 @@
-const {newSVGNode, shiftSVGPath} = require('./utils.js');
+const {newSVGNode, flattenSVG} = require('./utils.js');
 const {getScale} = require('./pages');
 const history = require('./history.js');
 
@@ -128,8 +128,13 @@ function Sketch() {
   }
 
   function SelectElements() {
-    _select(findPageChild('layer-pen'));
-    _select(findPageChild('layer-hlighter'));
+    if (mode=='select') {
+      _select(findPageChild('layer-pen'));
+      _select(findPageChild('layer-hlighter'));
+    }
+    if (mode=='select-latex') {
+      _select(findPageChild('layer-latex'));
+    }
 
     var i;
     for (i=0;i<selection.length;i++) {
@@ -146,8 +151,15 @@ function Sketch() {
         if (bbox.x>=selbox.x && bbox.y>=selbox.y &&
           (bbox.width+bbox.x)<=(selbox.width+selbox.x) &&
           (bbox.height+bbox.y)<=(selbox.height+selbox.y)) {
-          if (selection.indexOf(g.children[i]) == -1) {
+          if (mode == 'select' && selection.indexOf(g.children[i]) == -1) {
             selection.push(g.children[i]);
+          }
+          if (mode == 'select-latex') {
+            for (var j=0;j<g.children[i].children.length;j++) {
+              if (selection.indexOf(g.children[i].children[j]) == -1) {
+                selection.push(g.children[i].children[j]);
+              }
+            }
           }
         }
       }
@@ -159,20 +171,26 @@ function Sketch() {
     let dy = moveto.y - moveto.y0;
     var i;
     for (i=0;i<selection.length;i++) {
-      let d = shiftSVGPath(selection[i].getAttribute('d'),dx,dy);
-      selection[i].setAttribute('d', d);
+      let temp = flattenSVG(selection[i], ['translate(' + dx + ',' + dy + ')']);
+      // let d = shiftSVGPath(selection[i].getAttribute('d'),dx,dy);
+      selection[i].setAttribute('d', temp[0].getAttribute('d'));
     }
   }
 
   function erase(target) {
-    let g = findPageChild('layer-pen');
-    if (target.parentElement == g) {
-      g.removeChild(target);
+    var layers = ['layer-pen','layer-hlighter','layer-latex'];
+    for (var i=0;i<layers.length;i++) {
+      let g = findPageChild(layers[i]);
+      if (target.parentElement == g) {
+        g.removeChild(target);
+        break;
+      }
+      if (target.parentElement.parentElement == g) {
+        g.removeChild(target.parentElement);
+        break;
+      }
     }
-    g = findPageChild('layer-hlighter');
-    if (target.parentElement == g) {
-      g.removeChild(target);
-    }
+    return;
   }
 
   function init(_page) {
@@ -224,7 +242,7 @@ function Sketch() {
         return;
       }
 
-      if (mode == 'select') {
+      if (mode == 'select'||mode == 'select-latex') {
         selbox = {
           x0: pointer.x,
           y0: pointer.y,
@@ -263,7 +281,7 @@ function Sketch() {
 
       let pointer = position(event);
 
-      if (mode=='select') {
+      if (mode=='select'||mode == 'select-latex') {
         selbox = {
           x0: selbox.x0,
           y0: selbox.y0,
@@ -309,7 +327,7 @@ function Sketch() {
         path.setAttribute('d',optimize(decimate(4, points), bezier));
       }
 
-      if (mode == 'select') {
+      if (mode == 'select' || mode == 'select-latex') {
         SelectElements();
         return;
       }
@@ -327,6 +345,13 @@ function Sketch() {
     },
     getSelectedElements() {
       return selection;
+    },
+    appendSVG(svg, layer) {
+      let g = findPageChild(layer);
+      g.appendChild(svg);
+      for (var i=0;i<svg.children.length;i++) {
+        selection.push(svg.children[i]);
+      }
     }
 
   }

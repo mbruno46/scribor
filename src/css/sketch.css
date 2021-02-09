@@ -27,3 +27,7 @@
   stroke: grey;
   stroke-dasharray: 4;
 }
+
+.latex {
+  fill: black;
+}

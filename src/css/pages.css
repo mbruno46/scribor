@@ -19,6 +19,10 @@
   stroke: var(--vrule);
 }
 
+.page-number {
+  fill: var(--hrule);
+}
+
 #dpi {
   top: -100%;
   left: -100%;

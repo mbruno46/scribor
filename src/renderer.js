@@ -6,6 +6,8 @@ const { remote, globalShortcut } = require('electron');
 const {dialog} = remote;
 const fs = require('fs');
 const history = require('./components/history.js');
+const {firePreferences, fireLatexEditor} = require('./components/popup.js');
+const {TeXBox} = require('./components/texbox.js');
 
 // initialize notebook with cover page filling available width
 var page = pages.newPage(true);
@@ -21,10 +23,13 @@ var notebook_file = null;
 
 history.reset(notebook);
 history.recordState();
+Listeners(true);
 
-utils.pointerEventListener('down', page, s.start);
-utils.pointerEventListener('move', document, s.move);
-utils.pointerEventListener('up leave', document, s.end);
+function Listeners(add = true) {
+  utils.pointerEventListener('down', page, s.start, add);
+  utils.pointerEventListener('move', document, s.move, add);
+  utils.pointerEventListener('up leave', document, s.end, add);
+}
 
 function setActiveBtnGroup(g) {
   var el = document.getElementsByClassName('btn-group-active');
@@ -34,29 +39,54 @@ function setActiveBtnGroup(g) {
   g.classList.add('btn-group-active');
 }
 
+function setCursorIcon(type = '') {
+  notebook.classList.remove('eraser-cursor','move-cursor');
+  if (type != '') {
+    notebook.classList.add(type);
+  }
+}
+
 document.getElementById('eraser').onclick = ev => {
   s.setMode('eraser');
-  notebook.classList.add('eraser-cursor');
+  setCursorIcon('eraser-cursor');
   setActiveBtnGroup(event.currentTarget.parentElement);
 }
 document.getElementById('select').onclick = ev => {
   s.setMode('select');
-  notebook.classList.remove('eraser-cursor');
+  setCursorIcon();
   setActiveBtnGroup(event.currentTarget.parentElement);
 }
 document.getElementById('move').onclick = ev => {
   s.setMode('move');
-  notebook.classList.remove('eraser-cursor');
+  setCursorIcon('move-cursor');
   setActiveBtnGroup(event.currentTarget.parentElement);
 }
 document.getElementById('pen').onclick = ev => {
   s.setMode('pen');
-  notebook.classList.remove('eraser-cursor');
+  setCursorIcon();
   setActiveBtnGroup(event.currentTarget.parentElement);
 }
 document.getElementById('highlighter').onclick = ev => {
   s.setMode('highlighter');
-  notebook.classList.remove('eraser-cursor');
+  setCursorIcon();
+  setActiveBtnGroup(event.currentTarget.parentElement);
+}
+
+document.getElementById('latex').onclick = ev => {
+  setCursorIcon();
+  setActiveBtnGroup(event.currentTarget.parentElement);
+  Listeners(false);
+  fireLatexEditor(createLatex).then(function(resolve) {
+    Listeners(true);
+  });
+  function createLatex(text) {
+    s.appendSVG(TeXBox(text), 'layer-latex');
+  }
+}
+
+document.getElementById('select-latex').onclick = ev => {
+  s.setMode('select-latex');
+  setCursorIcon();
   setActiveBtnGroup(event.currentTarget.parentElement);
 }
 notebook.oncontextmenu = ev => {
@@ -66,15 +96,14 @@ notebook.oncontextmenu = ev => {
   }
   // prevents drawing on the page;
   ev.stopPropagation();
-  console.log(event.which);
   if (s.getMode() == 'pen') {
     s.setMode('eraser');
-    notebook.classList.add('eraser-cursor');
+    setCursorIcon('eraser-cursor');
     setActiveBtnGroup(document.getElementById('eraser').parentElement);
   }
   else {
     s.setMode('pen');
-    notebook.classList.remove('eraser-cursor');
+    setCursorIcon();
     setActiveBtnGroup(document.getElementById('pen').parentElement);
   }
 };
@@ -83,38 +112,38 @@ notebook.oncontextmenu = ev => {
 document.getElementById('thin').onclick = ev => {
   s.setSize(1.0);
   s.setMode('pen');
-  notebook.classList.remove('eraser-cursor');
+  setCursorIcon();
   setActiveBtnGroup(event.currentTarget.parentElement);
 }
 document.getElementById('medium').onclick = ev => {
   s.setSize(2.0);
   s.setMode('pen');
-  notebook.classList.remove('eraser-cursor');
+  setCursorIcon();
   setActiveBtnGroup(event.currentTarget.parentElement);
 }
 document.getElementById('thick').onclick = ev => {
   s.setSize(3.0);
   s.setMode('pen');
-  notebook.classList.remove('eraser-cursor');
+  setCursorIcon();
   setActiveBtnGroup(event.currentTarget.parentElement);
 }
 
 document.getElementById('red').onclick = ev => {
   s.setColor("var(--pen-color-red)");
   s.setMode('pen');
-  notebook.classList.remove('eraser-cursor');
+  setCursorIcon();
   setActiveBtnGroup(event.currentTarget.parentElement);
 }
 document.getElementById('blue').onclick = ev => {
   s.setColor("var(--pen-color-blue)");
   s.setMode('pen');
-  notebook.classList.remove('eraser-cursor');
+  setCursorIcon();
   setActiveBtnGroup(event.currentTarget.parentElement);
 }
 document.getElementById('black').onclick = ev => {
   s.setColor("black");
   s.setMode('pen');
-  notebook.classList.remove('eraser-cursor');
+  setCursorIcon();
   setActiveBtnGroup(event.currentTarget.parentElement);
 }
 
@@ -122,25 +151,25 @@ document.getElementById('black').onclick = ev => {
 document.getElementById('yellow').onclick = ev => {
   s.setColor("var(--pen-color-yellow)",1);
   s.setMode('highlighter');
-  notebook.classList.remove('eraser-cursor');
+  setCursorIcon();
   setActiveBtnGroup(event.currentTarget.parentElement);
 }
 document.getElementById('orange').onclick = ev => {
   s.setColor("var(--pen-color-orange)",1);
   s.setMode('highlighter');
-  notebook.classList.remove('eraser-cursor');
+  setCursorIcon();
   setActiveBtnGroup(event.currentTarget.parentElement);
 }
 document.getElementById('green').onclick = ev => {
   s.setColor("var(--pen-color-green)",1);
   s.setMode('highlighter');
-  notebook.classList.remove('eraser-cursor');
+  setCursorIcon();
   setActiveBtnGroup(event.currentTarget.parentElement);
 }
 document.getElementById('cyan').onclick = ev => {
   s.setColor("var(--pen-color-cyan)",1);
   s.setMode('highlighter');
-  notebook.classList.remove('eraser-cursor');
+  setCursorIcon();
   setActiveBtnGroup(event.currentTarget.parentElement);
 }
 
@@ -256,6 +285,7 @@ document.getElementById('new-page').onclick = ev => {
 
   s.setFocusPage(_new);
   refreshPageLabel();
+  pages.refreshPageNumbers();
 }
 
 document.getElementById('del-page').onclick = ev => {
@@ -269,8 +299,9 @@ document.getElementById('del-page').onclick = ev => {
     notebook.children[i].id = 'page ' + i;
   }
 
-  s.setFocusPage(notebook.children[idx]);
+  s.setFocusPage(notebook.children[idx-1]);
   refreshPageLabel();
+  pages.refreshPageNumbers();
 }
 
 document.getElementById('undo').onclick = ev => {
@@ -278,4 +309,8 @@ document.getElementById('undo').onclick = ev => {
 }
 document.getElementById('redo').onclick = ev => {
   history.getNextState();
+}
+
+document.getElementById('preferences').onclick = ev => {
+  firePreferences();
 }
