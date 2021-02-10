@@ -56,6 +56,16 @@ function exportPDF(nb, dest) {
               .strokeColor(rgb2hex(css.stroke))
               .stroke();
           }
+
+          // latex; we assume all paths inside
+          if (tag == 'g' && el.hasAttribute('latex')) {
+            for (var l=0;l<el.children.length;l++) {
+              let p = el.children[l];
+              console.log(p.getAttribute('d'));
+              doc.path(p.getAttribute('d'))
+                .fill(rgb2hex(css.fill))
+            }
+          }
         }
       }
     }

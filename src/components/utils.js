@@ -117,7 +117,7 @@ function flattenSVG(input, trafos = []) {
       d = _d;
     }
 
-    let newpath = newSVGNode('path',{d: d});
+    let newpath = newSVGNode('path',{d: svgpath(d).round(4).toString()});
     return [newpath];
   }
 }

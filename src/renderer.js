@@ -141,6 +141,10 @@ document.getElementById('latex').onclick = ev => {
   Listeners(false);
   fireLatexEditor(createLatex).then(function(resolve) {
     Listeners(true);
+    // change to move
+    s.setMode('move');
+    setCursorIcon('move-cursor');
+    setActiveBtnGroup(document.getElementById('move').parentElement);
   });
   function createLatex(text, color, size) {
     s.appendSVG(TeXBox(text, color, size), 'layer-latex');
