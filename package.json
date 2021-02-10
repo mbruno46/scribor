@@ -1,17 +1,41 @@
 {
   "name": "scribor",
+  "productName": "Scribor",
   "version": "0.1.0",
+  "license": "GPL-3.0-only",
+  "description": "Note-taking app with LaTeX support",
+  "author": "Mattia Bruno",
+  "keywords": [],
   "main": "src/main.js",
   "scripts": {
     "start": "electron .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "release": "electron-builder"
   },
-  "keywords": [],
-  "author": "Mattia Bruno",
-  "license": "GPLv3",
-  "description": "",
+  "build": {
+    "appId": "com.electron.scribor",
+    "copyright": "Copyright © 2021 ${author}",
+    "files": [
+      "src",
+      "public"
+    ],
+    "directories": {
+      "output": "release-builds"
+    },
+    "mac": {
+      "category": "public.app-category.productivity",
+      "artifactName": "${productName}-${version}-${arch}.${ext}"
+    }
+  },
+  "dependencies": {
+    "mathjax-full": "^3.1.2",
+    "pdfkit": "^0.11.0",
+    "svgpath": "^2.3.0"
+  },
   "devDependencies": {
     "electron": "^11.2.1",
+    "electron-builder": "^22.9.1",
     "mathjax-full": "^3.1.2",
     "pdfkit": "^0.11.0",
     "svgpath": "^2.3.0"

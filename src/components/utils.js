@@ -62,24 +62,6 @@ function px2float(str) {
   return parseFloat(str.substring(0,str.lastIndexOf('px')));
 }
 
-// function shiftSVGPath(_d,dx,dy) {
-//   let tmp = _d.split(/[MC, ]/)
-//
-//   let d = 'M ' + (parseFloat(tmp[2])+dx) + ',' + (parseFloat(tmp[3])+dy);
-//
-//   var i=4, j;
-//   while(i<tmp.length) {
-//     d += ' C'
-//     i+=2;
-//
-//     for (j=0;j<3;j++) {
-//       d += ' ' + (parseFloat(tmp[i])+dx) + ',' + (parseFloat(tmp[i+1])+dy);
-//       i += 2;
-//     }
-//   }
-//   return d;
-// }
-
 function flattenSVG(input, trafos = []) {
   let t = input.getAttribute('transform');
   if (t) {

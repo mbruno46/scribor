@@ -1,6 +1,6 @@
-const fs = require('electron').remote.require('fs');
-// const PDFDocument = require('pdfkit');
-const PDFDocument = require('electron').remote.require('pdfkit');
+const fs = require('fs');
+const PDFDocument = require('pdfkit');
+// const PDFDocument = require('electron').remote.require('pdfkit');
 const utils = require('./utils.js');
 
 
