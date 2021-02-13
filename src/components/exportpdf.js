@@ -53,8 +53,13 @@ function exportPDF(nb, dest) {
               .lineWidth(utils.px2float(css.strokeWidth))
               .lineCap(css.strokeLinecap)
               .strokeOpacity(css.opacity)
-              .strokeColor(rgb2hex(css.stroke))
-              .stroke();
+
+            if (css.fill != "none") {
+              doc.fillAndStroke(rgb2hex(css.fill),rgb2hex(css.stroke))
+            } else {
+              doc.strokeColor(rgb2hex(css.stroke))
+            }
+            doc.stroke();
           }
 
           // latex; we assume all paths inside

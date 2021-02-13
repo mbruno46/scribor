@@ -62,6 +62,22 @@ function px2float(str) {
   return parseFloat(str.substring(0,str.lastIndexOf('px')));
 }
 
+function RectAsPath(x,y,w,h,rx,ry) {
+  let r = x+w;
+  let b = y+h;
+  d = `M ${x+rx},${y}`
+  d+= `L ${r-rx},${y}`
+  d+= `Q ${r},${y},${r},${y+ry}`
+  d+= `L ${r},${y + h - ry}`
+  d+= `Q ${r},${b},${r-ry},${b}`
+  d+= `L ${x+rx},${b}`
+  d+= `Q ${x},${b},${x},${b-ry}`
+  d+= `L ${x},${y+ry}`
+  d+= `Q ${x},${y},${x+rx},${y}`
+  d+= 'Z'
+  return d;
+}
+
 function flattenSVG(input, trafos = []) {
   let t = input.getAttribute('transform');
   if (t) {
@@ -110,3 +126,4 @@ exports.newSVGNode = newSVGNode;
 exports.px2int = px2int;
 exports.px2float = px2float;
 exports.flattenSVG = flattenSVG;
+exports.RectAsPath = RectAsPath;

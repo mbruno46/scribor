@@ -15,7 +15,7 @@ function create(tag, attrs, styles, t) {
 
 function addEntry(text) {
   let div = create('div',null,{display: 'flex', margin: '4px 0 4px 0', alignItems: 'center'});
-  let s = create('span', null, {width: '40%', paddingLeft: '8px', textAlign: 'center'}, text);
+  let s = create('span', null, {width: '180px', paddingLeft: '8px', textAlign: 'center'}, text);
   div.appendChild(s);
   return div;
 }
@@ -52,33 +52,88 @@ function firePopup(children) {
   return [popup, cancel, ok];
 }
 
-function firePreferences() {
-  var div, el;
-  var children = [];
+function fireCoverPagePreferences(opts) {
+  var div, el1, el2;
+  var all = [];
 
-  children.push(create('span', null, {
+  let t = create('span', null, {
     minWidth: '100%',textAlign: 'center',
     padding: '8px', borderBottom: '1px solid var(--border)'
-  }, 'Preferences'));
+  }, 'Preferences Cover Page');
+  all.push(t);
 
   div = addEntry('Cover page style');
-  el = create('select',{name: 'cover-style'});
-  el.appendChild(create('option',{value: 'cyan'},null,'Cyan'));
-  el.appendChild(create('option',{value: 'orange'},null,'Orange'));
-  el.appendChild(create('option',{value: 'yellow'},null,'Yellow'));
-  div.appendChild(el);
-  children.push(div);
+  el1 = create('select',{name: 'cover-style'});
+  el1.appendChild(create('option',{value: ['var(--cover-page-blue)','yellow','red']},null,'Blue'));
+  el1.appendChild(create('option',{value: ['var(--cover-page-green)','orange','purple']},null,'Green'));
+  el1.value = opts.coverPageStyle;
+  div.appendChild(el1);
+  all.push(div);
 
-  div = addEntry('Ruling style');
-  let c1 = create('input',{type: 'checkbox', name: 'Rules'});
-  div.appendChild(c1);
-  div.appendChild(create('label',null,null,'Rules'));
-  let c2 = create('input',{type: 'checkbox', name: 'Grid'});
-  div.appendChild(c2);
-  div.appendChild(create('label',null,null,'Grid'));
-  children.push(div);
+  div = addEntry('Image');
+  el2 = create('select',{name: 'image'});
+  el2.appendChild(create('option',{value: 1},null,'Particle collision'));
+  el2.appendChild(create('option',{value: 0},null,'None'));
+  el2.value = opts.image;
+  div.appendChild(el2);
+  all.push(div);
 
-  let [popup, ok] = firePopup(children);
+  return new Promise(function(resolve, reject) {
+    let [popup, cancel, ok] = firePopup(all);
+
+    cancel.onclick = ev => {
+      document.body.removeChild(popup);
+      resolve("do-nothing");
+    }
+
+    ok.onclick = ev => {
+      document.body.removeChild(popup);
+      resolve({
+        coverPageStyle: el1.value.split(','),
+        image: el2.value,
+      });
+    }
+  });
+}
+
+function firePagePreferences(opts) {
+  var div1, div2, el1, el2;
+
+  let t = create('span', null, {
+    minWidth: '100%',textAlign: 'center',
+    padding: '8px', borderBottom: '1px solid var(--border)'
+  }, 'Preferences ' + 'Page ' + opts.idx);
+
+  div1 = addEntry('Ruling style');
+  el1 = create('select',{name: 'ruling'});
+  el1.appendChild(create('option',{value: 'ruled'},null,'Ruled'));
+  el1.appendChild(create('option',{value: 'grid'},null,'Grid'));
+  el1.value = opts.ruling;
+  div1.appendChild(el1);
+
+  div2 = addEntry('Background color');
+  el2 = create('select',{name: 'ruling'});
+  el2.appendChild(create('option',{value: 'white'},null,'White'));
+  el2.appendChild(create('option',{value: 'var(--page)'},null,'Yellow'));
+  el2.value = opts.bgcolor;
+  div2.appendChild(el2);
+
+  return new Promise(function(resolve, reject) {
+    let [popup, cancel, ok] = firePopup([t, div1, div2]);
+
+    cancel.onclick = ev => {
+      document.body.removeChild(popup);
+      resolve("do-nothing");
+    }
+
+    ok.onclick = ev => {
+      document.body.removeChild(popup);
+      resolve({
+        ruling: el1.value,
+        bgcolor: el2.value,
+      });
+    }
+  });
 }
 
 function fireLatexEditor(createLatex) {
@@ -121,5 +176,6 @@ function fireLatexEditor(createLatex) {
   });
 }
 
-exports.firePreferences = firePreferences;
+exports.fireCoverPagePreferences = fireCoverPagePreferences;
+exports.firePagePreferences = firePagePreferences;
 exports.fireLatexEditor = fireLatexEditor;

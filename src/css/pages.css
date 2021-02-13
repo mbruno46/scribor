@@ -1,11 +1,4 @@
 
-.page-background {
-  fill: white;
-  /* var(--page); */
-  /* stroke: black; */
-  /* stroke-width: 0.1 */
-}
-
 .rule {
   stroke-width: 0.4;
   fill: none;

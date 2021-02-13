@@ -6,7 +6,7 @@ const { remote, globalShortcut } = require('electron');
 const {dialog} = remote;
 const fs = require('fs');
 const history = require('./components/history.js');
-const {firePreferences, fireLatexEditor} = require('./components/popup.js');
+const {fireCoverPagePreferences, firePagePreferences, fireLatexEditor} = require('./components/popup.js');
 const {TeXBox} = require('./components/texbox.js');
 
 // initialize notebook with cover page filling available width
@@ -315,6 +315,36 @@ document.getElementById('redo').onclick = ev => {
   history.getNextState();
 }
 
+
 document.getElementById('preferences').onclick = ev => {
-  firePreferences();
+  Listeners(false);
+  let idx = s.getFocusPage();
+
+  if (idx == 0) {
+    let g = notebook.children[0].children[0];
+    let opts = {coverPageStyle: [g.children[0].getAttribute('fill'),
+      g.children[1].getAttribute('fill'), g.children[1].getAttribute('stroke')],
+      image: g.children[1].getAttribute('ig'),
+    };
+    fireCoverPagePreferences(opts).then(function(resolve) {
+      Listeners(true);
+      if (resolve=='do-nothing') {
+        return;
+      }
+      pages.makeCoverPage(resolve.coverPageStyle, resolve.image);
+    });
+  }
+  else {
+    let g = notebook.children[idx].children[0]
+    let opts = {idx: idx, ruling: g.getAttribute('ruling'),
+      bgcolor: g.children[0].getAttribute('fill')
+    };
+    firePagePreferences(opts).then(function(resolve) {
+      Listeners(true);
+      if (resolve=='do-nothing') {
+        return;
+      }
+      pages.setBackgroundLayer(idx, resolve.ruling, resolve.bgcolor);
+    });
+  }
 }
