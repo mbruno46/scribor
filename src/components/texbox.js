@@ -64,12 +64,11 @@ function TeXBox(latex,color,scale=1) {
   scale *= 0.025;
   let newpaths = flattenSVG(el.children[0].children[0], [`translate(90,90) scale(${scale} ${scale})`]);
 
-  var texbox = newSVGNode('g',{latex: latex, fill: color});
+  var d = '';
   for (var i=0;i<newpaths.length;i++) {
-    texbox.appendChild(newpaths[i]);
+    d += newpaths[i].getAttribute('d');
   }
-
-  return texbox;
+  return newSVGNode('path',{d: d, latex: latex, fill: color});
 }
 
 exports.TeXBox = TeXBox;

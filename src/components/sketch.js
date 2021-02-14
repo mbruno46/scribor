@@ -2,7 +2,7 @@ const {newSVGNode, flattenSVG} = require('./utils.js');
 const {getScale} = require('./pages');
 const history = require('./history.js');
 
-const smoothing = 0.15;
+const smoothing = 0.20;
 
 function line (a, b) {
   var lenX = b[0] - a[0];
@@ -39,10 +39,9 @@ function optimize (points, command) {
 function decimate(n, points) {
   var dec = [];
   dec[0] = points[0];
-  for (var i = 0; i < points.length; i++) {
+  for (var i = 1; i < points.length; i++) {
     if (i % n == 0) dec[dec.length] = points[i];
   }
-  dec[dec.length] = points[points.length-1];
   return dec;
 }
 
@@ -151,16 +150,16 @@ function Sketch() {
         if (bbox.x>=selbox.x && bbox.y>=selbox.y &&
           (bbox.width+bbox.x)<=(selbox.width+selbox.x) &&
           (bbox.height+bbox.y)<=(selbox.height+selbox.y)) {
-          if (mode == 'select' && selection.indexOf(g.children[i]) == -1) {
+          if (selection.indexOf(g.children[i]) == -1) {
             selection.push(g.children[i]);
           }
-          if (mode == 'select-latex') {
-            for (var j=0;j<g.children[i].children.length;j++) {
-              if (selection.indexOf(g.children[i].children[j]) == -1) {
-                selection.push(g.children[i].children[j]);
-              }
-            }
-          }
+          // if (mode == 'select-latex') {
+          //   for (var j=0;j<g.children[i].children.length;j++) {
+          //     if (selection.indexOf(g.children[i].children[j]) == -1) {
+          //       selection.push(g.children[i].children[j]);
+          //     }
+          //   }
+          // }
         }
       }
     }
@@ -172,7 +171,6 @@ function Sketch() {
     var i;
     for (i=0;i<selection.length;i++) {
       let temp = flattenSVG(selection[i], ['translate(' + dx + ',' + dy + ')']);
-      // let d = shiftSVGPath(selection[i].getAttribute('d'),dx,dy);
       selection[i].setAttribute('d', temp[0].getAttribute('d'));
     }
   }
@@ -349,10 +347,7 @@ function Sketch() {
     appendSVG(svg, layer) {
       let g = findPageChild(layer);
       g.appendChild(svg);
-      selection = [];
-      for (var i=0;i<svg.children.length;i++) {
-        selection.push(svg.children[i]);
-      }
+      selection = [svg];
     }
 
   }

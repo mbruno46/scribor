@@ -34,6 +34,7 @@ function exportPDF(nb, dest) {
 
           let tag = el.tagName.toLowerCase();
           let css = getComputedStyle(el);
+          console.log(page.children[j].id, tag, css.strokeLinecap, css.fill, css.stroke);
 
           if (tag == 'rect') {
             if (css.stroke != "none") {
@@ -54,23 +55,16 @@ function exportPDF(nb, dest) {
               .lineCap(css.strokeLinecap)
               .strokeOpacity(css.opacity)
 
-            if (css.fill != "none") {
+            if (css.fill != "none" && css.stroke != "none") {
               doc.fillAndStroke(rgb2hex(css.fill),rgb2hex(css.stroke))
-            } else {
-              doc.strokeColor(rgb2hex(css.stroke))
+            }
+            else {
+              if (css.fill != "none") {doc.fill(rgb2hex(css.fill))}
+              if (css.stroke != "none") {doc.strokeColor(rgb2hex(css.stroke))}
             }
             doc.stroke();
           }
 
-          // latex; we assume all paths inside
-          if (tag == 'g' && el.hasAttribute('latex')) {
-            for (var l=0;l<el.children.length;l++) {
-              let p = el.children[l];
-              console.log(p.getAttribute('d'));
-              doc.path(p.getAttribute('d'))
-                .fill(rgb2hex(css.fill))
-            }
-          }
         }
       }
     }
