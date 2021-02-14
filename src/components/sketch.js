@@ -153,13 +153,6 @@ function Sketch() {
           if (selection.indexOf(g.children[i]) == -1) {
             selection.push(g.children[i]);
           }
-          // if (mode == 'select-latex') {
-          //   for (var j=0;j<g.children[i].children.length;j++) {
-          //     if (selection.indexOf(g.children[i].children[j]) == -1) {
-          //       selection.push(g.children[i].children[j]);
-          //     }
-          //   }
-          // }
         }
       }
     }
@@ -241,6 +234,8 @@ function Sketch() {
       }
 
       if (mode == 'select'||mode == 'select-latex') {
+        // latex selection only selects single elements
+        if (mode=='select-latex') {resetSelection();}
         selbox = {
           x0: pointer.x,
           y0: pointer.y,
@@ -347,6 +342,8 @@ function Sketch() {
     appendSVG(svg, layer) {
       let g = findPageChild(layer);
       g.appendChild(svg);
+      resetSelection();
+      svg.classList.add('selected');
       selection = [svg];
     }
 

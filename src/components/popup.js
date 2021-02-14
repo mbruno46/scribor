@@ -136,7 +136,7 @@ function firePagePreferences(opts) {
   });
 }
 
-function fireLatexEditor(createLatex) {
+function fireLatexEditor(createLatex, text='', color='var(--pen-color-blue)', size=1.0) {
 
   let t = create('span', null, {
     minWidth: '100%',textAlign: 'center',
@@ -148,6 +148,7 @@ function fireLatexEditor(createLatex) {
   s.appendChild(create('option',{value: 'var(--pen-color-blue)'},null,'Blue'));
   s.appendChild(create('option',{value: 'var(--pen-color-red)'},null,'Red'));
   s.appendChild(create('option',{value: 'black'},null,'Black'));
+  s.value = color;
   div1.appendChild(s);
 
   let div2 = addEntry('Font size');
@@ -155,10 +156,12 @@ function fireLatexEditor(createLatex) {
   s2.appendChild(create('option',{value: 1.0},null,'Medium'));
   s2.appendChild(create('option',{value: 2.0},null,'Large'));
   s2.appendChild(create('option',{value: 0.5},null,'Small'));
+  s2.value = size;
   div2.appendChild(s2);
 
-  let editor = create('textarea', {value: '', rows: 2, cols: 40}, {
+  let editor = create('textarea', {rows: 2, cols: 40}, {
     margin: '8px', border: '1px solid var(--border)'});
+  editor.value = text;
 
   return new Promise(function(resolve, reject) {
     let [popup, cancel, ok] = firePopup([t, div1, div2, editor]);

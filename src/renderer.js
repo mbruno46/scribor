@@ -147,7 +147,32 @@ document.getElementById('latex').onclick = ev => {
     setActiveBtnGroup(document.getElementById('move').parentElement);
   });
   function createLatex(text, color, size) {
-    s.appendSVG(TeXBox(text, color, size), 'layer-latex');
+    s.appendSVG(TeXBox(text, [100,150], color, size), 'layer-latex');
+  }
+}
+
+document.getElementById('edit-latex').onclick = ev => {
+  setCursorIcon();
+  setActiveBtnGroup(event.currentTarget.parentElement);
+  let sel = s.getSelectedElements();
+  if (sel.length==0) {return;}
+
+  Listeners(false);
+  let bbox = sel[0].getBBox();
+  let opts = [sel[0].getAttribute('latex'), sel[0].getAttribute('fill'),
+    parseFloat(sel[0].getAttribute('scale'))];
+
+  fireLatexEditor(replaceLatex, opts[0], opts[1], opts[2]).then(function(resolve) {
+    Listeners(true);
+    // change to move
+    s.setMode('move');
+    setCursorIcon('move-cursor');
+    setActiveBtnGroup(document.getElementById('move').parentElement);
+  });
+  function replaceLatex(text, color, size) {
+    let p = sel[0].parentElement;
+    p.removeChild(sel[0]);
+    s.appendSVG(TeXBox(text, [bbox.x,bbox.y + bbox.height], color, size), 'layer-latex');
   }
 }
 
