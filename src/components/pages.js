@@ -78,8 +78,7 @@ function makeCoverPage(color, ig) {
   bg.setAttribute('fill',color[0]);
   g.appendChild(bg);
 
-  // let img = flattenSVG(newSVGNode('path',{d: fs.readFileSync(graphics[0])}),[`translate(120,570) scale(1.8, 1.8)`])[0];
-  // img.setAttribute('fill','yellow');
+  // let img = flattenSVG(newSVGNode('path',{d: fs.readFileSync(graphics[ig])}),[`translate(80,1220) scale(3.5, 3.5)`])[0];
   let img = newSVGNode('path',{d: (ig==0) ? '' : fs.readFileSync(graphics[ig]), fill: color[1], stroke: color[2], ig: ig});
   g.appendChild(img);
 
