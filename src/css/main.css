@@ -9,7 +9,8 @@
   --vrule: rgb(220,156,126);
   --hrule: rgb(160,190,200);
   --cover-page-blue: rgb(41,104,207);
-  --cover-page-green: rgb(160,201,122);
+  --cover-page-green: #a0c97a;
+  --cover-page-red: #db6f4b;
 }
 
 /* padding and border are included in the total width and height of the elements */

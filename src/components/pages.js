@@ -19,7 +19,8 @@ var layout = {
 }
 
 
-var graphics = ['', path.join(__dirname, '../../public/svgs/collision2.path.svg')];
+var graphics = ['', path.join(__dirname, '../../public/svgs/collision2.path.svg'),
+  path.join(__dirname, '../../public/svgs/feyndiagr2.path.svg')];
 
 function setBackgroundLayer(idx, ruling, bgcolor = 'white') {
   var g = pages[idx].children[0];
@@ -78,7 +79,7 @@ function makeCoverPage(color, ig) {
   bg.setAttribute('fill',color[0]);
   g.appendChild(bg);
 
-  // let img = flattenSVG(newSVGNode('path',{d: fs.readFileSync(graphics[ig])}),[`translate(80,1220) scale(3.5, 3.5)`])[0];
+  // let img = flattenSVG(newSVGNode('path',{d: fs.readFileSync(graphics[ig])}),[`translate(-400,-550) scale(3.2, 3.2) rotate(-25 0 0)`])[0];
   let img = newSVGNode('path',{d: (ig==0) ? '' : fs.readFileSync(graphics[ig]), fill: color[1], stroke: color[2], ig: ig});
   g.appendChild(img);
 

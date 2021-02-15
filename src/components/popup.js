@@ -66,6 +66,7 @@ function fireCoverPagePreferences(opts) {
   el1 = create('select',{name: 'cover-style'});
   el1.appendChild(create('option',{value: ['var(--cover-page-blue)','yellow','red']},null,'Blue'));
   el1.appendChild(create('option',{value: ['var(--cover-page-green)','orange','purple']},null,'Green'));
+  el1.appendChild(create('option',{value: ['var(--cover-page-red)','cyan','green']},null,'Red'));
   el1.value = opts.coverPageStyle;
   div.appendChild(el1);
   all.push(div);
@@ -73,6 +74,7 @@ function fireCoverPagePreferences(opts) {
   div = addEntry('Image');
   el2 = create('select',{name: 'image'});
   el2.appendChild(create('option',{value: 1},null,'Particle collision'));
+  el2.appendChild(create('option',{value: 2},null,'Feynman diagram'));
   el2.appendChild(create('option',{value: 0},null,'None'));
   el2.value = opts.image;
   div.appendChild(el2);
