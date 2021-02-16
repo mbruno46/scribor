@@ -6,18 +6,19 @@ const isMac = process.platform === 'darwin'
 function createWindow () {
   const win = new BrowserWindow({
     width: 1024,
-    height: 900,
+    height: 950,
     minWidth: 900,
-    minHeight: 900,
+    minHeight: 950,
     webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true,
+      devTools: false,
     }
   })
 
   win.loadFile(path.join(__dirname, 'index.html'));
 
-  win.webContents.openDevTools();
+  // win.webContents.openDevTools();
 
   win.webContents.once("did-frame-finish-load", function () {
     win.webContents.send('check-updates', {
