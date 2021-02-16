@@ -37,7 +37,10 @@ const handler = RegisterHTMLHandler(adaptor);
 //
 //  Create input and output jax and a document using them on the content from the HTML file
 //
-const tex = new TeX({packages: AllPackages.sort().join(', ').split(/\s*,\s*/)});
+const tex = new TeX({
+  packages: AllPackages.sort().join(', ').split(/\s*,\s*/),
+  inlineMath: [['$', '$'], ['\\(', '\\)']]
+});
 const svg = new SVG({fontCache: 'none'});
 const html = mathjax.document('', {InputJax: tex, OutputJax: svg});
 
@@ -53,13 +56,14 @@ function TeXBox(latex,point,color,scale=1) {
   //  Typeset the math from the command line
   //
   const node = html.convert(latex, {
-    display: false,
+    display: true, //displaystyle by default
     em: 16, //opts.em,
     ex: 8, //opts.ex,
-    containerWidth: 80, //opts.width
+    containerWidth: 80*16, //opts.width
   });
 
   var el = createElementFromHTML(adaptor.outerHTML(node));
+  console.log(el);
   // mjx-container.svg.g (stroke etcc).g(mml-data=math)
   _scale = scale * 0.025;
   let newpaths = flattenSVG(el.children[0].children[0], [`translate(${point[0]},${point[1]}) scale(${_scale} ${_scale})`]);

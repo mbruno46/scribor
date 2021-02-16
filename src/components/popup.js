@@ -165,6 +165,7 @@ function fireLatexEditor(createLatex, text='', color='var(--pen-color-blue)', si
   let editor = create('textarea', {rows: 2, cols: 40}, {
     margin: '8px', border: '1px solid var(--border)'});
   editor.value = text;
+  editor.focus();
 
   return new Promise(function(resolve, reject) {
     let [popup, cancel, ok] = firePopup([t, div1, div2, editor]);

@@ -92,6 +92,9 @@ function flattenSVG(input, trafos = []) {
   else if (tag=='path') {
     out = flattenSVGPath(input, trafos);
   }
+  else if (tag=='rect') {
+    out = flattenSVGPath(Rect2Path(input), trafos);
+  }
 
   if (t) {
     trafos.pop();
@@ -117,6 +120,23 @@ function flattenSVG(input, trafos = []) {
 
     let newpath = newSVGNode('path',{d: svgpath(d).round(4).toString()});
     return [newpath];
+  }
+
+  function Rect2Path(r) {
+    var x = r.getAttribute('x');
+    var y = r.getAttribute('y');
+    var w = r.getAttribute('width');
+    var h = r.getAttribute('height');
+
+    var d;
+    d = `M ${x},${y}`
+    d+= `h ${w}`
+    d+= `v ${h}`
+    d+= `h -${w}`
+    d+= `v -${h}`
+    d+= `Z`
+
+    return newSVGNode('path',{d: d});
   }
 }
 
