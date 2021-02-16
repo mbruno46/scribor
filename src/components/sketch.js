@@ -322,6 +322,7 @@ function Sketch() {
 
       if (mode=='pen' || mode=='highlighter') {
         path.setAttribute('d',optimize(decimate(4, points), bezier));
+        history.recordState();
       }
 
       if (mode == 'select' || mode == 'select-latex') {
@@ -329,8 +330,14 @@ function Sketch() {
         return;
       }
 
-      if (mode!=select) {
+      if (mode=='move') {
+        for (var i=0;i<selection.length;i++) {
+          selection[i].classList.remove('selected');
+        }
         history.recordState();
+        for (var i=0;i<selection.length;i++) {
+          selection[i].classList.add('selected');
+        }
       }
     },
     getFocusPage() {
@@ -346,6 +353,7 @@ function Sketch() {
     appendSVG(svg, layer) {
       let g = findPageChild(layer);
       g.appendChild(svg);
+      history.recordState();
       resetSelection();
       svg.classList.add('selected');
       selection = [svg];
