@@ -19,6 +19,12 @@ function createWindow () {
 
   win.webContents.openDevTools();
 
+  win.webContents.once("did-frame-finish-load", function () {
+    win.webContents.send('check-updates', {
+      version: app.getVersion()
+    });
+  });
+
   var menu = Menu.buildFromTemplate([
     ...(isMac ? [{
       label: app.name,

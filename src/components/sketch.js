@@ -248,17 +248,19 @@ function Sketch() {
         return;
       }
 
-      var stroke = {
-        x: pointer.x,
-        y: pointer.y,
-        delta: 0,
-        pressure: pointer.pressure
-      };
+      if (mode=='pen' || mode=='highlighter') {
+        var stroke = {
+          x: pointer.x,
+          y: pointer.y,
+          delta: 0,
+          pressure: pointer.pressure
+        };
 
-      points   = [[pointer.x, pointer.y]];
-      strokes  = [stroke];
-      previous = stroke;
-      beginDraw();
+        points   = [[pointer.x, pointer.y]];
+        strokes  = [stroke];
+        previous = stroke;
+        beginDraw();
+      }
     },
     move(event) {
       event = event || event.originalEvent || window.event;
@@ -296,17 +298,19 @@ function Sketch() {
         return;
       }
 
-      var stroke = {
-        x: pointer.x,
-        y: pointer.y,
-        delta: previous.delta + distance(previous, event),
-        pressure: pointer.pressure
-      };
-      previous = stroke;
-      strokes.push(stroke);
-      points.push([pointer.x, pointer.y]);
+      if (mode=='pen' || mode=='highlighter') {
+        var stroke = {
+          x: pointer.x,
+          y: pointer.y,
+          delta: previous.delta + distance(previous, event),
+          pressure: pointer.pressure
+        };
+        previous = stroke;
+        strokes.push(stroke);
+        points.push([pointer.x, pointer.y]);
 
-      path.setAttribute('d',optimize(decimate(3, points), bezier));
+        path.setAttribute('d',optimize(decimate(3, points), bezier));
+      }
     },
     end(event) {
       event = event || event.originalEvent || window.event;

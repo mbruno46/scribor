@@ -109,6 +109,10 @@ button {
   cursor: url(./cursor/eraser.cur), auto;
 }
 
+.laser-cursor {
+  cursor: url(./cursor/laser.cur), auto;
+}
+
 .move-cursor {
   cursor: move;
 }

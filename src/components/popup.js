@@ -1,3 +1,4 @@
+const { shell } = require('electron')
 
 function create(tag, attrs, styles, t) {
   let el = document.createElement(tag);
@@ -181,6 +182,36 @@ function fireLatexEditor(createLatex, text='', color='var(--pen-color-blue)', si
   });
 }
 
+function fireUpdate(oldv, newv, url) {
+
+  let t = create('span', null, {
+    minWidth: '100%',textAlign: 'center',
+    padding: '8px', borderBottom: '1px solid var(--border)'
+  }, 'Updates avaiable');
+
+  let div1 = addEntry('Current version');
+  div1.appendChild(create('span', null, null, oldv));
+
+  let div2 = addEntry('Available version');
+  div2.appendChild(create('span', null, null, newv));
+
+  return new Promise(function(resolve, reject) {
+    let [popup, cancel, ok] = firePopup([t, div1, div2]);
+
+    cancel.onclick = ev => {
+      document.body.removeChild(popup);
+      resolve("do-nothing");
+    }
+
+    ok.textContent = 'Download';
+    ok.onclick = ev => {
+      document.body.removeChild(popup);
+      // fire browser
+      shell.openExternal(url);
+    }
+  });
+}
 exports.fireCoverPagePreferences = fireCoverPagePreferences;
 exports.firePagePreferences = firePagePreferences;
 exports.fireLatexEditor = fireLatexEditor;
+exports.fireUpdate = fireUpdate;

@@ -8,6 +8,8 @@ const fs = require('fs');
 const history = require('./components/history.js');
 const {fireCoverPagePreferences, firePagePreferences, fireLatexEditor} = require('./components/popup.js');
 const {TeXBox} = require('./components/texbox.js');
+const {checkVersion} = require('./components/update.js');
+const { ipcRenderer } = require('electron')
 
 // initialize notebook with cover page filling available width
 var page = pages.newPage(true);
@@ -24,6 +26,12 @@ var notebook_file = null;
 history.reset(notebook);
 history.recordState();
 Listeners(true);
+
+// save prefs when closing app
+ipcRenderer.on('check-updates', (event, arg) => {
+  checkVersion(arg.version);
+  event.returnValue = 'DONE';
+});
 
 function Listeners(add = true) {
   utils.pointerEventListener('down', page, s.start, add);
@@ -58,7 +66,7 @@ function setActiveBtnGroup(g) {
 }
 
 function setCursorIcon(type = '') {
-  notebook.classList.remove('eraser-cursor','move-cursor');
+  notebook.classList.remove('eraser-cursor','move-cursor','laser-cursor');
   if (type != '') {
     notebook.classList.add(type);
   }
@@ -372,4 +380,10 @@ document.getElementById('preferences').onclick = ev => {
       pages.setBackgroundLayer(idx, resolve.ruling, resolve.bgcolor);
     });
   }
+}
+
+document.getElementById('laser').onclick = ev => {
+  s.setMode('none');
+  setCursorIcon('laser-cursor');
+  setActiveBtnGroup(event.currentTarget.parentElement);
 }
