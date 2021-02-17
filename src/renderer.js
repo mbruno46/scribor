@@ -10,6 +10,7 @@ const {fireCoverPagePreferences, firePagePreferences, fireLatexEditor} = require
 const {TeXBox} = require('./components/texbox.js');
 const {checkVersion} = require('./components/update.js');
 const { ipcRenderer } = require('electron')
+const zlib = require('zlib');
 
 // initialize notebook with cover page filling available width
 var page = pages.newPage(true);
@@ -221,7 +222,7 @@ document.getElementById('open').onclick = ev => {
     if (err) {
       alert('File could not be read');
     }
-    notebook.innerHTML = data;
+    notebook.innerHTML = zlib.inflateSync(data).toString();
     pages.refreshPagesDatabaseFromNotebook(notebook);
     s.setFocusPage(notebook.children[0]);
     refreshPageLabel();
@@ -234,7 +235,7 @@ document.getElementById('open').onclick = ev => {
 }
 
 function save_notebook(fname) {
-  fs.writeFile(fname, notebook.innerHTML, (err) => {
+  fs.writeFile(fname, zlib.deflateSync(notebook.innerHTML), (err) => {
     if (err) {
       alert('File could not be saved');
     }
