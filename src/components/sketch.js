@@ -321,7 +321,7 @@ function Sketch() {
       sketching = false;
 
       if (mode=='pen' || mode=='highlighter') {
-        path.setAttribute('d',optimize(decimate(4, points), bezier));
+        path.setAttribute('d',optimize(decimate(3, points), bezier));
         history.recordState();
       }
 
