@@ -1,6 +1,7 @@
 
 # Scribor <img src="./build/icons/256x256.png" height="64px"> 
 
+[![Build/Release](https://github.com/mbruno46/scribor/actions/workflows/release.yml/badge.svg)](https://github.com/mbruno46/scribor/actions/workflows/release.yml)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 An intuitive cross-platform note-taking app, with LaTeX support.
