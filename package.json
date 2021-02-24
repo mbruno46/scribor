@@ -1,11 +1,22 @@
 {
   "name": "scribor",
   "productName": "Scribor",
-  "version": "0.1.0",
-  "license": "GPL-3.0-only",
   "description": "Note-taking app with LaTeX support",
-  "author": "Mattia Bruno",
-  "keywords": [],
+  "version": "0.1.0",
+  "keywords": [
+    "Note-taking",
+    "Stylus",
+    "LaTex"
+  ],
+  "author": {
+    "name": "Mattia Bruno",
+    "email": "38449948+mbruno46@users.noreply.github.com"
+  },
+  "homepage": "https://mbruno46.github.io/scribor/",
+  "bugs": {
+    "url": "https://github.com/mbruno46/scribor/issues"
+  },
+  "license": "GPL-3.0-only",
   "main": "src/main.js",
   "scripts": {
     "start": "electron .",
@@ -18,15 +29,25 @@
     "copyright": "Copyright © 2021 ${author}",
     "files": [
       "src",
-      "public"
+      "public",
+      "!node_modules",
+      "!doc"
     ],
     "directories": {
       "output": "release-builds"
     },
     "mac": {
       "category": "public.app-category.productivity",
-      "artifactName": "${productName}-${version}-${arch}.${ext}"
-    }
+      "artifactName": "${productName}-${version}-${platform}-${arch}.${ext}"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "linux": {
+      "target": ["AppImage", "deb"],
+      "category": "Utility",
+      "artifactName": "${productName}-${version}-${platform}-${arch}.${ext}"
+    }    
   },
   "dependencies": {
     "mathjax-full": "^3.1.2",
