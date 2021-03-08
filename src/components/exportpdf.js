@@ -34,7 +34,6 @@ function exportPDF(nb, dest) {
 
           let tag = el.tagName.toLowerCase();
           let css = getComputedStyle(el);
-          console.log(page.children[j].id, tag, css.strokeLinecap, css.fill, css.stroke);
 
           if (tag == 'rect') {
             if (css.stroke != "none") {

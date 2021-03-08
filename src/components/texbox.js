@@ -63,7 +63,6 @@ function TeXBox(latex,point,color,scale=1) {
   });
 
   var el = createElementFromHTML(adaptor.outerHTML(node));
-  console.log(el);
   // mjx-container.svg.g (stroke etcc).g(mml-data=math)
   _scale = scale * 0.025;
   let newpaths = flattenSVG(el.children[0].children[0], [`translate(${point[0]},${point[1]}) scale(${_scale} ${_scale})`]);

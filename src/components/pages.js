@@ -205,11 +205,15 @@ function refreshPagesDatabaseFromNotebook(notebook) {
 }
 
 function refreshPageNumbers() {
-  var i;
-  for (i=0;i<pages.length;i++) {
+  var i, pn;
+  for (i=1;i<pages.length;i++) {
     let h = pages[i].children[0].children;
-    let pn = h[h.length-1];
-    pn.textContent = pages[i].id.split('page ')[1];
+    pn = h[h.length-1];
+    // pn.textContent = pages[i].id.split('page ')[1];
+    pn.parentElement.removeChild(pn);
+    let n = pages[i].id.split('page ')[1].toString();
+    pn = TeXBox(n, [viewport.width-25,viewport.height-15], 'var(--hrule)', 0.5);
+    pages[i].children[0].appendChild(pn);
   }
 }
 

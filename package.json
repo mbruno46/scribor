@@ -30,7 +30,6 @@
     "files": [
       "src",
       "public",
-      "!node_modules",
       "!doc"
     ],
     "directories": {
@@ -44,21 +43,24 @@
       "target": "nsis"
     },
     "linux": {
-      "target": ["AppImage", "deb"],
+      "target": [
+        "AppImage",
+        "deb"
+      ],
       "category": "Utility",
       "artifactName": "${productName}-${version}-${platform}-${arch}.${ext}"
-    }    
+    }
   },
   "dependencies": {
     "mathjax-full": "^3.1.2",
     "pdfkit": "^0.11.0",
-    "svgpath": "^2.3.0"
+    "svgpath": "^2.3.1"
   },
   "devDependencies": {
     "electron": "^11.2.1",
-    "electron-builder": "^22.9.1",
     "mathjax-full": "^3.1.2",
     "pdfkit": "^0.11.0",
-    "svgpath": "^2.3.0"
+    "svgpath": "^2.3.1",
+    "electron-builder": "^22.9.1"
   }
 }
