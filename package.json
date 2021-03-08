@@ -35,7 +35,29 @@
     "directories": {
       "output": "release-builds"
     },
+    "dmg": {
+      "background": null,
+      "backgroundColor": "#e4d4a3",
+      "title": "${productName} ${version}",
+      "window": {
+         "width": "400",
+         "height": "300"
+      },
+      "contents": [
+	 {
+           "x": 100,
+           "y": 100
+         },
+         {
+           "x": 300,
+           "y": 100,
+           "type": "link",
+           "path": "/Applications"
+	 }
+      ]
+    },
     "mac": {
+      "target": "dmg",
       "category": "public.app-category.productivity",
       "artifactName": "${productName}-${version}-${platform}-${arch}.${ext}"
     },
