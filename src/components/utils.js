@@ -140,6 +140,20 @@ function flattenSVG(input, trafos = []) {
   }
 }
 
+function removeChildren(p) {
+  while (p.hasChildNodes()) {
+    p.removeChild(p.firstElementChild);
+  }
+}
+
+function appendAtIndex(parent, child, index) {
+  if (!index) index = 0
+  if (index >= parent.children.length) {
+    parent.appendChild(child)
+  } else {
+    parent.insertBefore(child, parent.children[index])
+  }
+}
 
 exports.pointerEventListener = pointerEventListener;
 exports.newSVGNode = newSVGNode;
@@ -147,3 +161,5 @@ exports.px2int = px2int;
 exports.px2float = px2float;
 exports.flattenSVG = flattenSVG;
 exports.RectAsPath = RectAsPath;
+exports.removeChildren = removeChildren;
+exports.appendAtIndex = appendAtIndex;

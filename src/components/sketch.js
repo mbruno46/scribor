@@ -1,6 +1,5 @@
 const {newSVGNode, flattenSVG} = require('./utils.js');
-const {getScale} = require('./pages');
-const history = require('./history.js');
+const {getScale} = require('./notebook.js');
 
 const smoothing = 0.20;
 
@@ -53,7 +52,7 @@ function distance(p1, p2) {
 
 
 
-function Sketch() {
+function Sketch(_nb) {
   var sketching = false;
   var strokes = [];
   var points = [];
@@ -61,6 +60,7 @@ function Sketch() {
   let ns = 'http://www.w3.org/2000/svg';
   var strokePoints;
   var page = null;
+  var nb = _nb;
   var mode = 'pen';
   var color = ['var(--pen-color-blue)', 'var(--pen-color-orange)'];
   var size = 0.8;
@@ -322,8 +322,10 @@ function Sketch() {
 
       if (mode=='pen' || mode=='highlighter') {
         path.setAttribute('d',optimize(decimate(3, points), bezier));
-        history.recordState();
+        nb.recordState();
       }
+
+      if (mode=='eraser') {nb.recordState();}
 
       if (mode == 'select' || mode == 'select-latex') {
         SelectElements();
@@ -334,7 +336,7 @@ function Sketch() {
         for (var i=0;i<selection.length;i++) {
           selection[i].classList.remove('selected');
         }
-        history.recordState();
+        nb.recordState();
         for (var i=0;i<selection.length;i++) {
           selection[i].classList.add('selected');
         }
@@ -353,7 +355,7 @@ function Sketch() {
     appendSVG(svg, layer) {
       let g = findPageChild(layer);
       g.appendChild(svg);
-      history.recordState();
+      nb.recordState();
       resetSelection();
       svg.classList.add('selected');
       selection = [svg];
