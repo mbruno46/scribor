@@ -3,7 +3,6 @@ const {newSVGNode, px2float, flattenSVG, RectAsPath,
 const utils = require('./utils.js');
 const fs = require('fs');
 const path = require('path');
-const {History} = require('./history.js');
 
 var viewport = {
   width: 595,
@@ -155,12 +154,6 @@ function Notebook(nb) {
   var at;
   var history = [];
 
-  notebook.onkeydown = ev => {
-    if ((ev.ctrlKey || ev.metaKey)) {
-      if (event.key == "z" && !event.shiftKey) {getPreviousState();}
-      if (event.key == "y" && !event.shiftKey) {getNextState();}
-    }
-  }
 
   function addPageAt(i, innerHTML=null) {
     let p = newPage(i==0);
@@ -204,7 +197,7 @@ function Notebook(nb) {
     }
 
     if (at>=0) {at = idx;}
-    
+
     const state = history[idx];
     if (state) {
       if (state.data == data) return;
@@ -226,10 +219,12 @@ function Notebook(nb) {
     let tmp = history[idx].data;
     let n = tmp.length;
     let m = notebook.children.lengt;
+    let w = viewport.scale*viewport.width;
     var i;
     for (i=0;i<m-n;i++) {notebook.removeChild(notebook.children[n+i]);}
     for (i=0;i<n;i++) {notebook.children[i].innerHTML = tmp[i];}
     for (i=0;i<n-m;i++) {addPageAt(m+i,tmp[i]);}
+    rescalePages(w);
   }
 
   function getPreviousState() {

@@ -200,7 +200,12 @@ nb.notebook.oncontextmenu = ev => {
     setActiveBtnGroup(document.getElementById('pen').parentElement);
   }
 };
-
+nb.notebook.onkeydown = ev => {
+  if ((ev.ctrlKey || ev.metaKey)) {
+    if (event.key == "z" && !event.shiftKey) {nb.getPreviousState();}
+    if (event.key == "y" && !event.shiftKey) {nb.getNextState();}
+  }
+}
 
 document.getElementById('open').onclick = ev => {
   opts = {title: 'Open notebook', properties: ['openFile'], filters: [{name: 'Notebooks', extensions: ['svgnb']}]};
