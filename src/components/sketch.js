@@ -35,14 +35,49 @@ function optimize (points, command) {
   return d;
 }
 
-function decimate(n, points) {
-  var dec = [];
-  dec[0] = points[0];
-  for (var i = 1; i < points.length; i++) {
-    if (i % n == 0) dec[dec.length] = points[i];
+
+function Smoother(_n, first) {
+  var points = [first]
+  var cache = [first]
+  var n=_n;
+
+  function smear_cache() {
+    let m = [0,0];
+    for (var i=0;i<cache.length;i++) {
+      m[0] += cache[i][0];
+      m[1] += cache[i][1];
+    }
+    m[0] /= n;
+    m[1] /= n;
+    return m;
   }
-  return dec;
+
+  return {
+    addPoint(p) {
+      if (cache.length<n) {
+        cache[cache.length] = p;
+      }
+      else {
+        points[points.length] = smear_cache();
+        cache = [];
+        cache[0] = p;
+      }
+    },
+    getPoints() {
+      return points;
+    },
+    finalizePoints() {
+      if (cache.length<n) {
+        points[points.length] = cache[cache.length];
+      }
+      else {
+        points[points.length] = smear_cache();
+      }
+      return points;
+    }
+  }
 }
+
 
 function distance(p1, p2) {
   var dx = p2.x - p1.x;
@@ -68,6 +103,7 @@ function Sketch(_nb) {
   var selbox;
   var selection = []
   var moveto;
+  var smoother = null;
 
   function position(event) {
     var touches = event.touches;
@@ -91,7 +127,7 @@ function Sketch(_nb) {
   }
 
   function beginDraw() {
-    path = newSVGNode('path',{d: optimize(decimate(8, points), bezier)});
+    path = newSVGNode('path',{d: optimize(smoother.getPoints(), bezier)});
     var g;
 
     if (mode == 'pen') {
@@ -259,6 +295,7 @@ function Sketch(_nb) {
         points   = [[pointer.x, pointer.y]];
         strokes  = [stroke];
         previous = stroke;
+        if (smoother==null) {smoother = Smoother(4, [pointer.x, pointer.y]);}
         beginDraw();
       }
     },
@@ -308,8 +345,8 @@ function Sketch(_nb) {
         previous = stroke;
         strokes.push(stroke);
         points.push([pointer.x, pointer.y]);
-
-        path.setAttribute('d',optimize(decimate(3, points), bezier));
+        smoother.addPoint([pointer.x, pointer.y]);
+        path.setAttribute('d',optimize(smoother.getPoints(), bezier));
       }
     },
     end(event) {
@@ -321,7 +358,9 @@ function Sketch(_nb) {
       sketching = false;
 
       if (mode=='pen' || mode=='highlighter') {
-        path.setAttribute('d',optimize(decimate(3, points), bezier));
+        // path.setAttribute('d',optimize(decimate(3, points), bezier));
+        path.setAttribute('d',optimize(smoother.finalizePoints(), bezier));
+        smoother = null;
         nb.recordState();
       }
 
