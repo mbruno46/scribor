@@ -68,7 +68,7 @@ function Smoother(_n, first) {
     },
     finalizePoints() {
       if (cache.length<n) {
-        points[points.length] = cache[cache.length];
+        points[points.length] = cache[cache.length-1];
       }
       else {
         points[points.length] = smear_cache();

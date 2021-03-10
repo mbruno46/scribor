@@ -200,7 +200,7 @@ nb.notebook.oncontextmenu = ev => {
     setActiveBtnGroup(document.getElementById('pen').parentElement);
   }
 };
-nb.notebook.onkeydown = ev => {
+document.body.onkeydown = ev => {
   if ((ev.ctrlKey || ev.metaKey)) {
     if (event.key == "z" && !event.shiftKey) {nb.getPreviousState();}
     if (event.key == "y" && !event.shiftKey) {nb.getNextState();}
