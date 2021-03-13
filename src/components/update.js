@@ -17,7 +17,6 @@ function checkVersion(v) {
     .then(data => {
       let nv = convertVersion(data.version);
       if (nv > cv) {
-        console.log('new version available');
         fireUpdate(v, data.version, release);
       }
     });

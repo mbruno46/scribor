@@ -2,6 +2,7 @@ v0.1.2
  - faster and better drawing engine with smoother
  - bug fix undo/redo conflicts with zoom
  - added keyboard shortcut for undo/redo
+ - support for cut/copy/paste
 
 v0.1.1
  - pen/eraser/highlighter modes

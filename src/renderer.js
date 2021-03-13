@@ -14,11 +14,11 @@ const {Notebook} = require('./components/notebook.js');
 // initialize notebook with cover page filling available width
 const nb = Notebook(document.getElementById('notebook'));
 nb.init();
+nb.fit_width();
 
 let s = Sketch(nb);
 s.setFocusPage(nb.getPage());
 
-// fit_width();
 s.setMode('pen');
 setActiveBtnGroup(document.getElementById('pen').parentElement);
 var notebook_file = null;
@@ -204,6 +204,11 @@ document.body.onkeydown = ev => {
   if ((ev.ctrlKey || ev.metaKey)) {
     if (event.key == "z" && !event.shiftKey) {nb.getPreviousState();}
     if (event.key == "y" && !event.shiftKey) {nb.getNextState();}
+
+    if (event.key == "x" && !event.shiftKey) {s.cutSelection();}
+    if (event.key == "c" && !event.shiftKey) {s.copySelection();}
+    if (event.key == "v" && !event.shiftKey) {s.pasteSelection();}
+
   }
 }
 
@@ -294,6 +299,10 @@ document.getElementById('del-page').onclick = ev => {
 
 document.getElementById('undo').onclick = ev => {nb.getPreviousState();}
 document.getElementById('redo').onclick = ev => {nb.getNextState();}
+
+document.getElementById('cut').onclick = ev => {s.cutSelection();}
+document.getElementById('copy').onclick = ev => {s.copySelection();}
+document.getElementById('paste').onclick = ev => {s.pasteSelection();}
 
 document.getElementById('preferences').onclick = ev => {
   Listeners(false);

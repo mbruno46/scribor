@@ -56,15 +56,17 @@ function Smoother(_n, first) {
     addPoint(p) {
       if (cache.length<n) {
         cache[cache.length] = p;
+        return false;
       }
       else {
         points[points.length] = smear_cache();
         cache = [];
         cache[0] = p;
+        return true;
       }
     },
     getPoints() {
-      return points;
+      return points.concat(cache);
     },
     finalizePoints() {
       if (cache.length<n) {
@@ -104,6 +106,7 @@ function Sketch(_nb) {
   var selection = []
   var moveto;
   var smoother = null;
+  var clipboard = [];
 
   function position(event) {
     var touches = event.touches;
@@ -345,8 +348,9 @@ function Sketch(_nb) {
         previous = stroke;
         strokes.push(stroke);
         points.push([pointer.x, pointer.y]);
-        smoother.addPoint([pointer.x, pointer.y]);
-        path.setAttribute('d',optimize(smoother.getPoints(), bezier));
+        if (smoother.addPoint([pointer.x, pointer.y])) {
+          path.setAttribute('d',optimize(smoother.getPoints(), bezier));
+        }
       }
     },
     end(event) {
@@ -398,6 +402,32 @@ function Sketch(_nb) {
       resetSelection();
       svg.classList.add('selected');
       selection = [svg];
+    },
+    cutSelection() {
+      clipboard = [];
+      for (var i=0;i<selection.length;i++) {
+        clipboard.push({g: selection[i].parentElement,
+          node: selection[i].cloneNode(true)});
+        selection[i].parentElement.removeChild(selection[i]);
+      }
+      resetSelection();
+    },
+    copySelection() {
+      clipboard = [];
+      for (var i=0;i<selection.length;i++) {
+        clipboard.push({g: selection[i].parentElement,
+          node: selection[i].cloneNode(true)});
+      }
+      resetSelection();
+    },
+    pasteSelection() {
+      resetSelection();
+      for (var i=0;i<clipboard.length;i++) {
+        let node = clipboard[i].node.cloneNode(true);
+        clipboard[i].g.appendChild(node);
+        node.classList.add('selected');
+        selection[selection.length] = node;
+      }
     }
 
   }
