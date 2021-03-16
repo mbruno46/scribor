@@ -7,13 +7,9 @@
 
 An intuitive cross-platform note-taking app, with LaTeX support.
 
-- **Website:** https://mbruno46.github.io/scribor/
 - **Documentation:** https://mbruno46.github.io/scribor/
 - **Source code:** https://github.com/mbruno46/scribor/
 - **Bug reports:** https://github.com/mbruno46/scribor/issues
-
-[![scribor](./doc/_images/screenshot1.png)](https://mbruno46.github.io/scribor/)
-
 
 ### Authors
 
