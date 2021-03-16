@@ -1,5 +1,5 @@
 ---
-title: Scribor <img src="_images/256x256.png" style="height: 100%"
+title: Scribor <img src="./_images/256x256.png" alt="scribor" style="height: 100%;">
 desc: An intuitive cross-platform note-taking app, with LaTeX support.
 ---
 
