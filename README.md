@@ -2,6 +2,7 @@
 # Scribor <img src="./build/icons/256x256.png" height="64px">
 
 [![Build/Release](https://github.com/mbruno46/scribor/actions/workflows/release.yml/badge.svg)](https://github.com/mbruno46/scribor/actions/workflows/release.yml)
+[![Build doc](https://github.com/mbruno46/scribor/actions/workflows/doc.yml/badge.svg)](https://github.com/mbruno46/scribor/actions/workflows/doc.yml)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 An intuitive cross-platform note-taking app, with LaTeX support.
@@ -11,7 +12,7 @@ An intuitive cross-platform note-taking app, with LaTeX support.
 - **Source code:** https://github.com/mbruno46/scribor/
 - **Bug reports:** https://github.com/mbruno46/scribor/issues
 
-[![logo](./doc/_images/screenshot1.png)](https://mbruno46.github.io/scribor/)
+[![scribor](./doc/_images/screenshot1.png)](https://mbruno46.github.io/scribor/)
 
 
 ### Authors
@@ -31,5 +32,3 @@ Alternatively, the program can also be installed in the home Application folder,
 
 If the error message `“Scribor” cannot be opened because the developer cannot be verified.` appears when launching the application, click `Cancel`; then go to
 `System Preferences` -> `Security & Privacy` -> `General` and click on `Open Anyway`.
-
-[logo](./build/icons/256x256.png)
