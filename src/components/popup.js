@@ -162,10 +162,17 @@ function fireLatexEditor(createLatex, text='', color='var(--pen-color-blue)', si
   s2.value = size;
   div2.appendChild(s2);
 
-  let editor = create('textarea', {rows: 2, cols: 40}, {
+  let editor = create('textarea', {rows: 4, cols: 40}, {
     margin: '8px', border: '1px solid var(--border)'});
   editor.value = text;
   editor.focus();
+  editor.onkeydown = ev => {
+    if ((ev.ctrlKey || ev.metaKey)) {
+      if (event.key == "x" && !event.shiftKey) {document.execCommand('cut');}
+      if (event.key == "c" && !event.shiftKey) {document.execCommand('copy');}
+      if (event.key == "v" && !event.shiftKey) {document.execCommand('paste');}
+    }
+  };
 
   return new Promise(function(resolve, reject) {
     let [popup, cancel, ok] = firePopup([t, div1, div2, editor]);

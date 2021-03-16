@@ -155,6 +155,11 @@ function appendAtIndex(parent, child, index) {
   }
 }
 
+function eventListener(ev, element, handler, add=true, options=false) {
+  cmd = (add) ? element.addEventListener : element.removeEventListener;
+  cmd(ev, handler, options);
+}
+
 exports.pointerEventListener = pointerEventListener;
 exports.newSVGNode = newSVGNode;
 exports.px2int = px2int;
@@ -163,3 +168,4 @@ exports.flattenSVG = flattenSVG;
 exports.RectAsPath = RectAsPath;
 exports.removeChildren = removeChildren;
 exports.appendAtIndex = appendAtIndex;
+exports.eventListener = eventListener;

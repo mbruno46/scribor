@@ -154,7 +154,6 @@ function Notebook(nb) {
   var at;
   var history = [];
 
-
   function addPageAt(i, innerHTML=null) {
     let p = newPage(i==0);
     if (innerHTML!=null) {p.innerHTML = innerHTML;}

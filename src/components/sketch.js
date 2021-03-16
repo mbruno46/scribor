@@ -207,6 +207,17 @@ function Sketch(_nb) {
     }
   }
 
+  function fillClipboard(remove = false) {
+    clipboard = [];
+    for (var i=0;i<selection.length;i++) {
+      clipboard.push({layer: selection[i].parentElement.id,
+        node: selection[i].cloneNode(true)});
+      if (remove) {
+        selection[i].parentElement.removeChild(selection[i]);
+      }
+    }
+  }
+
   function erase(target) {
     var layers = ['layer-pen','layer-hlighter','layer-latex'];
     for (var i=0;i<layers.length;i++) {
@@ -404,27 +415,19 @@ function Sketch(_nb) {
       selection = [svg];
     },
     cutSelection() {
-      clipboard = [];
-      for (var i=0;i<selection.length;i++) {
-        clipboard.push({g: selection[i].parentElement,
-          node: selection[i].cloneNode(true)});
-        selection[i].parentElement.removeChild(selection[i]);
-      }
+      fillClipboard(true);
       resetSelection();
     },
     copySelection() {
-      clipboard = [];
-      for (var i=0;i<selection.length;i++) {
-        clipboard.push({g: selection[i].parentElement,
-          node: selection[i].cloneNode(true)});
-      }
+      fillClipboard(false);
       resetSelection();
     },
     pasteSelection() {
       resetSelection();
       for (var i=0;i<clipboard.length;i++) {
         let node = clipboard[i].node.cloneNode(true);
-        clipboard[i].g.appendChild(node);
+        let g = findPageChild(clipboard[i].layer);
+        g.appendChild(node);
         node.classList.add('selected');
         selection[selection.length] = node;
       }

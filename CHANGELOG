@@ -2,7 +2,7 @@ v0.1.2
  - faster and better drawing engine with smoother
  - bug fix undo/redo conflicts with zoom
  - added keyboard shortcut for undo/redo
- - support for cut/copy/paste
+ - support for cut/copy/paste (also in LaTex editor)
 
 v0.1.1
  - pen/eraser/highlighter modes

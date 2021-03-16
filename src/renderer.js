@@ -35,7 +35,22 @@ function Listeners(add = true) {
   utils.pointerEventListener('down', nb.getPage(), s.start, add);
   utils.pointerEventListener('move', document, s.move, add);
   utils.pointerEventListener('up leave', document, s.end, add);
+  utils.eventListener('keydown', document, keydown, add);
 }
+
+function keydown(ev) {
+  if ((ev.ctrlKey || ev.metaKey)) {
+    if (event.key == "z" && !event.shiftKey) {nb.getPreviousState();}
+    if (event.key == "y" && !event.shiftKey) {nb.getNextState();}
+
+    if (event.key == "x" && !event.shiftKey) {s.cutSelection();}
+    if (event.key == "c" && !event.shiftKey) {s.copySelection();}
+    if (event.key == "v" && !event.shiftKey) {s.pasteSelection();}
+
+    return false;
+  }
+  return true;
+};
 
 function setActiveBtnGroup(g) {
   var el = document.getElementsByClassName('btn-group-active');
@@ -200,17 +215,7 @@ nb.notebook.oncontextmenu = ev => {
     setActiveBtnGroup(document.getElementById('pen').parentElement);
   }
 };
-document.body.onkeydown = ev => {
-  if ((ev.ctrlKey || ev.metaKey)) {
-    if (event.key == "z" && !event.shiftKey) {nb.getPreviousState();}
-    if (event.key == "y" && !event.shiftKey) {nb.getNextState();}
 
-    if (event.key == "x" && !event.shiftKey) {s.cutSelection();}
-    if (event.key == "c" && !event.shiftKey) {s.copySelection();}
-    if (event.key == "v" && !event.shiftKey) {s.pasteSelection();}
-
-  }
-}
 
 document.getElementById('open').onclick = ev => {
   opts = {title: 'Open notebook', properties: ['openFile'], filters: [{name: 'Notebooks', extensions: ['svgnb']}]};
