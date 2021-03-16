@@ -1,0 +1,13 @@
+{
+  "name": "Scribor",
+  "build": "./build",
+  "theme": "./themes/superhero",
+  "pages": [
+    {
+      "file": "index.md",
+      "layout": "home",
+      "navbar": "Home"
+    }
+  ],
+  "footer": "Copyright © 2021 Mattia Bruno."
+}

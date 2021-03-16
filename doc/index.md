@@ -1,19 +1,13 @@
-
-# Scribor <img src="./build/icons/256x256.png" height="64px">
-
-[![Build/Release](https://github.com/mbruno46/scribor/actions/workflows/release.yml/badge.svg)](https://github.com/mbruno46/scribor/actions/workflows/release.yml)
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+---
+title: Scribor
+desc: An intuitive cross-platform note-taking app, with LaTeX support.
+---
 
 An intuitive cross-platform note-taking app, with LaTeX support.
 
 - **Website:** https://mbruno46.github.io/scribor/
 
-[![logo](./doc/_images/screenshot1.png)](https://mbruno46.github.io/scribor/)
-
-
-### Authors
-
-Copyright (C) 2021, Mattia Bruno
+![Scribor](./_images/screenshot1.png)
 
 ## Installation
 
@@ -25,9 +19,3 @@ latest version [here](https://github.com/mbruno46/scribor/releases/latest).
 For MacOS systems download the `.dmg` file, open it and drag the scribor icone in the `/Application` folder to install it.
 
 Alternatively, the program can also be installed in the home Application folder, `~/Application`, or in other destination, by dragging the scribor icon (after opening the `dmg` file) and dropping it in the destination folder.
-
-## Documentation
-
-To be added soon.
-
-[logo](./build/icons/256x256.png)
