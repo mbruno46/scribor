@@ -16,7 +16,7 @@
   "bugs": {
     "url": "https://github.com/mbruno46/scribor/issues"
   },
-  "license": "GPL-3.0-only",
+  "license": "GPL-2.0-only",
   "main": "src/main.js",
   "scripts": {
     "start": "electron .",
