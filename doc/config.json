@@ -1,7 +1,7 @@
 {
   "name": "Scribor",
   "build": "./build",
-  "theme": "./themes/superhero",
+  "theme": "superhero",
   "pages": [
     {
       "file": "index.md",
