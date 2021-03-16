@@ -3,11 +3,7 @@ title: Scribor
 desc: An intuitive cross-platform note-taking app, with LaTeX support.
 ---
 
-An intuitive cross-platform note-taking app, with LaTeX support.
-
-- **Website:** https://mbruno46.github.io/scribor/
-
-![Scribor](./_images/screenshot1.png)
+<img src="./_images/screenshot1.png" alt="scribor" style="width: 100%;">
 
 ## Installation
 
