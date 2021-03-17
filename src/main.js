@@ -5,10 +5,10 @@ const isMac = process.platform === 'darwin'
 
 function createWindow () {
   const win = new BrowserWindow({
-    width: 1024,
-    height: 950,
-    minWidth: 900,
-    minHeight: 950,
+    width: 980,
+    height: 850,
+    minWidth: 980,
+    minHeight: 850,
     webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true,

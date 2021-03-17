@@ -18,6 +18,7 @@ nb.fit_width();
 
 let s = Sketch(nb);
 s.setFocusPage(nb.getPage());
+refreshPageLabel();
 
 s.setMode('pen');
 setActiveBtnGroup(document.getElementById('pen').parentElement);
@@ -158,7 +159,7 @@ document.getElementById('latex').onclick = ev => {
     // change to move
     s.setMode('move');
     nb.setCursorIcon('move-cursor');
-    setActiveBtnGroup(document.getElementById('move').parentElement);
+    setActiveBtnGroup(document.getElementById('move-latex').parentElement);
   });
   function createLatex(text, color, size) {
     s.appendSVG(TeXBox(text, [100,150], color, size), 'layer-latex');
@@ -181,7 +182,7 @@ document.getElementById('edit-latex').onclick = ev => {
     // change to move
     s.setMode('move');
     nb.setCursorIcon('move-cursor');
-    setActiveBtnGroup(document.getElementById('move').parentElement);
+    setActiveBtnGroup(document.getElementById('move-latex').parentElement);
   });
   function replaceLatex(text, color, size) {
     let p = sel[0].parentElement;
@@ -189,7 +190,11 @@ document.getElementById('edit-latex').onclick = ev => {
     s.appendSVG(TeXBox(text, [bbox.x,bbox.y + bbox.height], color, size), 'layer-latex');
   }
 }
-
+document.getElementById('move-latex').onclick = ev => {
+  s.setMode('move');
+  nb.setCursorIcon('move-cursor');
+  setActiveBtnGroup(event.currentTarget.parentElement);
+}
 document.getElementById('select-latex').onclick = ev => {
   s.setMode('select-latex');
   nb.setCursorIcon();
