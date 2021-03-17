@@ -1,5 +1,5 @@
 
-# Scribor <img src="./build/icons/256x256.png" height="1em">
+<h1> <img src="./build/icons/256x256.png" height="64px"> Scribor </h1>
 
 [![Build/Release](https://github.com/mbruno46/scribor/actions/workflows/release.yml/badge.svg)](https://github.com/mbruno46/scribor/actions/workflows/release.yml)
 [![Build doc](https://github.com/mbruno46/scribor/actions/workflows/doc.yml/badge.svg)](https://github.com/mbruno46/scribor/actions/workflows/doc.yml)
