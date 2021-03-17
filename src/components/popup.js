@@ -219,7 +219,118 @@ function fireUpdate(oldv, newv, url) {
     }
   });
 }
+
+function fireSelectionLayer() {
+  let t = create('span', null, {
+    minWidth: '100%',textAlign: 'center',
+    padding: '8px', borderBottom: '1px solid var(--border)'
+  }, 'Selection Layer');
+
+  let div1 = addEntry('Layer');
+  let s = create('select',{name: 'layer'});
+  s.appendChild(create('option',{value: 'layer-hlighter layer-pen layer-latex'},null,'Pen + Highlighter + LaTeX'));
+  s.appendChild(create('option',{value: 'layer-hlighter layer-pen'},null,'Pen + Highlighter'));
+  s.appendChild(create('option',{value: 'layer-pen'},null,'Pen'));
+  s.appendChild(create('option',{value: 'layer-hlighter'},null,'Highlighter'));
+  s.appendChild(create('option',{value: 'layer-latex'},null,'LaTeX'));
+  s.value = 'layer-hlighter layer-pen';
+  div1.appendChild(s);
+
+  return new Promise(function(resolve, reject) {
+    let [popup, cancel, ok] = firePopup([t, div1]);
+
+    cancel.parentElement.removeChild(cancel);
+
+    ok.onclick = ev => {
+      document.body.removeChild(popup);
+      resolve({layers: s.value});
+    }
+  });
+}
+
+function firePenSettings(_color, _size) {
+  let t = create('span', null, {
+    minWidth: '100%',textAlign: 'center',
+    padding: '8px', borderBottom: '1px solid var(--border)'
+  }, 'Pen Settings');
+
+  let div1 = addEntry('Size');
+  let size = _size;
+  new Map([
+    ['fa-xs', 1.0],
+    ['fa-sm', 2.0],
+    ['fa-lg', 3.0],
+  ]).forEach(function(v,k) {
+    let btn = create('button',{class: 'btn'});
+    btn.appendChild(create('i',{class:"fa fa-slash " + k}));
+    btn.onclick = ev => {
+      size = v;
+    }
+    div1.appendChild(btn);
+  });
+
+  let div2 = addEntry('Color');
+  let color = _color;
+  ['var(--pen-color-red)', 'var(--pen-color-blue)', 'black'].forEach(c => {
+    let btn = create('button',{class: 'btn'});
+    btn.appendChild(create('i',{class:"fa fa-square"},{color: c}));
+    btn.onclick = ev => {
+      color = c;
+    }
+    div2.appendChild(btn);
+  });
+
+  return new Promise(function(resolve, reject) {
+    let [popup, cancel, ok] = firePopup([t, div1, div2]);
+
+    cancel.onclick = ev => {
+      document.body.removeChild(popup);
+      resolve("do-nothing");
+    }
+
+    ok.onclick = ev => {
+      document.body.removeChild(popup);
+      resolve({size: size, color: color});
+    }
+  });
+}
+
+function fireHlighterSettings(_color) {
+  let t = create('span', null, {
+    minWidth: '100%',textAlign: 'center',
+    padding: '8px', borderBottom: '1px solid var(--border)'
+  }, 'Highlighter Settings');
+
+  let div1 = addEntry('Color');
+  let color = _color;
+  ['orange','yellow','cyan','green'].forEach(c => {
+    let btn = create('button',{class: 'btn'});
+    btn.appendChild(create('i',{class:"fa fa-square"},{color: c}));
+    btn.onclick = ev => {
+      color = c;
+    }
+    div1.appendChild(btn);
+  });
+
+  return new Promise(function(resolve, reject) {
+    let [popup, cancel, ok] = firePopup([t, div1]);
+
+    cancel.onclick = ev => {
+      document.body.removeChild(popup);
+      resolve("do-nothing");
+    }
+
+    ok.onclick = ev => {
+      document.body.removeChild(popup);
+      resolve({color: color});
+    }
+  });
+}
+
+exports.firePenSettings = firePenSettings;
+exports.fireHlighterSettings = fireHlighterSettings;
 exports.fireCoverPagePreferences = fireCoverPagePreferences;
 exports.firePagePreferences = firePagePreferences;
 exports.fireLatexEditor = fireLatexEditor;
 exports.fireUpdate = fireUpdate;
+exports.fireSelectionLayer = fireSelectionLayer;

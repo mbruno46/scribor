@@ -4,7 +4,7 @@ const {exportPDF} = require('./components/exportpdf.js');
 const { remote, globalShortcut } = require('electron');
 const {dialog} = remote;
 const fs = require('fs');
-const {fireCoverPagePreferences, firePagePreferences, fireLatexEditor} = require('./components/popup.js');
+const popup = require('./components/popup.js');
 const {TeXBox} = require('./components/texbox.js');
 const {checkVersion} = require('./components/update.js');
 const { ipcRenderer } = require('electron')
@@ -79,21 +79,91 @@ function setActiveBtnGroup(g) {
   };
 }
 
+//
+// eraser
+//
+
 document.getElementById('eraser').onclick = ev => {
   s.setMode('eraser');
   nb.setCursorIcon('eraser-cursor');
   setActiveBtnGroup(event.currentTarget.parentElement);
 }
+
+//
+// selection
+//
 document.getElementById('select').onclick = ev => {
-  s.setMode('select');
   nb.setCursorIcon();
   setActiveBtnGroup(event.currentTarget.parentElement);
+
+  Listeners(false);
+  popup.fireSelectionLayer().then(function(resolve) {
+    Listeners(true);
+    s.setMode('select',resolve.layers);
+  });
 }
 document.getElementById('move').onclick = ev => {
   s.setMode('move');
   nb.setCursorIcon('move-cursor');
   setActiveBtnGroup(event.currentTarget.parentElement);
 }
+document.getElementById('edit').onclick = ev => {
+  nb.setCursorIcon();
+  setActiveBtnGroup(event.currentTarget.parentElement);
+  let sel = s.getSelectedElements();
+  let lay = s.getSelectedLayers();
+  if (lay.length!=1) {return;}
+  Listeners(false);
+
+  if (lay[0]=='layer-pen') {
+    popup.firePenSettings(sel[0].getAttribute('stroke'),sel[0].getAttribute('stroke-width')).then(function(resolve) {
+      Listeners(true);
+      for (var i=0;i<sel.length;i++) {
+        sel[i].setAttribute('stroke',resolve.color);
+        sel[i].setAttribute('stroke-width',resolve.size);
+      }
+      s.setMode('select',lay[0]);
+    });
+  }
+  else if (lay[0]=='layer-hlighter') {
+    popup.fireHlighterSettings(sel[0].getAttribute('stroke')).then(function(resolve) {
+      Listeners(true);
+      for (var i=0;i<sel.length;i++) {
+        sel[i].setAttribute('stroke',resolve.color);
+      }
+      s.setMode('select',lay[0]);
+    });
+  }
+  else if (lay[0]=='layer-latex') {
+    if (sel.length!=1) {
+      alert('Edit works only on single LaTeX element');
+      return;
+    }
+
+    let bbox = sel[0].getBBox();
+    let opts = [sel[0].getAttribute('latex'), sel[0].getAttribute('fill'),
+      parseFloat(sel[0].getAttribute('scale'))];
+
+    popup.fireLatexEditor(replaceLatex, opts[0], opts[1], opts[2]).then(function(resolve) {
+      Listeners(true);
+      // change to move
+      s.setMode('move');
+      nb.setCursorIcon('move-cursor');
+      setActiveBtnGroup(document.getElementById('move').parentElement);
+    });
+    function replaceLatex(text, color, size) {
+      let p = sel[0].parentElement;
+      p.removeChild(sel[0]);
+      s.appendSVG(TeXBox(text, [bbox.x,bbox.y + bbox.height], color, size), 'layer-latex');
+    }
+  }
+}
+document.getElementById('laser').onclick = ev => {
+  s.setMode('none');
+  nb.setCursorIcon('laser-cursor');
+  setActiveBtnGroup(event.currentTarget.parentElement);
+}
+
 
 //
 // pen
@@ -154,51 +224,16 @@ document.getElementById('latex').onclick = ev => {
   nb.setCursorIcon();
   setActiveBtnGroup(event.currentTarget.parentElement);
   Listeners(false);
-  fireLatexEditor(createLatex).then(function(resolve) {
+  popup.fireLatexEditor(createLatex).then(function(resolve) {
     Listeners(true);
     // change to move
     s.setMode('move');
     nb.setCursorIcon('move-cursor');
-    setActiveBtnGroup(document.getElementById('move-latex').parentElement);
+    setActiveBtnGroup(document.getElementById('move').parentElement);
   });
   function createLatex(text, color, size) {
     s.appendSVG(TeXBox(text, [100,150], color, size), 'layer-latex');
   }
-}
-
-document.getElementById('edit-latex').onclick = ev => {
-  nb.setCursorIcon();
-  setActiveBtnGroup(event.currentTarget.parentElement);
-  let sel = s.getSelectedElements();
-  if (sel.length==0) {return;}
-
-  Listeners(false);
-  let bbox = sel[0].getBBox();
-  let opts = [sel[0].getAttribute('latex'), sel[0].getAttribute('fill'),
-    parseFloat(sel[0].getAttribute('scale'))];
-
-  fireLatexEditor(replaceLatex, opts[0], opts[1], opts[2]).then(function(resolve) {
-    Listeners(true);
-    // change to move
-    s.setMode('move');
-    nb.setCursorIcon('move-cursor');
-    setActiveBtnGroup(document.getElementById('move-latex').parentElement);
-  });
-  function replaceLatex(text, color, size) {
-    let p = sel[0].parentElement;
-    p.removeChild(sel[0]);
-    s.appendSVG(TeXBox(text, [bbox.x,bbox.y + bbox.height], color, size), 'layer-latex');
-  }
-}
-document.getElementById('move-latex').onclick = ev => {
-  s.setMode('move');
-  nb.setCursorIcon('move-cursor');
-  setActiveBtnGroup(event.currentTarget.parentElement);
-}
-document.getElementById('select-latex').onclick = ev => {
-  s.setMode('select-latex');
-  nb.setCursorIcon();
-  setActiveBtnGroup(event.currentTarget.parentElement);
 }
 
 
@@ -324,7 +359,7 @@ document.getElementById('preferences').onclick = ev => {
       g.children[1].getAttribute('fill'), g.children[1].getAttribute('stroke')],
       image: g.children[1].getAttribute('ig'),
     };
-    fireCoverPagePreferences(opts).then(function(resolve) {
+    popup.fireCoverPagePreferences(opts).then(function(resolve) {
       Listeners(true);
       if (resolve=='do-nothing') {
         return;
@@ -336,7 +371,7 @@ document.getElementById('preferences').onclick = ev => {
     let opts = {idx: idx, ruling: g.getAttribute('ruling'),
       bgcolor: g.children[0].getAttribute('fill')
     };
-    firePagePreferences(opts).then(function(resolve) {
+    popup.firePagePreferences(opts).then(function(resolve) {
       Listeners(true);
       if (resolve=='do-nothing') {
         return;
@@ -344,10 +379,4 @@ document.getElementById('preferences').onclick = ev => {
       nb.setBackgrounStyle(idx, resolve.ruling, resolve.bgcolor);
     });
   }
-}
-
-document.getElementById('laser').onclick = ev => {
-  s.setMode('none');
-  nb.setCursorIcon('laser-cursor');
-  setActiveBtnGroup(event.currentTarget.parentElement);
 }

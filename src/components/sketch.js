@@ -94,7 +94,6 @@ function Sketch(_nb) {
   var strokes = [];
   var points = [];
   var previous = null;
-  let ns = 'http://www.w3.org/2000/svg';
   var strokePoints;
   var page = null;
   var nb = _nb;
@@ -103,7 +102,8 @@ function Sketch(_nb) {
   var size = 0.8;
   var path;
   var selbox;
-  var selection = []
+  var selection = [];
+  var selection_layers = [];
   var moveto;
   var smoother = null;
   var clipboard = [];
@@ -153,6 +153,7 @@ function Sketch(_nb) {
       selection[i].classList.remove('selected');
     }
     selection = [];
+    selection_layers = [];
     selbox = {x: 0, y: 0, width: 0, height: 0};
     drawSelection();
   };
@@ -166,16 +167,11 @@ function Sketch(_nb) {
   }
 
   function SelectElements() {
-    if (mode=='select') {
-      _select(findPageChild('layer-pen'));
-      _select(findPageChild('layer-hlighter'));
-    }
-    if (mode=='select-latex') {
-      _select(findPageChild('layer-latex'));
+    for (var i=0;i<selection_layers.length;i++) {
+      _select(findPageChild(selection_layers[i]));
     }
 
-    var i;
-    for (i=0;i<selection.length;i++) {
+    for (var i=0;i<selection.length;i++) {
       selection[i].classList.add('selected');
     }
 
@@ -243,10 +239,13 @@ function Sketch(_nb) {
   }
 
   return {
-    setMode(_mode) {
+    setMode(_mode,args=null) {
       mode = _mode;
       if (mode!='move') {
         resetSelection();
+      }
+      if (mode=='select') {
+        selection_layers = args.split(' ');
       }
     },
     getMode() {
@@ -283,9 +282,7 @@ function Sketch(_nb) {
         return;
       }
 
-      if (mode == 'select'||mode == 'select-latex') {
-        // latex selection only selects single elements
-        if (mode=='select-latex') {resetSelection();}
+      if (mode == 'select') {
         selbox = {
           x0: pointer.x,
           y0: pointer.y,
@@ -327,7 +324,7 @@ function Sketch(_nb) {
 
       let pointer = position(event);
 
-      if (mode=='select'||mode == 'select-latex') {
+      if (mode=='select') {
         selbox = {
           x0: selbox.x0,
           y0: selbox.y0,
@@ -381,7 +378,7 @@ function Sketch(_nb) {
 
       if (mode=='eraser') {nb.recordState();}
 
-      if (mode == 'select' || mode == 'select-latex') {
+      if (mode == 'select') {
         SelectElements();
         return;
       }
@@ -406,6 +403,9 @@ function Sketch(_nb) {
     getSelectedElements() {
       return selection;
     },
+    getSelectedLayers() {
+      return selection_layers;
+    },
     appendSVG(svg, layer) {
       let g = findPageChild(layer);
       g.appendChild(svg);
@@ -413,6 +413,7 @@ function Sketch(_nb) {
       resetSelection();
       svg.classList.add('selected');
       selection = [svg];
+      selection_layers = [layer];
     },
     cutSelection() {
       fillClipboard(true);
@@ -430,6 +431,9 @@ function Sketch(_nb) {
         g.appendChild(node);
         node.classList.add('selected');
         selection[selection.length] = node;
+        if (selection_layers.indexOf(clipboard[i].layer) < 0) {
+          selection_layers[selection_layers.length] = clipboard[i].layer;
+        }
       }
     }
 
