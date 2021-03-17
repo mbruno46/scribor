@@ -3,7 +3,9 @@ v0.1.2
  - bug fix undo/redo conflicts with zoom
  - added keyboard shortcut for undo/redo
  - support for cut/copy/paste (also in LaTex editor)
-
+ - support for editing settings of pen/highligther modes
+ - unique selection/edit tool for pen/highligther/latex
+ 
 v0.1.1
  - pen/eraser/highlighter modes
  - zoom in/out, fit height, fit width
