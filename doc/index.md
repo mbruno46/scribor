@@ -1,10 +1,5 @@
----
-title: Scribor
-desc: An intuitive cross-platform note-taking app, with LaTeX support.
-logo: ./_images/256x256.png
----
 
-<img src="./_images/screenshot1.png" alt="scribor" style="width: 100%;">
+<img src="assets/img/screenshot1.png" alt="scribor" style="width: 100%;">
 
 ***
 
