@@ -1,17 +1,23 @@
 <template>
+  <top-toolbar />
   <notebook ref="nb" />
+  <bottom-toolbar />
 </template>
 
 <script>
 import Notebook from './views/Notebook.vue'
+import TopToolbar from './views/TopToolbar'
+import BottomToolbar from './views/BottomToolbar'
 
 export default {
   name: 'App',
   components: {
-    Notebook
+    Notebook,
+    TopToolbar,
+    BottomToolbar
   },
   mounted() {
-    this.$refs.nb.setDrawingMode('pen')
+    this.$refs.nb.mode = 'pen';
   }
 }
 </script>
@@ -23,6 +29,5 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>

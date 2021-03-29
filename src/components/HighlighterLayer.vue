@@ -1,11 +1,10 @@
 <template>
-  <g id="layer-pen">
+  <g id="layer-highlighter">
     <path v-for="(stroke,index) in penstrokes" 
-      :key="'penstroke-' + index"
+      :key="'highlighter-' + index"
       :d="stroke.d"
       :stroke="stroke.color"
-      :stroke-width="stroke.size"
-      class="strokes"
+      class="highlighter"
     />
   </g>
 </template>
@@ -43,8 +42,10 @@ export default {
 </script>
 
 <style scoped>
-.strokes {
+.highlighter {
   fill: none;
+  stroke-width: 16;
   stroke-linecap: round;
+  opacity: 0.7;
 }
 </style>
