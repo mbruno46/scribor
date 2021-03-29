@@ -1,15 +1,17 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <notebook ref="nb" />
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Notebook from './views/Notebook.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    Notebook
+  },
+  mounted() {
+    this.$refs.nb.setDrawingMode('pen')
   }
 }
 </script>
