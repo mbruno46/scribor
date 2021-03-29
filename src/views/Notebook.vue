@@ -8,6 +8,7 @@
         </g>
         <pen-layer ref="penlayer"/>
         <highlighter-layer ref="highlighterlayer"/>
+        <eraser-layer ref="eraserlayer"/>
     </svg>
   </div>
 </template>
@@ -16,19 +17,23 @@
 import { ref, computed, onMounted, watch } from 'vue'
 import PenLayer from '../components/PenLayer.vue';
 import HighlighterLayer from '@/components/HighlighterLayer'
+import EraserLayer from '@/components/EraserLayer'
 import pointertools from '@/hooks/pointertools';
+import store from '../hooks/store'
 
 export default {
   components: {
     PenLayer,
-    HighlighterLayer
+    HighlighterLayer,
+    EraserLayer
   },
   setup() {
     const div = ref(null);
     const page = ref(null);
     const penlayer = ref(null);
     const highlighterlayer = ref(null);
-    const mode = ref('');
+    const eraserlayer = ref(null);
+    var mode = store.mode;
 
     const viewport = ref({
       width: 595,
@@ -45,21 +50,18 @@ export default {
       pointertools.setScale(viewport.value.scale);
     }
 
+    const layers = new Map([
+      ['pen', penlayer],
+      ['highlighter', highlighterlayer],
+      ['eraser',eraserlayer]
+    ]);
+
     watch(mode, (newmode, oldmode) => {
-      console.log(oldmode, ' --> ',newmode);
-
-      if (oldmode=='pen') {
-        penlayer.value.off(page.value)
-      } else if (oldmode=='highlighter') {
-        highlighterlayer.value.off(page.value);
-      }
-
-      if (newmode=='pen') {
-        penlayer.value.on(page.value);
-      } else if (newmode=='highlighter') {
-        highlighterlayer.value.on(page.value);
-      }
-    })
+      layers.forEach(function(v,k) {
+        if (oldmode==k) {v.value.off(page.value);}
+        if (newmode==k) {v.value.on(page.value);}
+      });
+    });
 
     onMounted(() => {
       let box = page.value.getBoundingClientRect()
@@ -71,10 +73,10 @@ export default {
       page,
       penlayer,
       highlighterlayer,
+      eraserlayer,
       width,
       height,
-      rescale,
-      mode
+      rescale
     }
   }
 }

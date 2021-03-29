@@ -1,7 +1,8 @@
 <template>
   <g id="layer-pen">
-    <path v-for="(stroke,index) in penstrokes" 
-      :key="'penstroke-' + index"
+    <path v-for="(stroke,index) in strokes" 
+      :key="'penstrokes:' + index"
+      :id="'penstrokes:' + index"
       :d="stroke.d"
       :stroke="stroke.color"
       :stroke-width="stroke.size"
@@ -13,28 +14,17 @@
 <script>
 import initStroke from '@/hooks/strokes'
 import pointertools from '@/hooks/pointertools';
-import _ from 'lodash'
+import store from '@/hooks/store'
 
 export default {
   setup() {
-    const { penstrokes, start, move, end } = initStroke();
+    const strokes = store.penstrokes;
 
-    var throttled_move = _.throttle(move, 16);
-
-    function on(p) {
-      pointertools.pointerEventListener('down', p, start, true);
-      pointertools.pointerEventListener('move', p, throttled_move, true);
-      pointertools.pointerEventListener('up leave', p, end, true);
-    }
-
-    function off(p) {
-      pointertools.pointerEventListener('down', p, start, false);
-      pointertools.pointerEventListener('move', p, throttled_move, false);
-      pointertools.pointerEventListener('up leave', document, end, false);
-    }
+    const { start, move, end } = initStroke(strokes.value);
+    const { on, off } = pointertools.layer(start, move, end);
 
     return {
-      penstrokes,
+      strokes,
       on,
       off
     }

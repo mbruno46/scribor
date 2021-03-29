@@ -8,6 +8,7 @@
 import Notebook from './views/Notebook.vue'
 import TopToolbar from './views/TopToolbar'
 import BottomToolbar from './views/BottomToolbar'
+import store from '@/hooks/store'
 
 export default {
   name: 'App',
@@ -17,7 +18,7 @@ export default {
     BottomToolbar
   },
   mounted() {
-    this.$refs.nb.mode = 'pen';
+    store.mode.value = 'pen';
   }
 }
 </script>

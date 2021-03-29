@@ -1,7 +1,8 @@
 <template>
   <g id="layer-highlighter">
-    <path v-for="(stroke,index) in penstrokes" 
-      :key="'highlighter-' + index"
+    <path v-for="(stroke,index) in strokes" 
+      :key="'highlighterstrokes:' + index"
+      :id="'highlighterstrokes:' + index"
       :d="stroke.d"
       :stroke="stroke.color"
       class="highlighter"
@@ -12,28 +13,16 @@
 <script>
 import initStroke from '@/hooks/strokes'
 import pointertools from '@/hooks/pointertools';
-import _ from 'lodash'
+import store from '@/hooks/store'
 
 export default {
   setup() {
-    const { penstrokes, start, move, end } = initStroke();
-
-    var throttled_move = _.throttle(move, 16);
-
-    function on(p) {
-      pointertools.pointerEventListener('down', p, start, true);
-      pointertools.pointerEventListener('move', p, throttled_move, true);
-      pointertools.pointerEventListener('up leave', p, end, true);
-    }
-
-    function off(p) {
-      pointertools.pointerEventListener('down', p, start, false);
-      pointertools.pointerEventListener('move', p, throttled_move, false);
-      pointertools.pointerEventListener('up leave', document, end, false);
-    }
+    const strokes = store.highlighterstrokes;
+    const { start, move, end } = initStroke(strokes.value);
+    const { on, off } = pointertools.layer(start, move, end);
 
     return {
-      penstrokes,
+      strokes,
       on,
       off
     }

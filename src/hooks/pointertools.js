@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 var ofs = {left:0, top:0};
 var scale = 1.0;
 
@@ -53,8 +55,30 @@ export function pointerEventListener(events, el, handler, add = true, options = 
   });
 }
 
+export function layer(start, move, end) {
+  var throttled_move = _.throttle(move, 16);
+
+  function on(p) {
+    pointerEventListener('down', p, start, true);
+    pointerEventListener('move', p, throttled_move, true);
+    pointerEventListener('up leave', p, end, true);
+  }
+
+  function off(p) {
+    pointerEventListener('down', p, start, false);
+    pointerEventListener('move', p, throttled_move, false);
+    pointerEventListener('up leave', document, end, false);
+  }
+
+  return {
+    on,
+    off
+  }
+}
+
 export default {
   pointerEventListener,
+  layer,
   position,
   setOfs,
   setScale
