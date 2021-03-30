@@ -1,27 +1,25 @@
 import _ from 'lodash'
 
-var ofs = {left:0, top:0};
 var scale = 1.0;
-
-function setOfs(left,top) {
-  ofs.left = left;
-  ofs.top = top;
-}
+var page;
 
 function setScale(s) {
   scale = s;
 }
 
+function init(p) {page=p;}
+
 function position(event) {
   var touches = event.touches;
+  let box = page.getBoundingClientRect()
   return {
-    x: Math.round((touches ? touches[0].clientX : event.clientX) - ofs.left)/scale,
-    y: Math.round((touches ? touches[0].clientY : event.clientY) - ofs.top)/scale,
+    x: Math.round((touches ? touches[0].clientX : event.clientX) - box.left)/scale,
+    y: Math.round((touches ? touches[0].clientY : event.clientY) - box.top)/scale,
     pressure: (touches ? touches[0].force : event.pressure || 0.5)
   }
 }
 
-export function pointerEventListener(events, el, handler, add = true, options = false) {
+function pointerEventListener(events, el, handler, add = true, options = false) {
   if (typeof events === 'string'){
     var s = events.split(/[\s,;]+/);
     events = s;
@@ -77,9 +75,8 @@ export function layer(start, move, end) {
 }
 
 export default {
-  pointerEventListener,
   layer,
   position,
-  setOfs,
+  init,
   setScale
 }

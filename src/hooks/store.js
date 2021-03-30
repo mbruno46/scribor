@@ -2,9 +2,9 @@ import { ref } from 'vue';
 
 const mode = ref('');
 const background = ref({
-  type: 0,
+  type: 1,
   style: 0,
-  color: 'blue'
+  color: 'white'
 });
 const penstrokes = ref([]);
 const highlighterstrokes = ref([]);

@@ -2,10 +2,7 @@
   <div ref="div" class="notebook">
     <svg ref="page" xmlns="http://www.w3.org/2000/svg" :width="width" 
         :height="height" :viewbox="'0 0 ' + width + ' ' + height">
-        <g id="layer-bg">
-            <rect x="0" y="0" :width="width" :height="height" fill="white"/>
-            <!-- <path v-if="ig>0" :d="d" fill="black"/> -->
-        </g>
+        <background-layer :width="width" :height="height" />
         <pen-layer ref="penlayer"/>
         <highlighter-layer ref="highlighterlayer"/>
         <eraser-layer ref="eraserlayer"/>
@@ -18,6 +15,7 @@ import { ref, computed, onMounted, watch } from 'vue'
 import PenLayer from '../components/PenLayer.vue';
 import HighlighterLayer from '@/components/HighlighterLayer'
 import EraserLayer from '@/components/EraserLayer'
+import BackgroundLayer from '../components/BackgroundLayer.vue';
 import pointertools from '@/hooks/pointertools';
 import store from '../hooks/store'
 
@@ -25,7 +23,8 @@ export default {
   components: {
     PenLayer,
     HighlighterLayer,
-    EraserLayer
+    EraserLayer,
+    BackgroundLayer
   },
   setup() {
     const div = ref(null);
@@ -34,7 +33,7 @@ export default {
     const highlighterlayer = ref(null);
     const eraserlayer = ref(null);
     var mode = store.mode;
-
+    
     const viewport = ref({
       width: 595,
       height: 842,
@@ -64,8 +63,7 @@ export default {
     });
 
     onMounted(() => {
-      let box = page.value.getBoundingClientRect()
-      pointertools.setOfs(box.x, box.y);
+      pointertools.init(page.value);
     });
 
     return {
