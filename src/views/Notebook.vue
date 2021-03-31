@@ -88,6 +88,6 @@ export default {
   overflow: auto;
   display: inline-block;
   height: calc(100vh - 4rem - 4rem);
-  width: 100%;
+  max-width: 100%;
 }
 </style>

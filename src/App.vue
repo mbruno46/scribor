@@ -1,6 +1,9 @@
 <template>
   <top-toolbar />
-  <notebook ref="nb" />
+  <div class='container'>
+    <left-toolbar />
+    <notebook ref="nb" />
+  </div>
   <bottom-toolbar />
 </template>
 
@@ -8,6 +11,7 @@
 import Notebook from './views/Notebook.vue'
 import TopToolbar from './views/TopToolbar'
 import BottomToolbar from './views/BottomToolbar'
+import LeftToolbar from './views/LeftToolbar'
 import store from '@/hooks/store'
 
 export default {
@@ -15,7 +19,8 @@ export default {
   components: {
     Notebook,
     TopToolbar,
-    BottomToolbar
+    BottomToolbar,
+    LeftToolbar
   },
   mounted() {
     store.mode.value = 'pen';
@@ -31,4 +36,10 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
+
+.container {
+  width: 100%;
+  display: flex;
+}
+
 </style>

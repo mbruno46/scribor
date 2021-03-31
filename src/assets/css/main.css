@@ -13,12 +13,21 @@
     --cover-page-red: #db6f4b;
 }
 
+:root {
+    --background: rgb(29, 35, 46);
+    --background-body: rgb(57, 75, 105);
+    --hover: rgb(90, 127, 141);
+    --focus: rgb(89, 165, 140);
+    --text: rgb(229, 239, 243);
+}
+
 /* padding and border are included in the total width and height of the elements */
 * {
     box-sizing: border-box;
 }
 
 body {
+    background-color: var(--background-body);
     padding: 0;
     margin: 0;
     max-width: 100vw;  
