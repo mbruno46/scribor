@@ -3,6 +3,7 @@
   <div class='container'>
     <left-toolbar />
     <notebook ref="nb" />
+    <right-toolbar />
   </div>
   <bottom-toolbar />
 </template>
@@ -12,6 +13,7 @@ import Notebook from './views/Notebook.vue'
 import TopToolbar from './views/TopToolbar'
 import BottomToolbar from './views/BottomToolbar'
 import LeftToolbar from './views/LeftToolbar'
+import RightToolbar from './views/RightToolbar'
 import store from '@/hooks/store'
 
 export default {
@@ -20,7 +22,8 @@ export default {
     Notebook,
     TopToolbar,
     BottomToolbar,
-    LeftToolbar
+    LeftToolbar,
+    RightToolbar
   },
   mounted() {
     store.mode.value = 'pen';
@@ -39,7 +42,9 @@ export default {
 
 .container {
   width: 100%;
-  display: flex;
+  height: calc(100vh - 3rem - 3rem);
+  display: grid;
+  grid-template-columns: min-content auto min-content;
 }
 
 </style>

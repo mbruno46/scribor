@@ -6,14 +6,16 @@ const background = ref({
   style: 0,
   color: 'white'
 });
-const penstrokes = ref([{d:'',color:'var(--pen-color-blue)',size:2}]);
-const highlighterstrokes = ref([{d:'',color:'var(--pen-color-orange)'}]);
-// const pages = ref({});
-
+const penstrokes = ref([{d:'',color:'blue',size:2}]);
+const highlighterstrokes = ref([{d:'',color:'orange'}]);
+const layers = ref({penlayer: true, highlighterlayer: true});
+const selection = ref({penlayer: [], highlighterlayer: []});
 
 export default {
   mode,
   background,
   penstrokes,
-  highlighterstrokes
+  highlighterstrokes,
+  layers,
+  selection
 }

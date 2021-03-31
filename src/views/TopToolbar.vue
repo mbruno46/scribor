@@ -1,22 +1,28 @@
 <template>
   <div class="toolbar">
-    <generic-btn id="page-pref" title="Preferences" icon="fa-bars"/>
+    <div>
+      <app-button icon="fa-bars" />
+      <app-button icon="fa-folder-open" />
+      <app-button icon="fa-save" />
+      <app-button icon="fa-file-pdf" />
+    </div>
 
-    <div class="nav">
-      <button title="Previous">
-        <i class="fa fa-angle-left"></i>
-      </button>
-      <span>1/1</span>
+    <div class="right">
+      <!-- <app-button icon="fa-cut" />
+      <app-button icon="fa-copy" />
+      <app-button icon="fa-paste" /> -->
+      <app-button icon="fa-undo" />
+      <app-button icon="fa-redo" />
     </div>
   </div>
 </template>
 
 <script>
-import GenericBtn from '@/components/GenericBtn'
+import AppButton from '../components/AppButton.vue'
 
 export default {
   components: {
-    GenericBtn
+    AppButton
   }
 }
 </script>
@@ -27,8 +33,9 @@ export default {
   display: flex;
 }
 
-.nav {
+.right {
+  float: right;
   margin-left: auto;
-  margin-right: auto;
 }
+
 </style>

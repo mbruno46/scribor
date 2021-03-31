@@ -1,10 +1,10 @@
 <template>
-  <g id="layer-highlighter">
+  <g id="highlighterlayer">
     <path v-for="(stroke,index) in strokes" 
       :key="'highlighterstrokes:' + index"
       :id="'highlighterstrokes:' + index"
       :d="stroke.d"
-      :stroke="stroke.color"
+      :stroke="`var(--pen-color-${stroke.color})`"
       class="highlighter"
     />
   </g>

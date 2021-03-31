@@ -87,7 +87,7 @@ export default {
   padding: 1rem;
   overflow: auto;
   display: inline-block;
-  height: calc(100vh - 4rem - 4rem);
+  max-height: 100%;
   max-width: 100%;
 }
 </style>

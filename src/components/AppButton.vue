@@ -1,17 +1,14 @@
 <template>
-    <button class="btn" :title="title" :style="style" :class="active">
+    <button class="btn" :title="title" :style="style" :class="(control) ? 'active' : ''">
         <i class="fa fa-lg" :class="icon"></i>
     </button>
 </template>
 
 <script>
 import '@fortawesome/fontawesome-free/js/all.js'
-import store from '../hooks/store'
-import { computed } from 'vue'
 
 export default {
   props: {
-    id: String,
     title: {
       type: String,
       default: ''
@@ -20,13 +17,11 @@ export default {
     style: {
       type: String,
       default: ''
+    },
+    control: {
+      type: Boolean,
+      default: false
     }
-  },
-  setup(props) {
-    const active = computed(()=> {
-      return (store.mode.value==props.id) ? 'active' : '';
-    })
-    return {active}
   }
 }
 </script>
@@ -49,7 +44,7 @@ export default {
 }
 
 .btn:hover {
-  background-color: var(--hover);
+  background-color: var(--focus);
 }
 
 .active {

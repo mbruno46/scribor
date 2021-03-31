@@ -1,10 +1,10 @@
 <template>
-  <g id="layer-pen">
+  <g id="penlayer">
     <path v-for="(stroke,index) in strokes" 
       :key="'penstrokes:' + index"
       :id="'penstrokes:' + index"
       :d="stroke.d"
-      :stroke="stroke.color"
+      :stroke="`var(--pen-color-${stroke.color})`"
       :stroke-width="stroke.size"
       class="strokes"
     />

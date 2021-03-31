@@ -10,8 +10,14 @@ export default {
 
     function move(e) {
       if (erasing) {
-        let tags = e.target.id.split(':');
-        if (tags[0]) {store[tags[0]].value.splice(tags[1],1);}
+        let t = e.target;
+        let tags = t.id.split(':');
+        let g = t.parentElement.id;
+        if (tags[0]) {
+          if (store.layers.value[g]) {
+            store[tags[0]].value.splice(tags[1],1);
+          }
+        }
       }
     }
 
