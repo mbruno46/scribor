@@ -6,9 +6,10 @@ const background = ref({
   style: 0,
   color: 'white'
 });
-const penstrokes = ref([]);
-const highlighterstrokes = ref([]);
+const penstrokes = ref([{d:'',color:'var(--pen-color-blue)',size:2}]);
+const highlighterstrokes = ref([{d:'',color:'var(--pen-color-orange)'}]);
 // const pages = ref({});
+
 
 export default {
   mode,
