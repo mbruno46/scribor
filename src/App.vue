@@ -42,7 +42,7 @@ export default {
 
 .container {
   width: 100%;
-  height: calc(100vh - 3rem - 3rem);
+  height: calc(100vh - 3.4rem - 3.4rem);
   display: grid;
   grid-template-columns: min-content auto min-content;
 }

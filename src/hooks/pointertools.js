@@ -59,7 +59,7 @@ export function layer(start, move, end) {
   function on(p) {
     pointerEventListener('down', p, start, true);
     pointerEventListener('move', p, throttled_move, true);
-    pointerEventListener('up leave', p, end, true);
+    pointerEventListener('up leave', document, end, true);
   }
 
   function off(p) {

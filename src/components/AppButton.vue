@@ -35,6 +35,8 @@ export default {
   outline: none;
   display: inline-block;
   align-items: center;
+  margin: 0.2rem;
+  box-sizing: border-box;
   width: 3rem;
   height: 3rem;
 }

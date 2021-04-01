@@ -40,7 +40,7 @@ export default {
       hrules.value = []
       vrules.value = []
       // ruled
-      if (s==0) {
+      if (s=='ruled') {
         for (i=0;i<layout.nlines;i++) {
           hrules.value.push({
             d: 'm 0 ' + (margin + layout.hrule*(i+1)) + ' h ' + props.width,
@@ -51,7 +51,7 @@ export default {
           d: 'm ' + layout.vrule + ' 0 v ' + props.height,
           class: 'vrule'
         });
-      } else if (s==1) { //grid
+      } else if (s=='grid') {
         var n;
         n = Math.round(props.height/layout.grid);
         for (i=0;i<n;i++) {

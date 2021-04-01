@@ -21,7 +21,7 @@
       />
     </div>
 
-    <div v-if="mode=='eraser'">
+    <div v-if="(mode=='eraser')||(mode=='selection')">
       <app-button v-for="(l) in layerMap"
         :key="l[0]" :icon="l[1]" :control="layers[l[0]]" @click="setLayers(l[0])"
       />      
@@ -49,8 +49,8 @@ export default {
       ],
       colorMap2: ['orange','yellow','cyan','green'],
       layerMap: [
-        ['penlayer','fa-pen-fancy'],
-        ['highlighterlayer','fa-highlighter']
+        ['penstrokes','fa-pen-fancy'],
+        ['highlighterstrokes','fa-highlighter']
       ],
       layers: store.layers
     }

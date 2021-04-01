@@ -1,11 +1,12 @@
 <template>
-  <div ref="div" class="notebook">
-    <svg ref="page" xmlns="http://www.w3.org/2000/svg" :width="width" 
-        :height="height" :viewbox="'0 0 ' + width + ' ' + height">
-        <background-layer :width="width" :height="height" />
-        <pen-layer ref="penlayer"/>
-        <highlighter-layer ref="highlighterlayer"/>
-        <eraser-layer ref="eraserlayer"/>
+  <div class="notebook">
+    <svg id="page" ref="page" xmlns="http://www.w3.org/2000/svg" :width="width" 
+      :height="height" :viewbox="'0 0 ' + width + ' ' + height">
+      <background-layer :width="width" :height="height" />
+      <pen-layer ref="penlayer"/>
+      <highlighter-layer ref="highlighterlayer"/>
+      <eraser-layer ref="eraserlayer"/>
+      <selection-layer ref="selectionlayer"/>
     </svg>
   </div>
 </template>
@@ -18,20 +19,22 @@ import EraserLayer from '@/components/EraserLayer'
 import BackgroundLayer from '../components/BackgroundLayer.vue';
 import pointertools from '@/hooks/pointertools';
 import store from '../hooks/store'
+import SelectionLayer from '../components/SelectionLayer.vue';
 
 export default {
   components: {
     PenLayer,
     HighlighterLayer,
     EraserLayer,
-    BackgroundLayer
+    BackgroundLayer,
+    SelectionLayer
   },
   setup() {
-    const div = ref(null);
     const page = ref(null);
     const penlayer = ref(null);
     const highlighterlayer = ref(null);
     const eraserlayer = ref(null);
+    const selectionlayer = ref(null);
     var mode = store.mode;
     
     const viewport = ref({
@@ -50,6 +53,7 @@ export default {
     }
 
     const layers = new Map([
+      ['selection',selectionlayer],
       ['pen', penlayer],
       ['highlighter', highlighterlayer],
       ['eraser',eraserlayer]
@@ -67,11 +71,11 @@ export default {
     });
 
     return {
-      div,
       page,
       penlayer,
       highlighterlayer,
       eraserlayer,
+      selectionlayer,
       width,
       height,
       rescale
