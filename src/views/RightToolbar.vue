@@ -24,7 +24,7 @@
     <div v-if="(mode=='eraser')||(mode=='selection')">
       <app-button v-for="(l) in layerMap"
         :key="l[0]" :icon="l[1]" :control="layers[l[0]]" @click="setLayers(l[0])"
-      />      
+      />
     </div>
 
   </div>

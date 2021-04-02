@@ -2,7 +2,10 @@
   <div class="notebook">
     <svg id="page" ref="page" xmlns="http://www.w3.org/2000/svg" :width="width" 
       :height="height" :viewbox="'0 0 ' + width + ' ' + height">
-      <background-layer :width="width" :height="height" />
+
+      <cover-page v-if="focuspage==0" :width="width" :height="height" />
+      <background-layer v-if="focuspage>0" :width="width" :height="height" />
+
       <pen-layer ref="penlayer"/>
       <highlighter-layer ref="highlighterlayer"/>
       <eraser-layer ref="eraserlayer"/>
@@ -20,6 +23,7 @@ import BackgroundLayer from '../components/BackgroundLayer.vue';
 import pointertools from '@/hooks/pointertools';
 import store from '../hooks/store'
 import SelectionLayer from '../components/SelectionLayer.vue';
+import CoverPage from '../components/CoverPage.vue';
 
 export default {
   components: {
@@ -27,7 +31,13 @@ export default {
     HighlighterLayer,
     EraserLayer,
     BackgroundLayer,
-    SelectionLayer
+    SelectionLayer,
+    CoverPage
+  },
+  data() {
+    return {
+      focuspage: store.focuspage
+    }
   },
   setup() {
     const page = ref(null);

@@ -31,6 +31,7 @@ export default {
   background-color: inherit;
   color: var(--text);
   border: none;
+  border-bottom: 1px solid var(--text);
   text-decoration:none;
   outline: none;
   display: inline-block;
