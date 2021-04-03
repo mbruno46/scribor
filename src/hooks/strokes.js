@@ -21,10 +21,8 @@ export default function Stroke() {
     n = strokes.length;
     let p = pointertools.position(e);
     // strokes.push({d: `M ${p.x} ${p.y}`, color:'red', size: 2});
-    strokes[n-1].d = `M ${p.x} ${p.y}`;
+    strokes[n-1].d = `M${p.x} ${p.y}`;
     s = smoother(2,[p.x, p.y]);
-
-    console.log(e);
   }
 
   function move(e) {

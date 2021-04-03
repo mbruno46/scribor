@@ -24,7 +24,7 @@ export default {
     }
   },
   setup() {
-    const selection = store.selection.value.highlighterstrokes;
+    const selection = store.selection.highlighterstrokes;
 
     const { init, start, move, end } = Stroke();
     const { on, off } = pointertools.layer(start, move, end);

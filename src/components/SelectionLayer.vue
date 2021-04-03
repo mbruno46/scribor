@@ -13,6 +13,7 @@ function select(array, selbox, sel) {
   array.forEach((element,index) => {
     let bbox = pathBBOX(element.d);
 
+
     if (bbox.x>=selbox.x && bbox.y>=selbox.y &&
       (bbox.width+bbox.x)<=(selbox.width+selbox.x) &&
       (bbox.height+bbox.y)<=(selbox.height+selbox.y)) {
@@ -30,8 +31,8 @@ function pathBBOX(d) {
   let ymin=1000;
   let xmax=0;
   let ymax=0;
-  d.split(/[MC\s]/).forEach((v)=>{
-    let h=v.split(',');
+  d.split(/[MC]/).forEach((v)=>{
+    let h=v.split(' ');
     if (h.length==2) {
       let x=parseFloat(h[0]);
       let y=parseFloat(h[1]);
@@ -86,11 +87,11 @@ export default {
     }
 
     function end() {
-      ['penstrokes','highlighterstrokes'].forEach(layer=>{
+      for (var layer in store.layers.value) {
         if (store.layers.value[layer]) {
-          select(store[layer].value, box.value, store.selection.value[layer]);
+          select(store[layer].value, box.value, store.selection[layer]);
         }
-      });
+      }
       selecting = false;
       box.value.width = 0;
       box.value.height = 0;

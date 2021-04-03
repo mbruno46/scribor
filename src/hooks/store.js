@@ -18,7 +18,7 @@ const viewport = reactive({
 });
 
 const layers = ref({penstrokes: true, highlighterstrokes: true});
-const selection = ref({penstrokes: [], highlighterstrokes: []});
+const selection = reactive({penstrokes: [], highlighterstrokes: []});
 
 function newPage(cover=false) {
   return {

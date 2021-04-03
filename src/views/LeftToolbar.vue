@@ -37,13 +37,13 @@ export default {
   methods: {
     clicker(key) {
       store.mode.value = key;
-      if (key=='selection') {
-        store.selection.value.penstrokes.splice(0);
-        store.selection.value.highlighterstrokes.splice(0);
+      if (key!='drag') {
+        for (var k in store.selection) {
+          store.selection[k].length = 0;
+        }
       }
     },
     addrmPage(add) {
-      // let i = store.focuspage.value;
       if (add) {
         store.notebook.splice(store.pages.focus+1,0,store.newPage());
         store.pages.focus += 1;

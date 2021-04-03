@@ -46,8 +46,8 @@ export default {
   transition-duration: 0.4s;
 }
 
-.btn:hover {
-  background-color: var(--focus);
+.btn:hover:not(.active) {
+  background-color: var(--hover);
 }
 
 .active {

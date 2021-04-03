@@ -30,7 +30,7 @@ export default {
     const { init, start, move, end } = Stroke();
     const { on, off } = pointertools.layer(start, move, end);
 
-    const selection = store.selection.value.penstrokes;
+    const selection = store.selection.penstrokes;
     const strokes = computed(()=>{
       let s = store.notebook[store.pages.focus].penstrokes;
       init(s);

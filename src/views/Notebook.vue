@@ -10,6 +10,8 @@
       <highlighter-layer ref="highlighterlayer"/>
       <eraser-layer ref="eraserlayer"/>
       <selection-layer ref="selectionlayer"/>
+      <drag-layer ref="draglayer"/>
+
     </svg>
   </div>
 </template>
@@ -24,6 +26,7 @@ import pointertools from '@/hooks/pointertools';
 import store from '../hooks/store'
 import SelectionLayer from '../components/SelectionLayer.vue';
 import CoverPage from '../components/CoverPage.vue';
+import DragLayer from '../components/DragLayer.vue';
 
 export default {
   components: {
@@ -32,7 +35,8 @@ export default {
     EraserLayer,
     BackgroundLayer,
     SelectionLayer,
-    CoverPage
+    CoverPage,
+    DragLayer
   },
   data() {
     return {
@@ -45,24 +49,13 @@ export default {
     const highlighterlayer = ref(null);
     const eraserlayer = ref(null);
     const selectionlayer = ref(null);
-    //  mode = store.mode;
-    
-    // const viewport = ref({
-    //   width: 595,
-    //   height: 842,
-    //   realwidth: 210, //mm
-    //   scale: 1
-    // });
+    const draglayer = ref(null);
 
     const width = computed(() => {return store.viewport.width * store.viewport.scale});
     const height = computed(() => {return store.viewport.height * store.viewport.scale});
 
-    // function rescale(factor) {
-    //   viewport.value.scale *= factor;
-    //   pointertools.setScale(viewport.value.scale);
-    // }
-
     const layers = new Map([
+      ['drag',draglayer],
       ['selection',selectionlayer],
       ['pen', penlayer],
       ['highlighter', highlighterlayer],
@@ -86,6 +79,7 @@ export default {
       highlighterlayer,
       eraserlayer,
       selectionlayer,
+      draglayer,
       width,
       height
       // rescale

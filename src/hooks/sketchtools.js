@@ -21,7 +21,7 @@ function joint(current, prev, next, reverse) {
 
 export function optimize(points, command) {
   var d = points.reduce(function(acc, point, i, a) {
-    return i === 0 ? 'M '+ point[0] +','+ point[1] : acc +' '+ command(point, i, a);
+    return i === 0 ? 'M'+ point[0] +','+ point[1] : acc +' '+ command(point, i, a);
   }, 0);
   return d;
 }
@@ -29,7 +29,7 @@ export function optimize(points, command) {
 export function bezier(point, i, a) {
   var cps = joint (a[i - 1], a[i - 2], point);
   var cpe = joint (point, a[i - 1], a[i + 1], true);
-  return 'C '+cps[0]+','+cps[1]+' '+cpe[0]+','+cpe[1]+' '+point[0]+','+point[1];
+  return 'C'+cps[0]+' '+cps[1]+' '+cpe[0]+' '+cpe[1]+' '+point[0]+' '+point[1];
 }
 
 export function smoother(_n, first) {
