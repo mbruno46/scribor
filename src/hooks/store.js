@@ -1,5 +1,5 @@
 // import { ref, reactive, watch, toRaw } from 'vue';
-import { ref, reactive, computed } from 'vue';
+import { ref, reactive, computed, watch } from 'vue';
 
 const mode = ref('');
 const pages = reactive({focus: 0, total: 1});
@@ -19,6 +19,13 @@ const viewport = reactive({
 
 const layers = ref({penstrokes: true, highlighterstrokes: true});
 const selection = reactive({penstrokes: [], highlighterstrokes: []});
+watch(
+  ()=>pages.focus,
+  ()=>{
+    selection.penstrokes.length = 0;
+    selection.highlighterstrokes.length = 0;
+  }
+)
 
 function newPage(cover=false) {
   return {
