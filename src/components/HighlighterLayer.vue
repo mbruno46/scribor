@@ -12,17 +12,23 @@
 </template>
 
 <script>
-import initStroke from '@/hooks/strokes'
+import Stroke from '@/hooks/strokes'
 import pointertools from '@/hooks/pointertools';
 import store from '@/hooks/store'
+import { computed } from '@vue/runtime-core';
 
 export default {
   setup() {
-    const strokes = store.highlighterstrokes;
     const selection = store.selection.value.highlighterstrokes;
 
-    const { start, move, end } = initStroke(strokes.value);
+    const { init, start, move, end } = Stroke();
     const { on, off } = pointertools.layer(start, move, end);
+
+    const strokes = computed(()=>{
+      let s = store.notebook[store.pages.focus].highlighterstrokes;
+      init(s);
+      return s;
+    });
 
     return {
       strokes,

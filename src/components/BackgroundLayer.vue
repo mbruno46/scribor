@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import store from '@/hooks/store'
 
 var layout = {
@@ -28,9 +28,7 @@ var layout = {
 export default {
   props: ['width','height'],
   setup(props) {
-    const bg = store.background.value;
-
-    var margin = Math.round((props.height-(layout.nlines-1)*layout.hrule)/2);
+    const bg = store.background;
 
     const hrules = ref([]);
     const vrules = ref([]);
@@ -41,6 +39,7 @@ export default {
       vrules.value = []
       // ruled
       if (s=='ruled') {
+        var margin = Math.round((props.height-(layout.nlines-1)*layout.hrule)/2);
         for (i=0;i<layout.nlines;i++) {
           hrules.value.push({
             d: 'm 0 ' + (margin + layout.hrule*(i+1)) + ' h ' + props.width,
@@ -70,8 +69,14 @@ export default {
       }
     }
 
-    setStyle(bg.style);
-    watch(() => bg.style, (s) => {setStyle(s);});
+    // const bg = computed(()=>{
+    //   let _bg = store.notebook[store.pages.focus].background;
+    //   setStyle(_bg.style);
+    //   return _bg;
+    // });
+
+    setStyle(bg.value.style);
+    // watch(() => bg, (_bg) => {console.log('styled',_bg);setStyle(_bg.value.style);});
 
     return {
       hrules,

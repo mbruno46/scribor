@@ -1,14 +1,16 @@
-import { ref } from 'vue';
+// import { ref, reactive, watch, toRaw } from 'vue';
+import { ref, reactive, computed } from 'vue';
 
 const mode = ref('');
-const focuspage = ref(0);
-const background = ref({
-  style: '',
-  color: 'blue'
-});
-// const cover = ref({ig: 0, color:'blue'});
-const penstrokes = ref([{d:'',color:'blue',size:2}]);
-const highlighterstrokes = ref([{d:'',color:'orange'}]);
+const pages = reactive({focus: 0, total: 1});
+
+// const background = ref({
+//   style: '',
+//   color: 'blue'
+// });
+// const penstrokes = ref([{d:'',color:'blue',size:2}]);
+// const highlighterstrokes = ref([{d:'',color:'orange'}]);
+
 const layers = ref({penstrokes: true, highlighterstrokes: true});
 const selection = ref({penstrokes: [], highlighterstrokes: []});
 
@@ -19,7 +21,10 @@ function newPage(cover=false) {
     highlighterstrokes: [{d:'',color:'orange'}]
   }
 }
-const notebook = ref([newPage(true)]);
+const notebook = reactive([newPage(true)]);
+const background = computed(()=>{return notebook[pages.focus].background});
+const penstrokes = computed(()=>{return notebook[pages.focus].penstrokes});
+const highlighterstrokes = computed(()=>{return notebook[pages.focus].highlighterstrokes})
 
 export default {
   mode,
@@ -31,5 +36,5 @@ export default {
   selection,
   notebook,
   newPage,
-  focuspage
+  pages
 }

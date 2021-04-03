@@ -1,9 +1,10 @@
 <template>
   <div class="toolbar">
+    <app-button icon="fa-cog" />
 
     <div class="nav">
       <app-button icon="fa-angle-left" @click.prevent="pageshift(-1)"/>
-      <span>{{ focuspage+1 }}/{{ totpages }}</span>
+      <span>{{ pages.focus +1 }}/{{ pages.total }}</span>
       <app-button icon="fa-angle-right" @click.prevent="pageshift(+1)"/>
     </div>
   </div>
@@ -12,30 +13,25 @@
 <script>
 import AppButton from '../components/AppButton.vue'
 import store from '../hooks/store'
-import { computed } from 'vue'
 
 export default {
   components: {
     AppButton
   },
   setup() {
-    const totpages = computed(()=>{
-      return store.notebook.value.length;
-    });
-
-    function pageshift(shift) {
-      store.focuspage.value += shift;
-      if (store.focuspage.value > totpages.value-1) {
-        store.focuspage.value = totpages.value-1;
-      }
-      if (store.focuspage.value < 0) {
-        store.focuspage.value = 0;
-      }
-    }
     return {
-      focuspage: store.focuspage,
-      totpages,
-      pageshift
+      pages: store.pages
+    }
+  },
+  methods: {
+    pageshift(shift) {
+      store.pages.focus += shift;
+      if (store.pages.focus > store.pages.total-1) {
+        store.pages.focus = store.pages.total-1;
+      }
+      if (store.pages.focus < 0) {
+        store.pages.focus = 0;
+      }      
     }
   }
 }
@@ -43,7 +39,7 @@ export default {
 
 <style scoped>
 .toolbar {
-  background-color: var(--border);
+  /* background-color: var(--border); */
   width: 100%;
   display: flex;
   flex-flow: row;

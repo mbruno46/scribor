@@ -7,7 +7,6 @@
     <div class="bottom"> 
       <app-button icon="fa-plus" @click.prevent="addrmPage(true)"/>
       <app-button icon="fa-minus" @click.prevent="addrmPage(false)"/>
-      <app-button icon="fa-cog" />
     </div>
   </div>
 
@@ -44,14 +43,16 @@ export default {
       }
     },
     addrmPage(add) {
-      let i = store.focuspage.value;
+      // let i = store.focuspage.value;
       if (add) {
-        store.notebook.value.splice(i+1,0,store.newPage());
-        store.focuspage.value += 1;
+        store.notebook.splice(store.pages.focus+1,0,store.newPage());
+        store.pages.focus += 1;
+        store.pages.total += 1;
       } else {
-        if (i==0) {return;}
-        store.notebook.value.splice(i,1);
-        store.focuspage.value -= 1;
+        if (store.pages.focus==0) {return}
+        store.notebook.splice(store.pages.focus,1);
+        store.pages.focus -= 1;
+        store.pages.total -= 1;
       }
     }
   }

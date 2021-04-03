@@ -3,8 +3,8 @@
     <svg id="page" ref="page" xmlns="http://www.w3.org/2000/svg" :width="width" 
       :height="height" :viewbox="'0 0 ' + width + ' ' + height">
 
-      <cover-page v-if="focuspage==0" :width="width" :height="height" />
-      <background-layer v-if="focuspage>0" :width="width" :height="height" />
+      <cover-page v-if="pages.focus==0" :width="width" :height="height" />
+      <background-layer v-if="pages.focus>0" :width="width" :height="height" />
 
       <pen-layer ref="penlayer"/>
       <highlighter-layer ref="highlighterlayer"/>
@@ -36,7 +36,7 @@ export default {
   },
   data() {
     return {
-      focuspage: store.focuspage
+      pages: store.pages
     }
   },
   setup() {

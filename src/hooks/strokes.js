@@ -1,10 +1,16 @@
 import pointertools from './pointertools'
 import { optimize, bezier, smoother } from './sketchtools'
+// import store from './store'
 
-export default function initStroke(strokes) {
+export default function Stroke() {
   var s;
   var n;
   var drawing = false;
+  var strokes;
+
+  function init(_strokes) {
+    strokes = _strokes;
+  }
 
   function start(e) {
     e = e || e.originalEvent || window.event;
@@ -40,6 +46,7 @@ export default function initStroke(strokes) {
   }
 
   return {
+    init,
     start,
     move,
     end
