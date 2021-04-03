@@ -3,8 +3,8 @@
     <svg id="page" ref="page" xmlns="http://www.w3.org/2000/svg" :width="width" 
       :height="height" :viewbox="'0 0 ' + width + ' ' + height">
 
-      <cover-page v-if="pages.focus==0" :width="width" :height="height" />
-      <background-layer v-if="pages.focus>0" :width="width" :height="height" />
+      <cover-page v-if="pages.focus==0" />
+      <background-layer v-if="pages.focus>0" />
 
       <pen-layer ref="penlayer"/>
       <highlighter-layer ref="highlighterlayer"/>
@@ -45,22 +45,22 @@ export default {
     const highlighterlayer = ref(null);
     const eraserlayer = ref(null);
     const selectionlayer = ref(null);
-    var mode = store.mode;
+    //  mode = store.mode;
     
-    const viewport = ref({
-      width: 595,
-      height: 842,
-      realwidth: 210, //mm
-      scale: 1
-    });
+    // const viewport = ref({
+    //   width: 595,
+    //   height: 842,
+    //   realwidth: 210, //mm
+    //   scale: 1
+    // });
 
-    const width = computed(() => {return viewport.value.width * viewport.value.scale});
-    const height = computed(() => {return viewport.value.height * viewport.value.scale});
+    const width = computed(() => {return store.viewport.width * store.viewport.scale});
+    const height = computed(() => {return store.viewport.height * store.viewport.scale});
 
-    function rescale(factor) {
-      viewport.value.scale *= factor;
-      pointertools.setScale(viewport.value.scale);
-    }
+    // function rescale(factor) {
+    //   viewport.value.scale *= factor;
+    //   pointertools.setScale(viewport.value.scale);
+    // }
 
     const layers = new Map([
       ['selection',selectionlayer],
@@ -69,7 +69,7 @@ export default {
       ['eraser',eraserlayer]
     ]);
 
-    watch(mode, (newmode, oldmode) => {
+    watch(store.mode, (newmode, oldmode) => {
       layers.forEach(function(v,k) {
         if (oldmode==k) {v.value.off(page.value);}
         if (newmode==k) {v.value.on(page.value);}
@@ -87,8 +87,8 @@ export default {
       eraserlayer,
       selectionlayer,
       width,
-      height,
-      rescale
+      height
+      // rescale
     }
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <g id="highlighterstrokes">
+  <g id="highlighterstrokes" :transform="`scale(${v.scale} ${v.scale})`">
     <path v-for="(stroke,index) in strokes" 
       :key="'highlighterstrokes:' + index"
       :id="'highlighterstrokes:' + index"
@@ -18,6 +18,11 @@ import store from '@/hooks/store'
 import { computed } from '@vue/runtime-core';
 
 export default {
+  data() {
+    return {
+      v: store.viewport
+    }
+  },
   setup() {
     const selection = store.selection.value.highlighterstrokes;
 

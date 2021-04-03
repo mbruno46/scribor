@@ -10,6 +10,12 @@ const pages = reactive({focus: 0, total: 1});
 // });
 // const penstrokes = ref([{d:'',color:'blue',size:2}]);
 // const highlighterstrokes = ref([{d:'',color:'orange'}]);
+const viewport = reactive({
+  width: 595,
+  height: 842,
+  realwidth: 210, //mm
+  scale: 1
+});
 
 const layers = ref({penstrokes: true, highlighterstrokes: true});
 const selection = ref({penstrokes: [], highlighterstrokes: []});
@@ -29,12 +35,12 @@ const highlighterstrokes = computed(()=>{return notebook[pages.focus].highlighte
 export default {
   mode,
   background,
-  // cover,
   penstrokes,
   highlighterstrokes,
   layers,
   selection,
   notebook,
   newPage,
-  pages
+  pages,
+  viewport
 }

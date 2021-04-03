@@ -1,6 +1,6 @@
 <template>
-  <g id="cover-page">
-    <rect x="0" y="0" :width="width" :height="height" :fill="bgc"/>
+  <g id="cover-page" :transform="`scale(${v.scale} ${v.scale})`">
+    <rect x="0" y="0" :width="v.width" :height="v.height" :fill="bgc"/>
 
     <!-- <path :d="rpath" fill='white' stroke='black' stroke-width="2" /> -->
 
@@ -19,6 +19,11 @@ const colorMap = {blue: ['var(--cover-page-blue)','yellow','red']};
 
 export default {
   props: ['width', 'height'],
+  data() {
+    return {
+      v: store.viewport
+    }
+  },
   setup() {
     const bgc = computed(() => {return colorMap[store.background.value.color][0];});
 

@@ -1,5 +1,5 @@
 <template>
-  <g id="layer-selection">
+  <g id="layer-selection" :transform="`scale(${v.scale} ${v.scale})`">
     <rect :x="box.x" :y="box.y" :width="box.width" :height="box.height" class="selection-box"/>
   </g>
 </template>
@@ -51,6 +51,11 @@ function pathBBOX(d) {
 
 
 export default {
+  data() {
+    return {
+      v: store.viewport
+    }
+  },
   setup() {
     var selecting = false;
     var origin;

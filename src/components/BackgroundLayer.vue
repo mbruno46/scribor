@@ -1,6 +1,6 @@
 <template>
-  <g id="layer-bg">
-    <rect x="0" y="0" :width="width" :height="height" :fill="bg.color"/>
+  <g id="layer-bg" :transform="`scale(${v.scale} ${v.scale})`">
+    <rect x="0" y="0" :width="v.width" :height="v.height" :fill="bg.color"/>
     <path v-for="(r,i) in hrules" :key="'hrule:'+i" class="rule" :class="r.class" :d="r.d"></path>
     <path v-for="(r,i) in vrules" :key="'vrule:'+i" class="rule" :class="r.class" :d="r.d"/>
   </g>
@@ -26,8 +26,8 @@ var layout = {
 // }
 
 export default {
-  props: ['width','height'],
-  setup(props) {
+  setup() {
+    const v =store.viewport;
     const bg = store.background;
 
     const hrules = ref([]);
@@ -39,30 +39,30 @@ export default {
       vrules.value = []
       // ruled
       if (s=='ruled') {
-        var margin = Math.round((props.height-(layout.nlines-1)*layout.hrule)/2);
+        var margin = Math.round((v.height-(layout.nlines-1)*layout.hrule)/2);
         for (i=0;i<layout.nlines;i++) {
           hrules.value.push({
-            d: 'm 0 ' + (margin + layout.hrule*(i+1)) + ' h ' + props.width,
+            d: 'm 0 ' + (margin + layout.hrule*(i+1)) + ' h ' + v.width,
             class: 'hrule'
           });
         }
         vrules.value.push({
-          d: 'm ' + layout.vrule + ' 0 v ' + props.height,
+          d: 'm ' + layout.vrule + ' 0 v ' + v.height,
           class: 'vrule'
         });
       } else if (s=='grid') {
         var n;
-        n = Math.round(props.height/layout.grid);
+        n = Math.round(v.height/layout.grid);
         for (i=0;i<n;i++) {
           hrules.value.push({
-            d: 'm 0 ' + (layout.grid*(i+1)) + ' h ' + props.width,
+            d: 'm 0 ' + (layout.grid*(i+1)) + ' h ' + v.width,
             class: 'hrule'
           })
         }
-        n = Math.round(props.width/layout.grid);
+        n = Math.round(v.width/layout.grid);
         for (i=0;i<n;i++) {
           vrules.value.push({
-            d: 'm ' + (layout.grid*(i+1)) + ' 0 v ' + props.height,
+            d: 'm ' + (layout.grid*(i+1)) + ' 0 v ' + v.height,
             class: 'hrule'
           })
         }
@@ -81,7 +81,8 @@ export default {
     return {
       hrules,
       vrules,
-      bg
+      bg,
+      v
     }
   },
 }

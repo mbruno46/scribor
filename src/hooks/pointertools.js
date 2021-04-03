@@ -1,17 +1,14 @@
 import _ from 'lodash'
+import store from '@/hooks/store'
 
-var scale = 1.0;
 var page;
-
-function setScale(s) {
-  scale = s;
-}
 
 function init(p) {page=p;}
 
 function position(event) {
   var touches = event.touches;
-  let box = page.getBoundingClientRect()
+  let box = page.getBoundingClientRect();
+  var scale = store.viewport.scale;
   return {
     x: Math.round((touches ? touches[0].clientX : event.clientX) - box.left)/scale,
     y: Math.round((touches ? touches[0].clientY : event.clientY) - box.top)/scale,
@@ -78,5 +75,4 @@ export default {
   layer,
   position,
   init,
-  setScale
 }

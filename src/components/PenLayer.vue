@@ -1,5 +1,5 @@
 <template>
-  <g id="penstrokes">
+  <g id="penstrokes" :transform="`scale(${v.scale} ${v.scale})`">
     <path v-for="(stroke,index) in strokes" 
       :key="'penstrokes:' + index"
       :id="'penstrokes:' + index"
@@ -19,6 +19,11 @@ import store from '@/hooks/store'
 import { computed } from '@vue/runtime-core';
 
 export default {
+  data() {
+    return {
+      v: store.viewport
+    }
+  },
   setup() {
     // const strokes = store.penstrokes;
 
