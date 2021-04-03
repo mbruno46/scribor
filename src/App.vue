@@ -1,5 +1,5 @@
 <template>
-  <top-toolbar />
+  <top-toolbar/>
   <div class='container'>
     <left-toolbar />
     <notebook ref="nb" />

@@ -27,6 +27,14 @@
       />
     </div>
 
+    <div v-if="mode=='latex'">
+      <app-button icon="fa-square" v-for="(c) in colorMap"
+        :key="c" :style="`color: var(--pen-color-${c})`"
+      />
+      <app-button icon="fa-text-height fa-xs"/>
+      <app-button icon="fa-text-height fa-sm"/>
+      <app-button icon="fa-text-height fa-lg"/>
+    </div>
   </div>
 </template>
 
