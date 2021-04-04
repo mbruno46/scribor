@@ -58,7 +58,8 @@ export default {
       colorMap2: ['orange','yellow','cyan','green'],
       layerMap: [
         ['penstrokes','fa-pen-fancy'],
-        ['highlighterstrokes','fa-highlighter']
+        ['highlighterstrokes','fa-highlighter'],
+        ['latex','fa-i-cursor']
       ],
       layers: store.layers
     }
@@ -106,6 +107,6 @@ export default {
 .toolbar {
   display: flex;
   flex-flow: column;
-  /* width: 3rem; */
+  width: 3rem;
 }
 </style>

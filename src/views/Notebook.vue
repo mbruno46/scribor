@@ -8,6 +8,8 @@
 
       <pen-layer ref="penlayer"/>
       <highlighter-layer ref="highlighterlayer"/>
+      <latex-layer ref="latexlayer"/>
+
       <eraser-layer ref="eraserlayer"/>
       <selection-layer ref="selectionlayer"/>
       <drag-layer ref="draglayer"/>
@@ -27,11 +29,13 @@ import store from '../hooks/store'
 import SelectionLayer from '../components/SelectionLayer.vue';
 import CoverPage from '../components/CoverPage.vue';
 import DragLayer from '../components/DragLayer.vue';
+import LatexLayer from '../components/LatexLayer.vue';
 
 export default {
   components: {
     PenLayer,
     HighlighterLayer,
+    LatexLayer,
     EraserLayer,
     BackgroundLayer,
     SelectionLayer,
@@ -47,6 +51,7 @@ export default {
     const page = ref(null);
     const penlayer = ref(null);
     const highlighterlayer = ref(null);
+    const latexlayer = ref(null);
     const eraserlayer = ref(null);
     const selectionlayer = ref(null);
     const draglayer = ref(null);
@@ -59,6 +64,7 @@ export default {
       ['selection',selectionlayer],
       ['pen', penlayer],
       ['highlighter', highlighterlayer],
+      ['latex',latexlayer],
       ['eraser',eraserlayer]
     ]);
 
@@ -77,6 +83,7 @@ export default {
       page,
       penlayer,
       highlighterlayer,
+      latexlayer,
       eraserlayer,
       selectionlayer,
       draglayer,
