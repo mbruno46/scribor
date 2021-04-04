@@ -1,5 +1,5 @@
 <template>
-  <div class="toolbar">
+  <div class="side-toolbar">
     <app-button v-for="(v,k) in btns"
       :ref="k" :key="k" :title="v.title" :icon="v.icon" :control="mode==k"
       @click="clicker(k)" />
@@ -42,6 +42,7 @@ export default {
           store.selection[k].length = 0;
         }
       }
+      store.editor.active = (key!='latex') ? false : true;
     },
     addrmPage(add) {
       if (add) {
@@ -60,7 +61,7 @@ export default {
 </script>
 
 <style scoped>
-.toolbar {
+.side-toolbar {
   display: flex;
   flex-flow: column;
 }

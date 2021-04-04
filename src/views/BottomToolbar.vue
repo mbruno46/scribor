@@ -1,12 +1,20 @@
 <template>
   <div class="toolbar">
-    <app-button icon="fa-cog" />
+    <div class="group-left">
+      <app-button icon="fa-cog" />
+    </div>
 
-    <div class="nav">
+    <div class="nav group-center">
       <app-button icon="fa-angle-left" @click.prevent="pageshift(-1)"/>
       <span>{{ pages.focus +1 }}/{{ pages.total }}</span>
       <app-button icon="fa-angle-right" @click.prevent="pageshift(+1)"/>
     </div>
+
+    <textarea v-if="editor.active"
+      rows="2" cols="40" class="editor"
+      v-model="editor.text"
+    />
+
   </div>
 </template>
 
@@ -20,7 +28,8 @@ export default {
   },
   setup() {
     return {
-      pages: store.pages
+      pages: store.pages,
+      editor: store.editor
     }
   },
   methods: {
@@ -32,19 +41,15 @@ export default {
       if (store.pages.focus < 0) {
         store.pages.focus = 0;
       }      
+    },
+    prova(el) {
+      console.log(el)
     }
   }
 }
 </script>
 
 <style scoped>
-.toolbar {
-  /* background-color: var(--border); */
-  width: 100%;
-  display: flex;
-  flex-flow: row;
-}
-
 .fade-enter-active, .fade-leave-active {
   transition: opacity .5s ease;
 }
@@ -53,20 +58,16 @@ export default {
   opacity: 0;
 }
 
-.left {
-  float:left;
-  margin-left: 3rem;
-}
-
-.nav {
-  margin-left: auto;
-  margin-right: auto;
-}
-
 .nav span {
   color: var(--text);
   margin: 0 1rem 0 1rem;
 }
 
+.editor {
+  background-color: var(--background);
+  color: var(--text);
+  resize: none;
+  outline: none;
+}
 
 </style>

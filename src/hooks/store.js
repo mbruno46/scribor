@@ -25,6 +25,7 @@ watch(
     selection.penstrokes.length = 0;
     selection.highlighterstrokes.length = 0;
     selection.latex.length = 0;
+    reset_editor();
   }
 )
 
@@ -43,6 +44,17 @@ const penstrokes = computed(()=>{return notebook[pages.focus].penstrokes});
 const highlighterstrokes = computed(()=>{return notebook[pages.focus].highlighterstrokes})
 const latex = computed(()=>{return notebook[pages.focus].latex});
 
+const editor = reactive({active: false, text: '', ofs: [0,0], idx: -1});
+function reset_editor() {
+  editor.text='';
+  editor.ofs=[0,0];
+  editor.idx=-1;
+}
+watch(
+  ()=>editor.active,
+  ()=>{reset_editor();}
+);
+
 // const history = reactive([]);
 // const timetravel = ref(0);
 // watch(
@@ -56,6 +68,7 @@ export default {
   penstrokes,
   highlighterstrokes,
   latex,
+  editor,
   layers,
   selection,
   notebook,

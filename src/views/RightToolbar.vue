@@ -30,10 +30,14 @@
     <div v-if="mode=='latex'">
       <app-button icon="fa-square" v-for="(c) in colorMap"
         :key="c" :style="`color: var(--pen-color-${c})`"
+        :control="stroke.color==c" 
+        @click="setColor(c)"
       />
-      <app-button icon="fa-text-height fa-xs"/>
-      <app-button icon="fa-text-height fa-sm"/>
-      <app-button icon="fa-text-height fa-lg"/>
+      <app-button v-for="(s) in scaleMap"
+        :icon="`fa-text-height ${s[1]}`" :id="s[0]" :key="s[0]" 
+        :control="stroke.scale==s[2]"
+        @click="setScale(s[2])"
+      />
     </div>
   </div>
 </template>
@@ -61,6 +65,11 @@ export default {
         ['highlighterstrokes','fa-highlighter'],
         ['latex','fa-i-cursor']
       ],
+      scaleMap: [
+        ['thin', 'fa-xs', 1],
+        ['medium', 'fa-sm', 2],
+        ['large', 'fa-lg', 3]        
+      ],
       layers: store.layers
     }
   },
@@ -70,8 +79,10 @@ export default {
       var s;
       if (mode.value=='pen') {
         s = store.penstrokes.value;
-      } else {
+      } else if (mode.value=='highlighter') {
         s = store.highlighterstrokes.value;
+      } else if (mode.value=='latex') {
+        s = store.latex.value;
       }
       return s[s.length-1];
     });
@@ -86,14 +97,20 @@ export default {
       var s;
       if (this.mode=='pen') {
         s = store.penstrokes.value;
-      } else {
+      } else if (this.mode=='highlighter') {
         s = store.highlighterstrokes.value;
+      } else if (this.mode=='latex') {
+        s = store.latex.value;
       }
       s[s.length-1].color = c;
     },
     setSize(s) {
       let ps = store.penstrokes.value;
       ps[ps.length-1].size = s;
+    },
+    setScale(s) {
+      let l = store.latex.value;
+      l[l.length-1].scale = s;
     },
     setLayers(l) {
       let ll = store.layers.value;
