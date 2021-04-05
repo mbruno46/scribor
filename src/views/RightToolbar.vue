@@ -45,6 +45,38 @@
         @click="setScale(s[2])"
       />
     </div>
+
+    <div v-if="mode=='coverprefs'">
+      <app-button icon="fa-square" v-for="(c) in colorMap3"
+        :key="c" :style="`color: var(--cover-page-${c})`"
+        :control="bg.color==c"
+        @click="()=>{bg.color = c}"
+      />
+      <app-button v-for="(i) in [0,1,2]"
+        :key="'style:' + i" :icon="styleMap[i]"
+        :control="bg.style==i"
+        @click="()=>{bg.style = i}"
+      />
+    </div>
+
+    <div v-if="mode=='pageprefs'">
+      <app-button icon="fa-square" style="color: white"
+        :control="bg.color=='white'"
+        @click="()=>{bg.color='white'}"
+      />
+      <app-button icon="fa-square" style="color: var(--page)"
+        :control="bg.color=='var(--page)'"
+        @click="()=>{bg.color='var(--page)'}"
+      />
+      <app-button icon="fa-grip-lines" 
+        :control="bg.style=='ruled'"
+        @click="()=>{bg.style='ruled'}"
+      />
+      <app-button icon="fa-border-all" 
+        :control="bg.style=='grid'"
+        @click="()=>{bg.style='grid'}"
+      />
+    </div>
   </div>
 </template>
 
@@ -66,6 +98,7 @@ export default {
         ['large', 'fa-lg', 3]
       ],
       colorMap2: ['orange','yellow','cyan','green'],
+      colorMap3: ['blue','green','red'],
       layerMap: [
         ['penstrokes','fa-pen-fancy'],
         ['highlighterstrokes','fa-highlighter'],
@@ -76,7 +109,9 @@ export default {
         ['medium', 'fa-sm', 2],
         ['large', 'fa-lg', 3]        
       ],
-      layers: store.layers
+      styleMap: ['','fa-image','fa-image'],
+      layers: store.layers,
+      bg: store.background
     }
   },
   setup() {

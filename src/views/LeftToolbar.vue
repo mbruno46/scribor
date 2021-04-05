@@ -7,6 +7,8 @@
     <div class="bottom"> 
       <app-button icon="fa-plus" @click.prevent="addrmPage(true)"/>
       <app-button icon="fa-minus" @click.prevent="addrmPage(false)"/>
+      <app-button icon="fa-cog" title="Page properties" 
+        @click="clicker((pages.focus==0) ? 'coverprefs' : 'pageprefs')"/>
     </div>
   </div>
 
@@ -31,7 +33,8 @@ export default {
         highlighter: {title: 'Highlighter', icon: 'fa-highlighter'},
         latex: {title: 'LaTeX', icon: 'fa-i-cursor'}
       },
-      pos: {top: '', left: ''}
+      pos: {top: '', left: ''},
+      pages: store.pages
     }
   },
   methods: {
@@ -67,6 +70,10 @@ export default {
 }
 
 .bottom {
-  margin-top: auto;
+  /* margin-top: auto; */
+  display: flex;
+  flex-flow: column;
+  bottom: 0;
+  position: absolute;
 }
 </style>

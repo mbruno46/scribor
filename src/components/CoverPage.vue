@@ -1,6 +1,7 @@
 <template>
   <g id="cover-page" :transform="`scale(${v.scale} ${v.scale})`">
-    <rect x="0" y="0" :width="v.width" :height="v.height" :fill="graphics.bg"/>
+    <rect x="0" y="0" :width="v.width" :height="v.height" 
+      :fill="`var(--cover-page-${graphics.bg})`"/>
 
     <path :d="graphics.d" :fill="graphics.fill" :stroke="graphics.stroke"/>
 
@@ -18,10 +19,14 @@ const rect = [90,90,595-2*90,120,10];
 const nlines = 2;
 const layout_hrule = 20;
 
-const colorMap = {blue: ['var(--cover-page-blue)','yellow','red']};
+const colorMap = {
+  blue: ['yellow','red'],
+  green: ['orange','purple'],
+  red: ['cyan','green']
+};
 
 import img1 from 'raw-loader!@/assets/svgs/collision.path'
-import img2 from 'raw-loader!@/assets/svgs/collision.path'
+import img2 from 'raw-loader!@/assets/svgs/feyndiagr.path'
 const imgs = ['', img1, img2];
 
 export default {
@@ -36,10 +41,10 @@ export default {
       let k = store.background.value.style;
       let c = store.background.value.color;
       return {
-        bg: colorMap[c][0],
+        bg: c,
         d: imgs[k],
-        fill: colorMap[c][1],
-        stroke: colorMap[c][2]
+        fill: colorMap[c][0],
+        stroke: colorMap[c][1]
       }
     })
 

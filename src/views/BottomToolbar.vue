@@ -1,7 +1,7 @@
 <template>
   <div class="toolbar">
     <div class="group-left">
-      <app-button icon="fa-cog" />
+      <!-- <app-button icon="fa-cog" /> -->
     </div>
 
     <div class="nav group-center">

@@ -3,6 +3,15 @@ import { ref, reactive, computed, watch } from 'vue';
 
 const mode = ref('');
 const pages = reactive({focus: 0, total: 1});
+watch(
+  ()=>pages.focus,
+  (newv,oldv)=>{
+    if ((oldv==0)&&(newv>0))
+      if (mode.value=='coverprefs') {mode.value = 'pageprefs'}
+    if ((oldv>0)&&(newv==0))
+      if (mode.value=='pageprefs') {mode.value = 'coverprefs'}
+  }
+)
 
 // const background = ref({
 //   style: '',
