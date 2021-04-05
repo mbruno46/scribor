@@ -1,10 +1,12 @@
 <template>
   <div class="toolbar">
     <div class="group-left">
-      <app-button icon="fa-bars" />
-      <!-- <app-button icon="fa-folder-open" />
-      <app-button icon="fa-save" />
-      <app-button icon="fa-file-pdf" /> -->
+      <!-- <app-button icon="fa-bars" @click="show_file = !show_file"/> -->
+      <app-button icon="fa-folder-open" title="Open notebook" @click="load"/>
+      <app-button icon="fa-save" title="Save notebook" @click="save"/>
+      <app-button icon="fa-file-pdf" title="Export as PDF" @click="savePDF"/>
+
+      <input ref="file_dialog" type="file" style="display: none" @change="loadNotebook">
     </div>
 
     <div class="group-center">
@@ -15,9 +17,6 @@
     </div>
 
     <div class="group-right">
-      <!-- <app-button icon="fa-cut" />
-      <app-button icon="fa-copy" />
-      <app-button icon="fa-paste" /> -->
       <app-button icon="fa-undo" />
       <app-button icon="fa-redo" />
     </div>
@@ -28,6 +27,7 @@
 import { parseInt } from 'lodash'
 import AppButton from '../components/AppButton.vue'
 import store from '../hooks/store'
+import fs from '@/hooks/filesystem'
 
 function px2int(px) {
   return parseInt(px.replace(/px/,''))
@@ -36,6 +36,11 @@ function px2int(px) {
 export default {
   components: {
     AppButton
+  },
+  data() {
+    return {
+      show_file: false
+    }
   },
   methods: {
     zoom(r) {store.viewport.scale *= r;},
@@ -50,7 +55,23 @@ export default {
       const css = getComputedStyle(nb);
       let h = nb.offsetHeight - px2int(css.paddingTop) - px2int(css.paddingBottom);
       store.viewport.scale = (h/store.viewport.height);
-    }  
+    },
+    save() {
+      fs.saveNotebook('notebook.json');
+    },
+    load() {
+      const f = this.$refs.file_dialog;
+      f.setAttribute('style','display:block');
+      f.focus();
+      f.click();
+      f.setAttribute('style','display: none');
+    },
+    loadNotebook() {
+      fs.loadNotebook(this.$refs.file_dialog.files[0]);
+    },
+    savePDF() {
+      fs.saveAsPDF('notebook.pdf');
+    }
   }
 }
 </script>

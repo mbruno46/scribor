@@ -5,6 +5,8 @@
     <path :d="rpath" fill='white' stroke='black' stroke-width="2" />
     <path v-for="(r,i) in hrules" :d="r" :key="i" class="rule hrule" />
 
+    <path :d="d" fill="red" />
+
     <!-- <path :d="graphics.d" :fill="graphics.fill" :stroke="graphics.stroke" /> -->
   </g>
 </template>
@@ -20,11 +22,29 @@ const layout_hrule = 20;
 
 const colorMap = {blue: ['var(--cover-page-blue)','yellow','red']};
 
+function loadGraphics(ig) {
+    const reader = new FileReader();
+    var text;
+    // reader.readAsText(require(`@/assets/svgs/${graphics[ig]}`),"UTF-8");
+    var file = new File([], '/Users/mbruno/scribor/src/assets/svgs/collision2.path.svg', {
+        type: "text/plain",
+    });
+    reader.onload = function() {//e => {
+        // text = e.target.result;
+        text = reader.result;
+    }
+    // reader.readAsText(file,"UTF-8");
+    reader.readAsDataURL(file);
+    console.log(ig,reader,text,file);
+    return text;
+}
+
 export default {
   props: ['width', 'height'],
   data() {
     return {
-      v: store.viewport
+      v: store.viewport,
+      d: loadGraphics(0)
     }
   },
   setup() {

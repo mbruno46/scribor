@@ -27,6 +27,12 @@
       />
     </div>
 
+    <div v-if="mode=='selection'" class="bottom">
+      <app-button icon="fa-cut" />
+      <app-button icon="fa-copy" />
+      <app-button icon="fa-paste" />
+    </div>
+
     <div v-if="mode=='latex'">
       <app-button icon="fa-square" v-for="(c) in colorMap"
         :key="c" :style="`color: var(--pen-color-${c})`"
@@ -125,5 +131,9 @@ export default {
   display: flex;
   flex-flow: column;
   width: 3rem;
+}
+
+.bottom {
+  margin-top: auto;
 }
 </style>
