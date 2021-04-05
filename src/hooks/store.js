@@ -31,7 +31,7 @@ watch(
 
 function newPage(cover=false) {
   return {
-    background: (cover) ? {style:'', color:'blue'} : {style: 'ruled', color:'white'},
+    background: (cover) ? {style:1, color:'blue'} : {style: 'ruled', color:'white'},
     penstrokes: [{d:'',color:'blue',size:2}],
     highlighterstrokes: [{d:'',color:'orange'}],
     latex: [{d:'',raw:'',color:'blue',scale:1}]

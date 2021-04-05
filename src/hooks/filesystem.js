@@ -1,4 +1,5 @@
 import store from '@/hooks/store'
+import _ from 'lodash'
 
 export function saveNotebook(name) {
   var content = JSON.stringify(store.notebook,null,2);
@@ -8,10 +9,12 @@ export function saveNotebook(name) {
   a.download = name;
   a.rel = 'noopener'
   a.href = URL.createObjectURL(blob);
-  a.click();
+  _.debounce(a.click(),0);
+  _.debounce(URL.revokeObjectURL(blob), 4000); //4secs
 }
 
 export function loadNotebook(file) {
+  console.log(file);
   const reader = new FileReader();
   reader.readAsText(file,"UTF-8");
 
