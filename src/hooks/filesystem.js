@@ -1,16 +1,28 @@
 import store from '@/hooks/store'
 import _ from 'lodash'
+import { exportPDF } from './exportpdf';
+
+function saveBlob(blob, dest) {
+  var a = document.createElement('a');
+  a.download = dest;
+  a.rel = 'noopener'
+  a.href = URL.createObjectURL(blob);
+
+  var debounce_click  = _.debounce(function() {
+    a.click()
+  },0);
+  var debounce_revoke = _.debounce(function() {
+    URL.revokeObjectURL(blob)
+  }, 4000); //4secs
+
+  debounce_click();
+  debounce_revoke();
+}
 
 export function saveNotebook(name) {
   var content = JSON.stringify(store.notebook,null,2);
   const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
-
-  var a = document.createElement('a');
-  a.download = name;
-  a.rel = 'noopener'
-  a.href = URL.createObjectURL(blob);
-  _.debounce(a.click(),0);
-  _.debounce(URL.revokeObjectURL(blob), 4000); //4secs
+  saveBlob(blob, name);
 }
 
 export function loadNotebook(file) {
@@ -29,12 +41,23 @@ export function loadNotebook(file) {
   };
 }
 
-export function saveAsPDF(name) {
-  console.log(name);
+export function saveNotebookAsPDF(dest) {
+  var stream = exportPDF(store.notebook);
+
+  stream.on('finish', function() {
+    const url = stream.toBlobURL('application/pdf');
+
+    var a = document.createElement('a');
+    a.download = dest;
+    a.rel = 'noopener';
+    a.href = url;
+
+    a.click();
+  });
 }
 
 export default {
   saveNotebook,
   loadNotebook,
-  saveAsPDF
+  saveNotebookAsPDF
 }

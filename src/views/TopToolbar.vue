@@ -70,7 +70,7 @@ export default {
       fs.loadNotebook(this.$refs.file_dialog.files[0]);
     },
     savePDF() {
-      fs.saveAsPDF('notebook.pdf');
+      fs.saveNotebookAsPDF('notebook.pdf');
     }
   }
 }

@@ -3,7 +3,7 @@
     <rect x="0" y="0" :width="v.width" :height="v.height" 
       :fill="`var(--cover-page-${graphics.bg})`"/>
 
-    <path :d="graphics.d" :fill="graphics.fill" :stroke="graphics.stroke"/>
+    <path key="graph" :d="graphics.d" :fill="graphics.fill" :stroke="graphics.stroke"/>
 
     <path :d="rpath" fill='white' stroke='black' stroke-width="2" />
     <path v-for="(r,i) in hrules" :d="r" :key="i" class="rule hrule" />

@@ -1,13 +1,15 @@
 <template>
   <g id="layer-bg" :transform="`scale(${v.scale} ${v.scale})`">
     <rect x="0" y="0" :width="v.width" :height="v.height" :fill="bg.color"/>
-    <path v-for="(r,i) in hrules" :key="'hrule:'+i" class="rule" :class="r.class" :d="r.d"></path>
-    <path v-for="(r,i) in vrules" :key="'vrule:'+i" class="rule" :class="r.class" :d="r.d"/>
+    <path v-for="(r,i) in rules.hrules" 
+      :key="'hrule:'+i" class="rule" :class="r.class" :d="r.d"></path>
+    <path v-for="(r,i) in rules.vrules" 
+      :key="'vrule:'+i" class="rule" :class="r.class" :d="r.d"/>
   </g>
 </template>
 
 <script>
-import { ref } from 'vue'
+import { computed } from 'vue'
 import store from '@/hooks/store'
 
 var layout = {
@@ -30,23 +32,23 @@ export default {
     const v =store.viewport;
     const bg = store.background;
 
-    const hrules = ref([]);
-    const vrules = ref([]);
+    // const hrules = ref([]);
+    // const vrules = ref([]);
 
     function setStyle(s) {
       var i;
-      hrules.value = []
-      vrules.value = []
+      let hrules = []
+      let vrules = []
       // ruled
       if (s=='ruled') {
         var margin = Math.round((v.height-(layout.nlines-1)*layout.hrule)/2);
         for (i=0;i<layout.nlines;i++) {
-          hrules.value.push({
+          hrules.push({
             d: 'm 0 ' + (margin + layout.hrule*(i+1)) + ' h ' + v.width,
             class: 'hrule'
           });
         }
-        vrules.value.push({
+        vrules.push({
           d: 'm ' + layout.vrule + ' 0 v ' + v.height,
           class: 'vrule'
         });
@@ -54,20 +56,23 @@ export default {
         var n;
         n = Math.round(v.height/layout.grid);
         for (i=0;i<n;i++) {
-          hrules.value.push({
+          hrules.push({
             d: 'm 0 ' + (layout.grid*(i+1)) + ' h ' + v.width,
             class: 'hrule'
           })
         }
         n = Math.round(v.width/layout.grid);
         for (i=0;i<n;i++) {
-          vrules.value.push({
+          vrules.push({
             d: 'm ' + (layout.grid*(i+1)) + ' 0 v ' + v.height,
             class: 'hrule'
           })
         }
       }
+      return {hrules, vrules};
     }
+
+    const rules = computed(()=>{return setStyle(bg.value.style)});
 
     // const bg = computed(()=>{
     //   let _bg = store.notebook[store.pages.focus].background;
@@ -79,8 +84,7 @@ export default {
     // watch(() => bg, (_bg) => {console.log('styled',_bg);setStyle(_bg.value.style);});
 
     return {
-      hrules,
-      vrules,
+      rules,
       bg,
       v
     }

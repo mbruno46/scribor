@@ -109,7 +109,7 @@ export default {
         ['medium', 'fa-sm', 2],
         ['large', 'fa-lg', 3]        
       ],
-      styleMap: ['','fa-image','fa-image'],
+      styleMap: ['far fa-square','fa-image','fa-image'],
       layers: store.layers,
       bg: store.background
     }
