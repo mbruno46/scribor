@@ -17,8 +17,8 @@
     </div>
 
     <div class="group-right">
-      <app-button icon="fa-undo" />
-      <app-button icon="fa-redo" />
+      <app-button icon="fa-undo" @click="undo"/>
+      <app-button icon="fa-redo" @click="redo"/>
     </div>
   </div>
 </template>
@@ -28,6 +28,7 @@ import { parseInt } from 'lodash'
 import AppButton from '../components/AppButton.vue'
 import store from '../hooks/store'
 import fs from '@/hooks/filesystem'
+import history from '@/hooks/history'
 
 function px2int(px) {
   return parseInt(px.replace(/px/,''))
@@ -71,6 +72,12 @@ export default {
     },
     savePDF() {
       fs.saveNotebookAsPDF('notebook.pdf');
+    },
+    undo() {
+      history.previousState();
+    },
+    redo() {
+      history.nextState();
     }
   }
 }

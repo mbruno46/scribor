@@ -33,7 +33,7 @@ export default {
     const selection = store.selection.penstrokes;
     const strokes = computed(()=>{
       let s = store.notebook[store.pages.focus].penstrokes;
-      init(s);
+      init(s,'penstrokes');
       return s;
     });
 

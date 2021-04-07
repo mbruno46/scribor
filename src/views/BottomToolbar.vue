@@ -41,9 +41,6 @@ export default {
       if (store.pages.focus < 0) {
         store.pages.focus = 0;
       }      
-    },
-    prova(el) {
-      console.log(el)
     }
   }
 }

@@ -1,15 +1,17 @@
 import pointertools from './pointertools'
 import { optimize, bezier, smoother } from './sketchtools'
-// import store from './store'
+import history from '@/hooks/history'
 
 export default function Stroke() {
   var s;
   var n;
   var drawing = false;
   var strokes;
+  var layer;
 
-  function init(_strokes) {
+  function init(_strokes, _layer) {
     strokes = _strokes;
+    layer = _layer;
   }
 
   function start(e) {
@@ -38,6 +40,8 @@ export default function Stroke() {
     if (drawing) {
       strokes[n-1].d = optimize(s.finalizePoints(), bezier);
       strokes.push({d:'', color: strokes[n-1].color, size: strokes[n-1].size});
+
+      history.saveState(layer,[n-1]);
     }
     s = null;
     drawing = false;
