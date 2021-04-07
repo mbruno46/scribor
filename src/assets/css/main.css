@@ -1,5 +1,4 @@
 :root {
-    --page: rgb(240,230,180);
     --pen-color-yellow: #FFFF33;
     --pen-color-orange: #FFA500;
     --pen-color-green: #98FB98;
@@ -12,6 +11,8 @@
     --cover-page-blue: rgb(41,104,207);
     --cover-page-green: #a0c97a;
     --cover-page-red: #db6f4b;
+    --page-yellow: rgb(240,230,180);
+    --page-white: white;
 }
 
 /* :root {

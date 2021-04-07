@@ -3,8 +3,7 @@
     <svg id="page" ref="page" xmlns="http://www.w3.org/2000/svg" :width="width" 
       :height="height" :viewbox="'0 0 ' + width + ' ' + height">
 
-      <cover-page v-if="pages.focus==0" />
-      <background-layer v-if="pages.focus>0" />
+      <background-layer />
 
       <pen-layer ref="penlayer"/>
       <highlighter-layer ref="highlighterlayer"/>
@@ -27,7 +26,6 @@ import BackgroundLayer from '../components/BackgroundLayer.vue';
 import pointertools from '@/hooks/pointertools';
 import store from '../hooks/store'
 import SelectionLayer from '../components/SelectionLayer.vue';
-import CoverPage from '../components/CoverPage.vue';
 import DragLayer from '../components/DragLayer.vue';
 import LatexLayer from '../components/LatexLayer.vue';
 
@@ -39,13 +37,7 @@ export default {
     EraserLayer,
     BackgroundLayer,
     SelectionLayer,
-    CoverPage,
     DragLayer
-  },
-  data() {
-    return {
-      pages: store.pages
-    }
   },
   setup() {
     const page = ref(null);

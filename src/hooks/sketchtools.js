@@ -21,7 +21,7 @@ function joint(current, prev, next, reverse) {
 
 export function optimize(points, command) {
   var d = points.reduce(function(acc, point, i, a) {
-    return i === 0 ? 'M'+ point[0] +','+ point[1] : acc +' '+ command(point, i, a);
+    return i === 0 ? 'M'+ point[0] +' '+ point[1] : acc +' '+ command(point, i, a);
   }, 0);
   return d;
 }

@@ -54,19 +54,21 @@
       />
       <app-button v-for="(i) in [0,1,2]"
         :key="'style:' + i" :icon="styleMap[i]"
-        :control="bg.style==i"
-        @click="()=>{bg.style = i}"
+        :control="bg.style==`img${i}`"
+        @click="()=>{bg.style = `img${i}`}"
       />
     </div>
 
     <div v-if="mode=='pageprefs'">
-      <app-button icon="fa-square" style="color: white"
+      <app-button icon="fa-square" 
+        :style="`color: var(--page-white)`"
         :control="bg.color=='white'"
         @click="()=>{bg.color='white'}"
       />
-      <app-button icon="fa-square" style="color: var(--page)"
-        :control="bg.color=='var(--page)'"
-        @click="()=>{bg.color='var(--page)'}"
+      <app-button icon="fa-square" 
+        :style="`color: var(--page-yellow)`"
+        :control="bg.color=='yellow'"
+        @click="()=>{bg.color='yellow'}"
       />
       <app-button icon="fa-grip-lines" 
         :control="bg.style=='ruled'"

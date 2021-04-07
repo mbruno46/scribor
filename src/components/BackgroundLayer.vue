@@ -1,16 +1,40 @@
 <template>
-  <g id="layer-bg" :transform="`scale(${v.scale} ${v.scale})`">
-    <rect x="0" y="0" :width="v.width" :height="v.height" :fill="bg.color"/>
-    <path v-for="(r,i) in rules.hrules" 
-      :key="'hrule:'+i" class="rule" :class="r.class" :d="r.d"></path>
-    <path v-for="(r,i) in rules.vrules" 
-      :key="'vrule:'+i" class="rule" :class="r.class" :d="r.d"/>
+  <g v-if="pages.focus==0" id="layer-bg" :transform="`scale(${v.scale} ${v.scale})`">
+    <rect x="0" y="0" :width="v.width" :height="v.height" 
+      :fill="`var(--cover-page-${bg.color})`"/>
+
+    <!-- <path key="graph" :d="graphics.d" :fill="graphics.fill" :stroke="graphics.stroke"/> -->
+    <path v-for="(p,i) in bg.paths"
+      :key="'path:'+i" :d="p.d" :fill="p.fill" :stroke="p.color" :stroke-width="p.width" />
+
+    <path v-for="(r,i) in bg.rules" 
+      :d="r.d" :key="'rule:'+i" class="rule" :stroke="`var(--${r.color})`"/>
   </g>
+
+  <g v-if="pages.focus>0" id="layer-bg" :transform="`scale(${v.scale} ${v.scale})`">
+    <rect x="0" y="0" :width="v.width" :height="v.height" 
+      :fill="`var(--page-${bg.color})`"/>
+    <path v-for="(r,i) in bg.rules" 
+      :key="'rule:'+i" class="rule" :stroke="`var(--${r.color})`" :d="r.d">
+    </path>
+  </g>
+
+
 </template>
 
 <script>
-import { computed } from 'vue'
+import { watch } from 'vue'
 import store from '@/hooks/store'
+import { RectAsPath } from '@/hooks/utils'
+
+import img1 from 'raw-loader!@/assets/svgs/collision.path'
+import img2 from 'raw-loader!@/assets/svgs/feyndiagr.path'
+const imgs = {img0: '', img1, img2};
+const colorMap = {
+  blue: ['yellow','red'],
+  green: ['orange','purple'],
+  red: ['cyan','green']
+};
 
 var layout = {
   vrule: 91, //32mm /210*595;
@@ -21,70 +45,100 @@ var layout = {
   label_nlines: 2,
 };
 
-// background = {
-//   type: 0 or 1  cover/normal
-//   style: 0,1,2 if cover is image/if normal ruled vs grid?
-//   color: blue/green/red if cover, white/yellow if normal?
-// }
-
 export default {
   setup() {
-    const v =store.viewport;
+    const v = store.viewport;
     const bg = store.background;
+    const pages = store.pages;
 
-    // const hrules = ref([]);
-    // const vrules = ref([]);
-
-    function setStyle(s) {
+    function setRules(s) {
       var i;
-      let hrules = []
-      let vrules = []
+      let rules = bg.value.rules;
+      rules.length = 0;
+
       // ruled
       if (s=='ruled') {
         var margin = Math.round((v.height-(layout.nlines-1)*layout.hrule)/2);
         for (i=0;i<layout.nlines;i++) {
-          hrules.push({
+          rules.push({
             d: 'm 0 ' + (margin + layout.hrule*(i+1)) + ' h ' + v.width,
-            class: 'hrule'
+            color: 'hrule'
           });
         }
-        vrules.push({
+        rules.push({
           d: 'm ' + layout.vrule + ' 0 v ' + v.height,
-          class: 'vrule'
+          color: 'vrule'
         });
       } else if (s=='grid') {
         var n;
         n = Math.round(v.height/layout.grid);
         for (i=0;i<n;i++) {
-          hrules.push({
+          rules.push({
             d: 'm 0 ' + (layout.grid*(i+1)) + ' h ' + v.width,
-            class: 'hrule'
+            color: 'hrule'
           })
         }
         n = Math.round(v.width/layout.grid);
         for (i=0;i<n;i++) {
-          vrules.push({
+          rules.push({
             d: 'm ' + (layout.grid*(i+1)) + ' 0 v ' + v.height,
-            class: 'hrule'
+            color: 'hrule'
           })
         }
       }
-      return {hrules, vrules};
     }
 
-    const rules = computed(()=>{return setStyle(bg.value.style)});
+    function setCoverPage(s,c) {
+      bg.value.paths.length = 0;
+      let cols = colorMap[c];
+      bg.value.paths.push({
+        d: imgs[s],
+        fill: cols[0],
+        color: cols[1],
+        width: '1'
+      })
+      console.log(c, cols)
 
-    // const bg = computed(()=>{
-    //   let _bg = store.notebook[store.pages.focus].background;
-    //   setStyle(_bg.style);
-    //   return _bg;
-    // });
+      let r = layout.label;
+      bg.value.paths.push({
+        d: RectAsPath(r[0],r[1],r[2],r[3],r[4],r[4]),
+        fill: 'white',
+        color: 'black',
+        width: '2'
+      })
 
-    setStyle(bg.value.style);
-    // watch(() => bg, (_bg) => {console.log('styled',_bg);setStyle(_bg.value.style);});
+      let rules = bg.value.rules;
+      rules.length = 0;
+      for (var i=0;i<layout.label_nlines;i++) {
+        rules.push({d: 'm' + (layout.label[0]+layout.label[4]) + ' ' + 
+          (layout.label[1]+2*layout.hrule*(i+1)) + 'h' + (layout.label[2]-2*layout.label[4]),
+          color: 'hrule'
+        });
+      }
+    }
+          
+    setCoverPage(bg.value.style,bg.value.color);
+    watch(
+      ()=>bg.value.style,
+      ()=>{
+        if (pages.focus==0) {
+          setCoverPage(bg.value.style,bg.value.color);
+        } else {
+          setRules(bg.value.style);
+        }
+      }
+    );
+    watch(
+      ()=>bg.value.color,
+      ()=>{
+        if (pages.focus==0) {
+          setCoverPage(bg.value.style,bg.value.color);
+        }
+      }
+    );
 
     return {
-      rules,
+      pages,
       bg,
       v
     }
@@ -96,13 +150,5 @@ export default {
 .rule {
   stroke-width: 0.4;
   fill: none;
-}
-
-.hrule {
-  stroke: var(--hrule);
-}
-
-.vrule {
-  stroke: var(--vrule);
 }
 </style>

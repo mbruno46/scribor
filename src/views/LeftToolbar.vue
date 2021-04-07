@@ -7,7 +7,8 @@
     <div class="bottom"> 
       <app-button icon="fa-plus" @click.prevent="addrmPage(true)"/>
       <app-button icon="fa-minus" @click.prevent="addrmPage(false)"/>
-      <app-button icon="fa-cog" title="Page properties" 
+      <app-button icon="fa-cog" title="Page properties"
+        :control="(mode=='coverprefs')||(mode=='pageprefs')"
         @click="clicker((pages.focus==0) ? 'coverprefs' : 'pageprefs')"/>
     </div>
   </div>

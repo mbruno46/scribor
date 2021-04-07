@@ -42,7 +42,7 @@ export function loadNotebook(file) {
 }
 
 export function saveNotebookAsPDF(dest) {
-  var stream = exportPDF(store.notebook);
+  var stream = exportPDF(store.notebook, store.viewport);
 
   stream.on('finish', function() {
     const url = stream.toBlobURL('application/pdf');
