@@ -24,7 +24,6 @@ function select(array, selbox, sel) {
   });
 }
 
-
 export default {
   data() {
     return {
@@ -64,6 +63,7 @@ export default {
       for (var layer in store.layers.value) {
         if (store.layers.value[layer]) {
           select(store[layer].value, box.value, store.selection[layer]);
+          store.selection[layer].sort();
         }
       }
       selecting = false;

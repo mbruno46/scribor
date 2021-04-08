@@ -5,9 +5,9 @@
     </div>
 
     <div class="nav group-center">
-      <app-button icon="fa-angle-left" @click.prevent="pageshift(-1)"/>
+      <app-button icon="fa-angle-left" title="Previous page" @click.prevent="pageshift(-1)"/>
       <span>{{ pages.focus +1 }}/{{ pages.total }}</span>
-      <app-button icon="fa-angle-right" @click.prevent="pageshift(+1)"/>
+      <app-button icon="fa-angle-right" title="Next page" @click.prevent="pageshift(+1)"/>
     </div>
 
     <textarea v-if="editor.active"

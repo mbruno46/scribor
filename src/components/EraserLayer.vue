@@ -18,6 +18,7 @@ export default {
           if (store.layers.value[g]) {
             history.saveState(false,tags[0],[tags[1]]);
             store[tags[0]].value.splice(tags[1],1);
+            history.saveState(true);
           }
         }
       }

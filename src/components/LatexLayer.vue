@@ -33,7 +33,7 @@ export default {
       e = e || e.originalEvent || window.event;
       if (e.target.parentElement.parentElement.id!="page") {return;}
       e.preventDefault();
-      
+
       moving = true;
       store.reset_selection();
 
@@ -60,7 +60,7 @@ export default {
       l.d = TeXBox(store.editor.text,store.editor.ofs,l.scale);
       l.raw = store.editor.text;
       
-      history.saveState('latex', [store.editor.idx]);
+      history.saveState(true, 'latex', [store.editor.idx]);
 
       latex.value.push({d:'', raw:'', color:l.color, scale:l.scale });
     }
@@ -71,11 +71,13 @@ export default {
       ()=>store.editor.text,
       ()=>{
         if (store.editor.idx >= 0) {
+          history.saveState(false, 'latex', [store.editor.idx]);
+
           let l = latex.value[store.editor.idx];
           l.d = TeXBox(store.editor.text,store.editor.ofs,l.scale);
           l.raw = store.editor.text;
 
-          history.saveState('latex', [store.editor.idx]);
+          history.saveState(true, 'latex', [store.editor.idx]);
         }
       }
     )

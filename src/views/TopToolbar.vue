@@ -10,15 +10,15 @@
     </div>
 
     <div class="group-center">
-      <app-button icon="fa-search-plus" @click="zoom(1.1)"/>
-      <app-button icon="fa-search-minus" @click="zoom(1/1.1)"/>
-      <app-button icon="fa-arrows-alt-h" @click="fit_width"/>
-      <app-button icon="fa-arrows-alt-v" @click="fit_height"/>
+      <app-button icon="fa-search-plus" title="Zoom In" @click="zoom(1.1)"/>
+      <app-button icon="fa-search-minus" title="Zoom out" @click="zoom(1/1.1)"/>
+      <app-button icon="fa-arrows-alt-h" title="Fit width" @click="fit_width"/>
+      <app-button icon="fa-arrows-alt-v" title="Fit height" @click="fit_height"/>
     </div>
 
     <div class="group-right">
-      <app-button icon="fa-undo" @click="undo"/>
-      <app-button icon="fa-redo" @click="redo"/>
+      <app-button icon="fa-undo" title="Undo" @click="undo"/>
+      <app-button icon="fa-redo" title="Redo" @click="redo"/>
     </div>
   </div>
 </template>
@@ -33,6 +33,13 @@ import history from '@/hooks/history'
 function px2int(px) {
   return parseInt(px.replace(/px/,''))
 }
+
+const layers = ['penstrokes','highligtherstrokes','latex'];
+var clipboard = {
+  penstrokes: [],
+  highligtherstrokes: [],
+  latex: []
+};
 
 export default {
   components: {
@@ -78,6 +85,24 @@ export default {
     },
     redo() {
       history.nextState();
+    },
+    recordState(add) {
+      history.saveState(add,
+        'penstrokes',clipboard.penstrokes,
+        'highlighterstrokes',clipboard.highlighterstrokes,
+        'latex',clipboard.latex
+      );
+    },
+    cut() {
+      layers.forEach(key => {
+        clipboard[key] = [];
+        store.selection[key].reverse().forEach(element => {
+          clipboard[key].push(element);
+          store[key].value.splice(element);
+        })
+      });
+      store.reset_selection();
+      this.recordState(true);
     }
   }
 }
