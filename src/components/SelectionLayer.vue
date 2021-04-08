@@ -8,11 +8,11 @@
 import { ref } from 'vue'
 import pointertools from '@/hooks/pointertools'
 import store from '@/hooks/store'
+import { pathBBox } from '../hooks/utils'
 
 function select(array, selbox, sel) {
   array.forEach((element,index) => {
-    let bbox = pathBBOX(element.d);
-    console.log(bbox, selbox);
+    let bbox = pathBBox(element.d);
 
     if (bbox.x>=selbox.x && bbox.y>=selbox.y &&
       (bbox.width+bbox.x)<=(selbox.width+selbox.x) &&
@@ -22,33 +22,6 @@ function select(array, selbox, sel) {
         }
       }
   });
-}
-
-// right now does not work for latex paths,need a generic function
-function pathBBOX(d) {
-  if (d=='') {return {x:0,y:0,width:0,height:0};}
-
-  // let xmin=1000;
-  // let ymin=1000;
-  // let xmax=0;
-  // let ymax=0;
-  // d.split(/[A-Z]/).forEach((v)=>{
-  //   let h=v.split(' ');
-  //   for (var i=0;i<h.length;i+=2) {
-  //     let x=parseFloat(h[i+0]);
-  //     let y=parseFloat(h[i+1]);
-  //     xmin = (x<xmin) ? x : xmin;
-  //     ymin = (y<ymin) ? y : ymin;
-  //     xmax = (x>xmax) ? x : xmax;
-  //     ymax = (y>ymax) ? y : ymax;
-  //   }
-  // });
-  // return {
-  //   x:xmin,
-  //   y:ymin,
-  //   width:xmax-xmin,
-  //   height:ymax-ymin
-  // }
 }
 
 

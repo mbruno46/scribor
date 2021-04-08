@@ -1,7 +1,7 @@
 import store from './store'
 import { toRaw } from 'vue'
 
-const layers = ['penstrokes','highlighterstrokes'];
+const layers = ['penstrokes','highlighterstrokes','latex'];
 const NMAX = 20;
 
 function History() {
@@ -9,17 +9,17 @@ function History() {
   var history = [];
 
   // data = {penstrokes: [3,4]}
-  function State(page, data) {
+  function State(page, add, data) {
     var s = {
       page,
-      add: store.mode!='eraser',
-      penstrokes: [],
-      highlighterstrokes: []
+      add
     }
 
     layers.forEach(key => {
+      s[key] = [];
       data[key].forEach(element => {
-        s[key].push( toRaw(store[key].value[element]) )
+        let clone = Object.assign({}, toRaw(store[key].value[element]));
+        s[key].push( [element, clone] )
       })
     })
 
@@ -27,16 +27,18 @@ function History() {
   }
 
   function setState(dir) {
+    console.log(at,history)
+
     let s = history[at];
     let rm = Boolean((s.add + dir) % 2);
     store.pages.focus = s.page;
     layers.forEach(key => {
       s[key].forEach(element => {
         if (rm) {
-          let idx = store[key].value.indexOf(element);
+          let idx = element[0];
           store[key].value.splice(idx,1);
         } else {
-          store[key].value.splice(store[key].value.length-2, 0, element);
+          store[key].value.splice(element[0], 0, element[1]);
         }
       });
     })
@@ -54,7 +56,7 @@ function History() {
         }
       });
 
-      let s = State(store.pages.focus, data);
+      let s = State(store.pages.focus, args[0], data);
       history.splice(at, history.length-at, s);
       at++;
 

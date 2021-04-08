@@ -5,10 +5,8 @@
       :id="'latex:' + index"
       :d="l.d"
       :fill="`var(--pen-color-${l.color})`" 
-      :class="(selection.includes(index)) ? 'selected' : ''"
+      :class="modifiers(index)"
     />
-
-    <rect :x="box.x" :y="box.y" :width="box.width" height="5" />
   </g>
 </template>
 
@@ -16,7 +14,8 @@
 import store from '@/hooks/store'
 import pointertools from '@/hooks/pointertools';
 import { TeXBox } from '@/hooks/texbox';
-import { getCurrentInstance, reactive, watch } from 'vue'
+import { watch } from 'vue'
+import history from '@/hooks/history'
 
 export default {
   data() {
@@ -34,7 +33,9 @@ export default {
       e = e || e.originalEvent || window.event;
       if (e.target.parentElement.parentElement.id!="page") {return;}
       e.preventDefault();
+      
       moving = true;
+      store.reset_selection();
 
       let p = pointertools.position(e);
       store.editor.ofs = [p.x, p.y];
@@ -58,13 +59,13 @@ export default {
       let l = latex.value[latex.value.length-1];
       l.d = TeXBox(store.editor.text,store.editor.ofs,l.scale);
       l.raw = store.editor.text;
+      
+      history.saveState('latex', [store.editor.idx]);
 
       latex.value.push({d:'', raw:'', color:l.color, scale:l.scale });
     }
 
     const { on, off } = pointertools.layer(start, move, end);
-
-    const box = reactive({x:0,y:0,width:0});
 
     watch(
       ()=>store.editor.text,
@@ -74,30 +75,35 @@ export default {
           l.d = TeXBox(store.editor.text,store.editor.ofs,l.scale);
           l.raw = store.editor.text;
 
-          // THIS BELOW IS NOT WORKING
-          let b = getCurrentInstance().getBBox();
-          box.x = b.x;
-          box.y = b.y;
-          box.width = b.width;
+          history.saveState('latex', [store.editor.idx]);
         }
       }
     )
     
     return {
       latex,
-      box,
       on,
       off
     }
   },
-
+  methods: {
+    modifiers(index) {
+      let c0 = (this.selection.includes(index)) ? 'selected' : '';
+      let c1 = (this.editor.idx==index) ? 'editing' : '';
+      return `${c0} ${c1}`
+    }
+  }
 }
 </script>
 
 <style scoped>
 .selected {
+  fill: grey;
   stroke: grey;
   stroke-dasharray: 4;
 }
 
+.editing {
+  stroke: red;
+}
 </style>

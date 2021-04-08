@@ -2,6 +2,7 @@
 import store from '../hooks/store'
 import { newSVGNode, flattenSVG } from '../hooks/utils'
 import pointertools from '@/hooks/pointertools'
+import history from '@/hooks/history'
 
 export default {
   setup() {
@@ -20,10 +21,19 @@ export default {
     }
 
     function start(e) {
+      e = e || e.originalEvent || window.event;
+      if (e.target.parentElement.parentElement.id!="page") {return;}
+      e.preventDefault();
+
       moving = true;
       let p = pointertools.position(e);
       moveto.x0 = p.x;
       moveto.y0 = p.y;
+      history.saveState(false,
+        'penstrokes',store.selection.penstrokes,
+        'highlighterstrokes',store.selection.highlighterstrokes,
+        'latex',store.selection.latex
+      );    
     }
 
     function move(e) {
@@ -37,6 +47,12 @@ export default {
     }
 
     function end() {
+      if (!moving) {return}
+      history.saveState(true,
+        'penstrokes',store.selection.penstrokes,
+        'highlighterstrokes',store.selection.highlighterstrokes,
+        'latex',store.selection.latex
+      );
       moving=false;
       moveto = {x0:0, y0:0, dx:0, dy:0};
     }

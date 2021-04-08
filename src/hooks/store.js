@@ -28,12 +28,15 @@ const viewport = reactive({
 
 const layers = ref({penstrokes: true, highlighterstrokes: true, latex: true});
 const selection = reactive({penstrokes: [], highlighterstrokes: [], latex: []});
+function reset_selection() {
+  selection.penstrokes.length = 0;
+  selection.highlighterstrokes.length = 0;
+  selection.latex.length = 0;
+}
 watch(
   ()=>pages.focus,
   ()=>{
-    selection.penstrokes.length = 0;
-    selection.highlighterstrokes.length = 0;
-    selection.latex.length = 0;
+    reset_selection();
     reset_editor();
   }
 )
@@ -84,6 +87,7 @@ export default {
   selection,
   notebook,
   newPage,
+  reset_selection,
   pages,
   viewport
 }

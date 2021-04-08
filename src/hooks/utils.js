@@ -92,6 +92,15 @@ export function flattenSVG(input, trafos = []) {
   }
 }
 
+export function pathBBox(d) {
+  let p = newSVGNode('path',{d: d});
+  let pp = document.getElementById('page');
+  pp.appendChild(p);
+  let b = p.getBBox();
+  pp.removeChild(p);
+  return b;
+}
+
 export default {
   RectAsPath,
   newSVGNode,

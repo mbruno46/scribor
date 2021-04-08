@@ -16,7 +16,7 @@ export default {
         let g = t.parentElement.id;
         if (tags[0]) {
           if (store.layers.value[g]) {
-            history.saveState(tags[0],[tags[1]]);
+            history.saveState(false,tags[0],[tags[1]]);
             store[tags[0]].value.splice(tags[1],1);
           }
         }

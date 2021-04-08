@@ -41,7 +41,7 @@ export default function Stroke() {
       strokes[n-1].d = optimize(s.finalizePoints(), bezier);
       strokes.push({d:'', color: strokes[n-1].color, size: strokes[n-1].size});
 
-      history.saveState(layer,[n-1]);
+      history.saveState(true,layer,[n-1]);
     }
     s = null;
     drawing = false;

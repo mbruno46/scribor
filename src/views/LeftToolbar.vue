@@ -41,10 +41,8 @@ export default {
   methods: {
     clicker(key) {
       store.mode.value = key;
-      if (key!='drag') {
-        for (var k in store.selection) {
-          store.selection[k].length = 0;
-        }
+      if ((key=='selection')||(key=='eraser')) {
+        store.reset_selection();
       }
       store.editor.active = (key!='latex') ? false : true;
     },
