@@ -44,19 +44,19 @@ body {
 }
 
 .toolbar {
-    width: 100%;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-  }
-  
-  .group-left {
-    justify-self: left;
-  }
-  
-  .group-center {
-    justify-self: center;
-  }
-  
-  .group-right {
-    justify-self: right;
-  }
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.group-left {
+  justify-self: left;
+}
+
+.group-center {
+  justify-self: center;
+}
+
+.group-right {
+  justify-self: right;
+}
