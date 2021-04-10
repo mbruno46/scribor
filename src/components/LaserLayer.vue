@@ -1,9 +1,13 @@
 <template>
   <g id="laser" :transform="`scale(${v.scale} ${v.scale})`">
     <path :d="strokes[0].d"   stroke="red"
-      stroke-width='8' class="laser"/>
-    <path :d="strokes[0].d"   stroke="yellow"
-      stroke-width='4' class="laser"/>  </g>  
+      stroke-width='8' class="laser" opacity="0.1" />
+    <path :d="strokes[0].d"   stroke="red"
+      stroke-width='6' class="laser" opacity="0.2" />
+    <path :d="strokes[0].d"   stroke="red"
+      stroke-width='4' class="laser" opacity="0.3" />
+    <path :d="strokes[0].d"   stroke="orange"
+      stroke-width='3' class="laser" opacity="0.6" />  </g>  
 </template>
 
 <script>
@@ -48,7 +52,6 @@ export default {
 
 <style scoped>
 .laser {
-  opacity: 0.5;  
   fill: none;
   stroke-linecap: round;
 }
