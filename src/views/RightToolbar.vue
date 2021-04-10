@@ -28,9 +28,9 @@
     </div>
 
     <div v-if="mode=='selection'" class="bottom">
-      <app-button icon="fa-cut" />
-      <app-button icon="fa-copy" />
-      <app-button icon="fa-paste" />
+      <app-button icon="fa-cut" title="Cut" @click="toclipboard(true)"/>
+      <app-button icon="fa-copy" title="Copy" @click="toclipboard(false)"/>
+      <app-button icon="fa-paste" title="Paste" @click="fromclipboard()"/>
     </div>
 
     <div v-if="mode=='latex'">
@@ -86,6 +86,15 @@
 import { computed } from '@vue/runtime-core'
 import AppButton from '../components/AppButton'
 import store from '../hooks/store'
+import history from '@/hooks/history'
+import { toRaw } from 'vue'
+import _ from 'lodash'
+
+const layers = ['penstrokes','highlighterstrokes','latex'];
+var clipboard = {}
+layers.forEach(key => {
+  clipboard[key] = [];
+});
 
 export default {
   components: {
@@ -158,6 +167,31 @@ export default {
     setLayers(l) {
       let ll = store.layers.value;
       ll[l] = !ll[l];
+    },
+    toclipboard(cut=false) {
+      layers.forEach(key => {
+        clipboard[key] = [];
+        store.selection[key].reverse().forEach(element => {
+          let clone = _.cloneDeep(toRaw(store[key].value[element]));
+          clipboard[key].push(clone);
+          if (cut) {
+            store[key].value.splice(element, 1);
+          }
+        });
+      });
+      history.checkpoint();
+      store.reset_selection();
+    },
+    fromclipboard() {
+      store.reset_selection();
+      layers.forEach(key => {
+        clipboard[key].forEach(element => {
+          let idx = store[key].value.length-1;
+          store[key].value.splice(idx, 0, element);
+          store.selection[key].push(idx);
+        })
+      });
+      history.checkpoint();       
     }
   }
 }

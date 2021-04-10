@@ -28,12 +28,7 @@ export default {
       moving = true;
       let p = pointertools.position(e);
       moveto.x0 = p.x;
-      moveto.y0 = p.y;
-      history.saveState(false,
-        'penstrokes',store.selection.penstrokes,
-        'highlighterstrokes',store.selection.highlighterstrokes,
-        'latex',store.selection.latex
-      );    
+      moveto.y0 = p.y; 
     }
 
     function move(e) {
@@ -48,11 +43,7 @@ export default {
 
     function end() {
       if (!moving) {return}
-      history.saveState(true,
-        'penstrokes',store.selection.penstrokes,
-        'highlighterstrokes',store.selection.highlighterstrokes,
-        'latex',store.selection.latex
-      );
+      history.checkpoint();
       moving=false;
       moveto = {x0:0, y0:0, dx:0, dy:0};
     }

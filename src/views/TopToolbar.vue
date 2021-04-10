@@ -29,18 +29,12 @@ import AppButton from '../components/AppButton.vue'
 import store from '../hooks/store'
 import fs from '@/hooks/filesystem'
 import history from '@/hooks/history'
-import { toRaw } from 'vue'
 
 function px2int(px) {
   return parseInt(px.replace(/px/,''))
 }
 
-const layers = ['penstrokes','highligtherstrokes','latex'];
-var clipboard = {
-  penstrokes: [],
-  highligtherstrokes: [],
-  latex: []
-};
+
 
 export default {
   components: {
@@ -86,32 +80,6 @@ export default {
     },
     redo() {
       history.nextState();
-    },
-    cut() {
-      history.checkpoint();
-
-      layers.forEach(key => {
-        clipboard[key] = [];
-        store.selection[key].reverse().forEach(element => {
-          clipboard[key].push(element);
-          store[key].value.splice(element);
-        })
-        clipboard[key].sort();
-      });
-      history.saveState();
-      store.reset_selection();
-    },
-    paste() {
-      var news = {}
-      layers.forEach(key => {
-        news[key] = []
-        clipboard[key].forEach(element => {
-          let clone = Object.assign({}, toRaw(store[key].value[element]));
-          store[key].value.push( clone );
-          news[key].push(element);
-        })
-      });
-      history.saveState();       
     }
   }
 }
