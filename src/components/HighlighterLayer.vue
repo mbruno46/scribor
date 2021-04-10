@@ -31,7 +31,7 @@ export default {
 
     const strokes = computed(()=>{
       let s = store.notebook[store.pages.focus].highlighterstrokes;
-      init(s,'highlighterstrokes');
+      init(s);
       return s;
     });
 

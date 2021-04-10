@@ -13,6 +13,7 @@
       <selection-layer ref="selectionlayer"/>
       <drag-layer ref="draglayer"/>
 
+      <laser-layer ref="laserlayer"/>
     </svg>
   </div>
 </template>
@@ -28,6 +29,7 @@ import store from '../hooks/store'
 import SelectionLayer from '../components/SelectionLayer.vue';
 import DragLayer from '../components/DragLayer.vue';
 import LatexLayer from '../components/LatexLayer.vue';
+import LaserLayer from '../components/LaserLayer.vue';
 
 export default {
   components: {
@@ -37,7 +39,8 @@ export default {
     EraserLayer,
     BackgroundLayer,
     SelectionLayer,
-    DragLayer
+    DragLayer,
+    LaserLayer
   },
   setup() {
     const page = ref(null);
@@ -47,6 +50,7 @@ export default {
     const eraserlayer = ref(null);
     const selectionlayer = ref(null);
     const draglayer = ref(null);
+    const laserlayer = ref(null);
 
     const width = computed(() => {return store.viewport.width * store.viewport.scale});
     const height = computed(() => {return store.viewport.height * store.viewport.scale});
@@ -57,7 +61,8 @@ export default {
       ['pen', penlayer],
       ['highlighter', highlighterlayer],
       ['latex',latexlayer],
-      ['eraser',eraserlayer]
+      ['eraser',eraserlayer],
+      ['laser',laserlayer]
     ]);
 
     watch(store.mode, (newmode, oldmode) => {
@@ -79,6 +84,7 @@ export default {
       eraserlayer,
       selectionlayer,
       draglayer,
+      laserlayer,
       width,
       height
       // rescale

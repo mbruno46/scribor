@@ -7,11 +7,9 @@ export default function Stroke() {
   var n;
   var drawing = false;
   var strokes;
-  var layer;
 
-  function init(_strokes, _layer) {
+  function init(_strokes) {
     strokes = _strokes;
-    layer = _layer;
   }
 
   function start(e) {
@@ -39,9 +37,14 @@ export default function Stroke() {
   function end() {    
     if (drawing) {
       strokes[n-1].d = optimize(s.finalizePoints(), bezier);
-      strokes.push({d:'', color: strokes[n-1].color, size: strokes[n-1].size});
+      strokes.push({
+        id: strokes[n-1].id+1,
+        d:'', 
+        color: strokes[n-1].color, 
+        size: strokes[n-1].size
+      });
 
-      history.saveState(true,layer,[n-1]);
+      history.checkpoint();
     }
     s = null;
     drawing = false;

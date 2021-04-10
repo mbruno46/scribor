@@ -46,12 +46,14 @@ function newPage(cover=false) {
     // background: (cover) ? {style:1, color:'blue'} : {style: 'ruled', color:'white'},
     background: {style: (cover) ? 'img0' : 'ruled', 
       paths:[], rules: [], color: (cover) ? 'blue': 'white'},
-    penstrokes: [{d:'',color:'blue',size:2}],
+    penstrokes: [{id:0, d:'',color:'blue',size:2}],
     highlighterstrokes: [{d:'',color:'orange'}],
     latex: [{d:'',raw:'',color:'blue',scale:1}]
   }
 }
+// could notebook not be reactive?
 const notebook = reactive([newPage(true)]);
+// var notebook = [newPage(true)];
 
 const background = computed(()=>{return notebook[pages.focus].background});
 const penstrokes = computed(()=>{return notebook[pages.focus].penstrokes});
@@ -68,13 +70,6 @@ watch(
   ()=>editor.active,
   ()=>{reset_editor();}
 );
-
-// const history = reactive([]);
-// const timetravel = ref(0);
-// watch(
-//   ()=>timetravel,
-//   ()=>{notebook = history[history.length-timetravel.value]}
-// )
 
 export default {
   mode,

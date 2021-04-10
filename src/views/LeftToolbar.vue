@@ -32,7 +32,8 @@ export default {
         eraser: {title: 'Eraser', icon: 'fa-eraser'},
         pen: {title: 'Pen', icon: 'fa-pen-fancy'},
         highlighter: {title: 'Highlighter', icon: 'fa-highlighter'},
-        latex: {title: 'LaTeX', icon: 'fa-i-cursor'}
+        latex: {title: 'LaTeX', icon: 'fa-i-cursor'},
+        laser: {title: 'Laser', icon: 'fa-bahai'}
       },
       pos: {top: '', left: ''},
       pages: store.pages

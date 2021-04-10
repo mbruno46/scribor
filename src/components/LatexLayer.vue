@@ -36,7 +36,7 @@ export default {
 
       moving = true;
       store.reset_selection();
-
+      
       let p = pointertools.position(e);
       store.editor.ofs = [p.x, p.y];
       store.editor.idx = latex.value.length-1;
@@ -60,9 +60,8 @@ export default {
       l.d = TeXBox(store.editor.text,store.editor.ofs,l.scale);
       l.raw = store.editor.text;
       
-      history.saveState(true, 'latex', [store.editor.idx]);
-
       latex.value.push({d:'', raw:'', color:l.color, scale:l.scale });
+      history.checkpoint();
     }
 
     const { on, off } = pointertools.layer(start, move, end);
@@ -71,13 +70,11 @@ export default {
       ()=>store.editor.text,
       ()=>{
         if (store.editor.idx >= 0) {
-          history.saveState(false, 'latex', [store.editor.idx]);
-
           let l = latex.value[store.editor.idx];
           l.d = TeXBox(store.editor.text,store.editor.ofs,l.scale);
           l.raw = store.editor.text;
 
-          history.saveState(true, 'latex', [store.editor.idx]);
+          history.checkpoint();
         }
       }
     )

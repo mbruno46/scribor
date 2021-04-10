@@ -16,6 +16,8 @@ import LeftToolbar from './views/LeftToolbar'
 import RightToolbar from './views/RightToolbar'
 import store from '@/hooks/store'
 
+import history from '@/hooks/history'
+
 export default {
   name: 'App',
   components: {
@@ -27,6 +29,7 @@ export default {
   },
   mounted() {
     store.mode.value = 'pen';
+    history.checkpoint();
   }
 }
 </script>
