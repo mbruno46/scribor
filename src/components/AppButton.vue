@@ -40,6 +40,7 @@ export default {
   box-sizing: border-box;
   width: 3rem;
   height: 3rem;
+  font-size: inherit;
 }
 
 .btn {

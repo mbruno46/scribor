@@ -1,5 +1,5 @@
 <template>
-  <top-toolbar/>
+  <top-toolbar ref="toptoolbar"/>
   <div class='container'>
     <left-toolbar />
     <notebook ref="nb" />
@@ -30,6 +30,7 @@ export default {
   mounted() {
     store.mode.value = 'pen';
     history.checkpoint();
+    this.$refs.toptoolbar.fit_width();
   }
 }
 </script>

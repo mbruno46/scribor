@@ -1,14 +1,8 @@
-// const svgpath = require('svgpath');
 import svgpath from 'svgpath'
 
 export function newSVGNode(type, attrs) {
   let el = document.createElementNS("http://www.w3.org/2000/svg", type);
   for (var k in attrs) {el.setAttributeNS(null, k, attrs[k]);}
-  // for (var a in attrs) {
-  //   el.setAttributeNS(null, a.replace(/[A-Z]/g, function(m, a, o, s) {
-  //     return "-" + m.toLowerCase();
-  //   }), attrs[a]);
-  // }
   return el
 }
 

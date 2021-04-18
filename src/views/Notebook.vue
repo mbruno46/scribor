@@ -55,21 +55,21 @@ export default {
     const width = computed(() => {return store.viewport.width * store.viewport.scale});
     const height = computed(() => {return store.viewport.height * store.viewport.scale});
 
-    const layers = new Map([
-      ['drag',draglayer],
-      ['selection',selectionlayer],
-      ['pen', penlayer],
-      ['highlighter', highlighterlayer],
-      ['latex',latexlayer],
-      ['eraser',eraserlayer],
-      ['laser',laserlayer]
-    ]);
+    const layers = {
+      'drag': draglayer,
+      'selection': selectionlayer,
+      'pen': penlayer,
+      'highlighter': highlighterlayer,
+      'latex': latexlayer,
+      'eraser': eraserlayer,
+      'laser': laserlayer
+    };
 
     watch(store.mode, (newmode, oldmode) => {
-      layers.forEach(function(v,k) {
-        if (oldmode==k) {v.value.off();}
-        if (newmode==k) {v.value.on();}
-      });
+      if (oldmode in layers) {
+        layers[oldmode].value.off();
+      }
+      layers[newmode].value.on();
     });
 
     onMounted(() => {
@@ -87,7 +87,6 @@ export default {
       laserlayer,
       width,
       height
-      // rescale
     }
   }
 }
