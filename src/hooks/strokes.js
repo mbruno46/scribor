@@ -14,7 +14,7 @@ export default function Stroke() {
 
   function start(e) {
     e = e || e.originalEvent || window.event;
-    if (e.target.parentElement.parentElement.id!="page") {return;}
+    if (e.target.parentElement.parentElement.id!="page") {return false;}
     e.preventDefault();
 
     drawing = true;

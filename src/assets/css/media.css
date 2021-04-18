@@ -1,0 +1,73 @@
+/* https://css-tricks.com/snippets/css/media-queries-for-standard-devices/ */
+
+html {
+  font-size: 16px;
+}
+
+
+:root {
+  --fs-desktop: 16px;
+  --fs-tablet: 12px;
+}
+
+/* ----------- Non-Retina Screens ----------- */
+@media screen 
+  and (min-device-width: 1200px) 
+  and (max-device-width: 1600px) 
+  and (-webkit-min-device-pixel-ratio: 1) { 
+    html {
+      font-size: var(--fs-desktop);
+    }
+}
+/* ----------- Retina Screens ----------- */
+@media screen 
+  and (min-device-width: 1200px) 
+  and (max-device-width: 1600px) 
+  and (-webkit-min-device-pixel-ratio: 2)
+  and (min-resolution: 192dpi) { 
+    html {
+      font-size: var(--fs-desktop);
+    }
+}
+
+/* ----------- iPad 1, 2, Mini and Air ----------- */
+/* Portrait and Landscape */
+@media only screen 
+  and (min-device-width: 768px) 
+  and (max-device-width: 1024px) 
+  and (-webkit-min-device-pixel-ratio: 1) {
+    html {
+      font-size: var(--fs-tablet);
+    }
+}
+
+/* ----------- iPad 3, 4 and Pro 9.7" ----------- */
+@media only screen 
+  and (min-device-width: 768px) 
+  and (max-device-width: 1024px) 
+  and (-webkit-min-device-pixel-ratio: 2) {
+    html {
+      font-size: var(--fs-tablet);
+    }
+}
+
+/* ----------- Galaxy Tab 2 ----------- */
+/* Portrait and Landscape */
+@media 
+  (min-device-width: 800px) 
+  and (max-device-width: 1280px) {
+    html {
+      font-size: var(--fs-tablet);
+    }
+}
+
+/* ----------- Galaxy Tab S ----------- */
+/* Portrait and Landscape */
+@media 
+  (min-device-width: 800px) 
+  and (max-device-width: 1280px)
+  and (-webkit-min-device-pixel-ratio: 2) {
+    html {
+      font-size: var(--fs-tablet);
+    }
+}

@@ -49,5 +49,4 @@ export default {
   display: grid;
   grid-template-columns: min-content auto min-content;
 }
-
 </style>

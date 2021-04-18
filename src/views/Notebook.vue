@@ -67,8 +67,8 @@ export default {
 
     watch(store.mode, (newmode, oldmode) => {
       layers.forEach(function(v,k) {
-        if (oldmode==k) {v.value.off(page.value);}
-        if (newmode==k) {v.value.on(page.value);}
+        if (oldmode==k) {v.value.off();}
+        if (newmode==k) {v.value.on();}
       });
     });
 

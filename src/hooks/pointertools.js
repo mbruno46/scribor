@@ -53,15 +53,15 @@ function pointerEventListener(events, el, handler, add = true, options = false) 
 export function layer(start, move, end) {
   var throttled_move = _.throttle(move, 16);
 
-  function on(p) {
-    pointerEventListener('down', p, start, true);
-    pointerEventListener('move', p, throttled_move, true);
+  function on() {
+    pointerEventListener('down', page, start, true);
+    pointerEventListener('move', page, throttled_move, true);
     pointerEventListener('up leave', document, end, true);
   }
 
-  function off(p) {
-    pointerEventListener('down', p, start, false);
-    pointerEventListener('move', p, throttled_move, false);
+  function off() {
+    pointerEventListener('down', page, start, false);
+    pointerEventListener('move', page, throttled_move, false);
     pointerEventListener('up leave', document, end, false);
   }
 
