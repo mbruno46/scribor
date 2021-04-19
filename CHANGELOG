@@ -1,0 +1,29 @@
+v1.0.0
+ - rewritten with Vue 3, with core functionalities taken from v0.x.y
+ - new interface, with primitive responsiveness to device
+ - works primarily as Progressive Web App, compatible with Tablets/Phones
+ - improved performances, reduced program size
+
+v0.1.2
+ - faster and better drawing engine with smoother
+ - bug fix undo/redo conflicts with zoom
+ - added keyboard shortcut for undo/redo
+ - support for cut/copy/paste (also in LaTex editor)
+ - support for editing settings of pen/highligther modes
+ - unique selection/edit tool for pen/highligther/latex
+ 
+v0.1.1
+ - pen/eraser/highlighter modes
+ - zoom in/out, fit height, fit width
+ - history for undo/redo
+ - LaTeX: create new text, edit, select, move
+ - selection/drag tools for pen/highligther
+ - several cover page styles
+ - laser pointer for presentations
+
+v0.1.0
+ - basic drawing engine added
+ - open, save, export notebook to pdf
+ - basic functionalities for pen, highligther, eraser
+ - basic LaTeX functionalities
+ - continuos integration for program release

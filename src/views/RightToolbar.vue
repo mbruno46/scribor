@@ -32,9 +32,9 @@
     </div>
 
     <div v-if="mode=='selection'" class="bottom">
-      <app-button icon="fa-cut" title="Cut" @click="toclipboard(true)"/>
-      <app-button icon="fa-copy" title="Copy" @click="toclipboard(false)"/>
-      <app-button icon="fa-paste" title="Paste" @click="fromclipboard()"/>
+      <app-button icon="fa-cut" aria-label="cut" title="Cut" @click="toclipboard(true)"/>
+      <app-button icon="fa-copy" aria-label="copy" title="Copy" @click="toclipboard(false)"/>
+      <app-button icon="fa-paste" aria-label="paste" title="Paste" @click="fromclipboard()"/>
     </div>
 
     <div v-if="mode=='latex'">
@@ -146,6 +146,8 @@ export default {
         s = store.highlighterstrokes.value;
       } else if (mode.value=='latex') {
         s = store.latex.value;
+      } else {
+        return [];
       }
       return s[s.length-1];
     });
@@ -195,10 +197,11 @@ export default {
     },
     fromclipboard() {
       store.reset_selection();
+      console.log(clipboard)
       layers.forEach(key => {
         clipboard[key].forEach(element => {
           let idx = store[key].value.length-1;
-          store[key].value.splice(idx, 0, element);
+          store[key].value.splice(idx, 0, _.cloneDeep(element));
           store.selection[key].push(idx);
         })
       });
