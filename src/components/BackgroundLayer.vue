@@ -26,6 +26,7 @@
 import { watch } from 'vue'
 import store from '@/hooks/store'
 import { RectAsPath } from '@/hooks/utils'
+// import { newSVGNode, flattenSVG } from '../hooks/utils'
 
 import img1 from 'raw-loader!@/assets/svgs/collision.path'
 import img2 from 'raw-loader!@/assets/svgs/feyndiagr.path'
@@ -91,6 +92,8 @@ export default {
     function setCoverPage(s,c) {
       bg.value.paths.length = 0;
       let cols = colorMap[c];
+      // let newel = flattenSVG(newSVGNode('path', {d: imgs[s]}),
+      //   [`translate(350,-1220) scale(1.0, 1.0) rotate(0 0 0)`]);
       bg.value.paths.push({
         d: imgs[s],
         fill: cols[0],

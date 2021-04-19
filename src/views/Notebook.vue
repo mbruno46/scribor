@@ -69,7 +69,9 @@ export default {
       if (oldmode in layers) {
         layers[oldmode].value.off();
       }
-      layers[newmode].value.on();
+      if (newmode in layers) {
+        layers[newmode].value.on();
+      }
     });
 
     onMounted(() => {

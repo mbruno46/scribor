@@ -7,9 +7,6 @@
     <div class="bottom"> 
       <app-button icon="fa-plus" title="Add page" @click.prevent="addrmPage(true)"/>
       <app-button icon="fa-minus" title="Remove page" @click.prevent="addrmPage(false)"/>
-      <app-button icon="fa-cog" title="Page properties"
-        :control="(mode=='coverprefs')||(mode=='pageprefs')"
-        @click="clicker((pages.focus==0) ? 'coverprefs' : 'pageprefs')"/>
     </div>
   </div>
 
@@ -70,10 +67,10 @@ export default {
 }
 
 .bottom {
-  /* margin-top: auto; */
+  margin-top: auto;
   display: flex;
   flex-flow: column;
-  bottom: 0;
-  position: absolute;
+  /* bottom: 0; */
+  /* position: absolute; */
 }
 </style>

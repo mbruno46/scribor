@@ -1,7 +1,9 @@
 <template>
   <div class="toolbar">
     <div class="group-left">
-      <!-- <app-button icon="fa-cog" /> -->
+      <app-button icon="fa-cog" title="Page properties"
+        :control="(mode=='coverprefs')||(mode=='pageprefs')"
+        @click="clicker((pages.focus==0) ? 'coverprefs' : 'pageprefs')"/>
     </div>
 
     <div class="nav group-center">
@@ -26,6 +28,11 @@ export default {
   components: {
     AppButton
   },
+  data() {
+    return {
+      mode: store.mode,
+    }
+  },
   setup() {
     return {
       pages: store.pages,
@@ -41,7 +48,14 @@ export default {
       if (store.pages.focus < 0) {
         store.pages.focus = 0;
       }      
-    }
+    },
+    clicker(key) {
+      store.mode.value = key;
+      if ((key=='selection')||(key=='eraser')) {
+        store.reset_selection();
+      }
+      store.editor.active = (key!='latex') ? false : true;
+    },
   }
 }
 </script>
