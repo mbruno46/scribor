@@ -57,7 +57,8 @@ export default {
       box.value.height = Math.abs(p.y - origin[1]);
     }
 
-    function end() {
+    function end(e) {
+      e.preventDefault();
       for (var layer in store.layers.value) {
         if (store.layers.value[layer]) {
           select(store[layer].value, box.value, store.selection[layer]);

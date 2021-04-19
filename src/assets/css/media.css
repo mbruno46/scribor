@@ -8,7 +8,7 @@ html {
 :root {
   --fs-desktop: 16px;
   --fs-tablet: 12px;
-  --fs-phone: 8px;
+  --fs-phone: 10px;
 }
 
 /* ----------- Non-Retina Screens ----------- */

@@ -26,14 +26,14 @@ export default function Stroke() {
   function move(e) {
     if (!drawing) {return;}
 
-    e.preventDefault();
-    let p = pointertools.position(e);
+    let p = pointertools.safemove(e);
     s.addPoint([p.x,p.y]);
     strokes[n-1].d = optimize(s.getPoints(), bezier);
   }
 
-  function end() {
+  function end(e) {
     if (drawing) {
+      e.preventDefault();
       strokes[n-1].d = optimize(s.finalizePoints(), bezier);
       strokes.push({
         id: strokes[n-1].id+1,

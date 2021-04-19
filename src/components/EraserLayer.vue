@@ -25,7 +25,10 @@ export default {
       }
     }
 
-    function end() {erasing=false;}
+    function end(e) {
+      erasing=false;
+      e.preventDefault();
+    }
 
     const {on, off} = pointertools.layer(start, move, end)
 

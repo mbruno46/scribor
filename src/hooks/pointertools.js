@@ -73,14 +73,14 @@ export function layer(start, move, end) {
 
 export function safedown(e) {
   // prevents drawing if right click
-  if (e.which == 3) {return;}
+  if (e.which == 3) {return false;}
 
   e = e || e.originalEvent || window.event;
   if (e.target.parentElement.parentElement.id!="page") {return false;}
 
   // mobile/tablet: if two fingers does not start event
-  var touches = e.touches;
-  let ntouches = touches ? touches.length : 1;
+  let ntouches = e.touches ? e.touches.length : 1;
+  console.log('ntouches ', ntouches);
   if (ntouches > 1) {return false;}
 
   e.preventDefault();

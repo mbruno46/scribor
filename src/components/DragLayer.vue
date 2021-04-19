@@ -39,8 +39,9 @@ export default {
       moveSelected();
     }
 
-    function end() {
+    function end(e) {
       if (!moving) {return}
+      e.preventDefault();
       history.checkpoint();
       moving=false;
       moveto = {x0:0, y0:0, dx:0, dy:0};

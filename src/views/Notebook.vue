@@ -124,6 +124,7 @@ export default {
   display: inline-block;
   max-height: 100%;
   max-width: 100%;
+  touch-action: none;
 }
 
 .splash {

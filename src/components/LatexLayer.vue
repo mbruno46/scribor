@@ -50,8 +50,9 @@ export default {
       l.d = TeXBox(store.editor.text,store.editor.ofs,l.scale);
     }
 
-    function end() {
+    function end(e) {
       if (!moving) {return;}
+      e.preventDefault();
       moving = false;
 
       let l = latex.value[latex.value.length-1];
