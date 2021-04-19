@@ -10,6 +10,7 @@ export default {
     function start() {erasing = true;}
 
     function move(e) {
+      e.preventDefault();
       if (erasing) {
         let t = e.target;
         let tags = t.id.split(':');

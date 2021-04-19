@@ -13,9 +13,7 @@ export default function Stroke() {
   }
 
   function start(e) {
-    e = e || e.originalEvent || window.event;
-    if (e.target.parentElement.parentElement.id!="page") {return false;}
-    e.preventDefault();
+    if (!pointertools.safedown(e)) {return;}
 
     drawing = true;
     n = strokes.length;
@@ -34,7 +32,7 @@ export default function Stroke() {
     strokes[n-1].d = optimize(s.getPoints(), bezier);
   }
 
-  function end() {    
+  function end() {
     if (drawing) {
       strokes[n-1].d = optimize(s.finalizePoints(), bezier);
       strokes.push({

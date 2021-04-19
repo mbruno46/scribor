@@ -36,9 +36,7 @@ export default {
     const box = ref({x:0,y:0,width:0,height:0});
     
     function start(e) {
-      e = e || e.originalEvent || window.event;
-      if (e.target.parentElement.parentElement.id!="page") {return;}
-      e.preventDefault();
+      if (!pointertools.safedown(e)) {return;}
 
       selecting = true;
       let p = pointertools.position(e);
@@ -52,7 +50,7 @@ export default {
     function move(e) {
       if (!selecting) {return;}
 
-      let p = pointertools.position(e);
+      let p = pointertools.safemove(e);
       box.value.x = (p.x > origin[0]) ? origin[0] : p.x;
       box.value.y = (p.y > origin[1]) ? origin[1] : p.y;
       box.value.width = Math.abs(p.x - origin[0]);

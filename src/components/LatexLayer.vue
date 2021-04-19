@@ -30,9 +30,7 @@ export default {
     var moving = false;
 
     function start(e) {
-      e = e || e.originalEvent || window.event;
-      if (e.target.parentElement.parentElement.id!="page") {return;}
-      e.preventDefault();
+      if (!pointertools.safedown(e)) {return;}
 
       moving = true;
       store.reset_selection();
@@ -45,7 +43,7 @@ export default {
     function move(e) {
       if (!moving) {return;}
 
-      let p = pointertools.position(e);
+      let p = pointertools.safemove(e);
       store.editor.ofs = [p.x, p.y];
 
       let l = latex.value[latex.value.length-1];

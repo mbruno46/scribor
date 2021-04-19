@@ -71,8 +71,32 @@ export function layer(start, move, end) {
   }
 }
 
+export function safedown(e) {
+  // prevents drawing if right click
+  if (e.which == 3) {return;}
+
+  e = e || e.originalEvent || window.event;
+  if (e.target.parentElement.parentElement.id!="page") {return false;}
+
+  // mobile/tablet: if two fingers does not start event
+  var touches = e.touches;
+  let ntouches = touches ? touches.length : 1;
+  if (ntouches > 1) {return false;}
+
+  e.preventDefault();
+  return true;
+}
+
+export function safemove(e) {
+  e.preventDefault();
+  let p = position(e);
+  return p;
+}
+
 export default {
   layer,
   position,
   init,
+  safedown,
+  safemove
 }

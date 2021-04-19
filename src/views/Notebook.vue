@@ -22,6 +22,7 @@
         <h1>Scribor</h1>
         <p>Version 1.0.0 (1.0.0)</p>
         <p>Copyright © 2021 Mattia Bruno </p>
+        <p>(click splash to start)</p>
       </div>
     </transition>
   </div>
