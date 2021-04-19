@@ -61,14 +61,6 @@ export default {
 </script>
 
 <style scoped>
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .5s ease;
-}
-
-.fade-enter-from, .fade-leave-to {
-  opacity: 0;
-}
-
 .nav span {
   color: var(--text);
   margin: 0 1rem 0 1rem;

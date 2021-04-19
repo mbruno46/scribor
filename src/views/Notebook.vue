@@ -15,6 +15,15 @@
 
       <laser-layer ref="laserlayer"/>
     </svg>
+
+    <transition name="fade">
+      <div v-if="splash" class="splash" @click.prevent="splash = false">
+        <img src="@/assets/logo.png"/>
+        <h1>Scribor</h1>
+        <p>Version 1.0.0 (1.0.0)</p>
+        <p>Copyright © 2021 Mattia Bruno </p>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -74,6 +83,8 @@ export default {
       }
     });
 
+    const splash = ref(true);
+
     onMounted(() => {
       pointertools.init(page.value);
     });
@@ -88,7 +99,8 @@ export default {
       draglayer,
       laserlayer,
       width,
-      height
+      height,
+      splash
     }
   }
 }
@@ -96,6 +108,14 @@ export default {
 
 
 <style scoped>
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s ease;
+}
+
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
+}
+
 .notebook {
   background-color: var(--background);
   padding: 1rem;
@@ -104,4 +124,26 @@ export default {
   max-height: 100%;
   max-width: 100%;
 }
+
+.splash {
+  background-color: var(--background);
+  border-radius: 1rem;
+  border: 2px solid var(--focus);
+  top: calc(100% / 2 - 10rem);
+  left: calc(100% / 2 - 10rem);
+  height: fit-content;
+  width: 20rem;
+  position: absolute;
+  z-index: 1;
+}
+
+.splash img {
+  margin-top: 1rem;
+  width: 70%;
+}
+
+.splash h1, p {
+  color: var(--text);
+}
+
 </style>
