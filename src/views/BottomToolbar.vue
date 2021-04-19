@@ -69,6 +69,7 @@ export default {
 .editor {
   background-color: var(--background);
   color: var(--text);
+  font: inherit;
   resize: none;
   outline: none;
 }
