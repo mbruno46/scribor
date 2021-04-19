@@ -15,10 +15,10 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 11
-        run: npm install
 
       - name: Build app
         run: |
+          npm install
           npm run build
           cd doc
           mkdir build
