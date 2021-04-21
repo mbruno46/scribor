@@ -17,8 +17,8 @@
     </svg>
 
     <transition name="fade">
-      <div v-if="splash" class="splash" @click.prevent="splash = false">
-        <img src="@/assets/logo.png"/>
+      <div v-if="splash" class="splash" @click="splash = false">
+        <a href="https://github.com/mbruno46/scribor" target="_blank"><img src="@/assets/logo.png"/></a>
         <h1>Scribor</h1>
         <p>Version 1.0.0 (1.0.0)</p>
         <p>Copyright © 2021 Mattia Bruno </p>
@@ -124,7 +124,7 @@ export default {
   display: inline-block;
   max-height: 100%;
   max-width: 100%;
-  touch-action: none;
+  /* touch-action: none; */
 }
 
 .splash {

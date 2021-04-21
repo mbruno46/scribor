@@ -7,19 +7,22 @@ export default {
   setup() {
     var erasing = false;
 
-    function start() {erasing = true;}
+    function start(e) {
+      if (!pointertools.safedown(e)) {return;}
+      erasing = true;
+    }
 
     function move(e) {
-      e.preventDefault();
       if (erasing) {
-        let t = e.target;
+        e.preventDefault();
+        let t = pointertools.safetarget(e);
+
         let tags = t.id.split(':');
         let g = t.parentElement.id;
         if (tags[0]) {
           if (store.layers.value[g]) {
-            history.checkpoint();
             store[tags[0]].value.splice(tags[1],1);
-            history.saveState();
+            history.checkpoint();
           }
         }
       }
