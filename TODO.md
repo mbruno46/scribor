@@ -9,5 +9,3 @@
 - feel more like an app? https://web.dev/app-like-pwas/
 
 # Tablet/Phone
-
-- distinguish pen from touch; e.g. use two fingers for scrolling and one finger for drawing
