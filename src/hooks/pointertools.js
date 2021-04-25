@@ -8,7 +8,7 @@ var page;
 function init(p) {page=p;}
 
 function position(event) {
-  var touches = event.targetTouches;
+  var touches = event.changedTouches;
   let box = page.getBoundingClientRect();
   var scale = store.viewport.scale;
   return {
@@ -79,7 +79,8 @@ export function safedown(e) {
   if (e.which == 3) {return false;}
 
   e = e || e.originalEvent || window.event;
-  if (safetarget(e).parentElement.parentElement.id!="page") {
+  let target = safetargets(e)[0];
+  if (target.parentElement.parentElement.id!="page") {
     return false;
   }
 
@@ -96,11 +97,11 @@ export function safemove(e) {
   return p;
 }
 
-export function safetarget(e) {
+export function safetargets(e) {
   var touches = e.changedTouches;
   let x = (touches ? touches[0].clientX : e.clientX);
   let y = (touches ? touches[0].clientY : e.clientY);
-  return document.elementFromPoint(x, y);
+  return document.elementsFromPoint(x, y);
 }
 
 export default {
@@ -109,5 +110,5 @@ export default {
   init,
   safedown,
   safemove,
-  safetarget
+  safetargets
 }
