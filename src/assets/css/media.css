@@ -1,15 +1,15 @@
 /* https://css-tricks.com/snippets/css/media-queries-for-standard-devices/ */
 
-html {
-  font-size: 16px;
-}
-
-
 :root {
   --fs-desktop: 16px;
-  --fs-tablet: 12px;
+  --fs-tablet: 14px;
   --fs-phone: 10px;
 }
+
+html {
+  font-size: var(--fs-desktop);
+}
+
 
 /* ----------- Non-Retina Screens ----------- */
 @media screen 
@@ -31,55 +31,40 @@ html {
     }
 }
 
-/* ----------- iPad 1, 2, Mini and Air ----------- */
+/* ----------- tablet ----------- */
 /* Portrait and Landscape */
 @media only screen 
   and (min-device-width: 768px) 
-  and (max-device-width: 1024px) 
+  and (max-device-width: 1200px) 
   and (-webkit-min-device-pixel-ratio: 1) {
     html {
       font-size: var(--fs-tablet);
     }
 }
 
-/* ----------- iPad 3, 4 and Pro 9.7" ----------- */
 @media only screen 
   and (min-device-width: 768px) 
-  and (max-device-width: 1024px) 
+  and (max-device-width: 1200px) 
   and (-webkit-min-device-pixel-ratio: 2) {
     html {
       font-size: var(--fs-tablet);
     }
 }
 
-/* ----------- Galaxy Tab 2 ----------- */
-/* Portrait and Landscape */
-@media 
-  (min-device-width: 800px) 
-  and (max-device-width: 1280px) {
-    html {
-      font-size: var(--fs-tablet);
-    }
-}
-
-/* ----------- Galaxy Tab S ----------- */
-/* Portrait and Landscape */
-@media 
-  (min-device-width: 800px) 
-  and (max-device-width: 1280px)
-  and (-webkit-min-device-pixel-ratio: 2) {
-    html {
-      font-size: var(--fs-tablet);
-    }
-}
-
-
-/* ----------- iPhone 5, 5S, 5C and 5SE ----------- */
-
+/* ----------- smartphone ----------- */
 /* Portrait and Landscape */
 @media only screen 
   and (min-device-width: 320px) 
-  and (max-device-width: 568px)
+  and (max-device-width: 768px)
+  and (-webkit-min-device-pixel-ratio: 1) {
+    html {
+      font-size: var(--fs-phone);
+    }
+}
+
+@media only screen 
+  and (min-device-width: 320px) 
+  and (max-device-width: 768px)
   and (-webkit-min-device-pixel-ratio: 2) {
     html {
       font-size: var(--fs-phone);

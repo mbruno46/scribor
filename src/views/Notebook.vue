@@ -14,6 +14,8 @@
       <drag-layer ref="draglayer"/>
 
       <laser-layer ref="laserlayer"/>
+
+      <image-layer ref="image-layer"/>
     </svg>
 
     <splash/>
@@ -33,6 +35,7 @@ import DragLayer from '../components/DragLayer.vue';
 import LatexLayer from '../components/LatexLayer.vue';
 import LaserLayer from '../components/LaserLayer.vue';
 import Splash from '../components/Splash.vue';
+import ImageLayer from '../components/ImageLayer.vue';
 
 export default {
   components: {
@@ -44,6 +47,7 @@ export default {
     SelectionLayer,
     DragLayer,
     LaserLayer,
+    ImageLayer,
     Splash
   },
   setup() {
@@ -55,6 +59,7 @@ export default {
     const selectionlayer = ref(null);
     const draglayer = ref(null);
     const laserlayer = ref(null);
+    const imagelayer = ref(null);
 
     const width = computed(() => {return store.viewport.width * store.viewport.scale});
     const height = computed(() => {return store.viewport.height * store.viewport.scale});
@@ -66,7 +71,8 @@ export default {
       'highlighter': highlighterlayer,
       'latex': latexlayer,
       'eraser': eraserlayer,
-      'laser': laserlayer
+      'laser': laserlayer,
+      'image': imagelayer
     };
 
     watch(store.mode, (newmode, oldmode) => {
@@ -91,6 +97,7 @@ export default {
       selectionlayer,
       draglayer,
       laserlayer,
+      imagelayer,
       width,
       height
     }

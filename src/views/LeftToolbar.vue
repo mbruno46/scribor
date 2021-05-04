@@ -10,11 +10,14 @@
     </div>
   </div>
 
+  <input ref="file_dialog" type="file" accept="image/png, image/jpeg" 
+    style="display: none" @change="loadImage">
 </template>
 
 <script>
 import AppButton from '../components/AppButton'
 import store from '../hooks/store'
+import fs from '@/hooks/filesystem'
 
 export default {
   components: {
@@ -30,6 +33,7 @@ export default {
         pen: {title: 'Pen', icon: 'fa-pen-fancy'},
         highlighter: {title: 'Highlighter', icon: 'fa-highlighter'},
         latex: {title: 'LaTeX', icon: 'fa-i-cursor'},
+        image: {title: 'Image PNG/JPEG', icon: 'fa-file-image'},
         laser: {title: 'Laser', icon: 'fa-bahai'}
       },
       pos: {top: '', left: ''},
@@ -43,6 +47,13 @@ export default {
         store.reset_selection();
       }
       store.editor.active = (key!='latex') ? false : true;
+      if (key=='image') {
+        const f = this.$refs.file_dialog;
+        f.setAttribute('style','display:block');
+        f.focus();
+        f.click();
+        f.setAttribute('style','display: none');
+      }
     },
     addrmPage(add) {
       if (add) {
@@ -54,6 +65,29 @@ export default {
         store.notebook.splice(store.pages.focus,1);
         store.pages.focus -= 1;
         store.pages.total -= 1;
+      }
+    },
+    load() {
+      const f = this.$refs.file_dialog;
+      f.setAttribute('style','display:block');
+      f.focus();
+      f.click();
+      f.setAttribute('style','display: none');
+    },
+    loadImage() {
+      const f = this.$refs.file_dialog;
+      let n = f.files.lenght;
+      for (var i=0;i<n;i++) {
+        fs.loadImage(f.files[i]);
+
+        store.images.push({
+          blob: '',
+          url: '',
+          x: 0,
+          y: 0,
+          width: 0,
+          height: 0,
+        })
       }
     }
   }

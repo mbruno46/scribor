@@ -26,7 +26,6 @@ export function saveNotebook(name) {
 }
 
 export function loadNotebook(file) {
-  console.log(file);
   const reader = new FileReader();
   reader.readAsText(file,"UTF-8");
 
@@ -56,8 +55,25 @@ export function saveNotebookAsPDF(dest) {
   });
 }
 
+export function loadImage(file) {
+  console.log(file);
+  const reader = new FileReader();
+  reader.readAsArrayBuffer(file);
+
+  reader.onloadend = function() {
+    let n = store.images.length;
+    store.images[n-1].blob = new Blob([reader.result.buffer], {type: MimeType});
+    store.images[n-1].url = URL.createObjectURL(store.images[n-1].blob);
+    store.images[n-1].x = 0;
+    store.images[n-1].y = 0;
+    store.images[n-1].width = 200;
+    store.images[n-1].height = 200;
+  };
+}
+
 export default {
   saveNotebook,
   loadNotebook,
+  loadImage,
   saveNotebookAsPDF
 }

@@ -48,7 +48,8 @@ function newPage(cover=false) {
       paths:[], rules: [], color: (cover) ? 'blue': 'white'},
     penstrokes: [{id:0, d:'',color:'blue',size:2}],
     highlighterstrokes: [{d:'',color:'orange'}],
-    latex: [{d:'',raw:'',color:'blue',scale:1}]
+    latex: [{d:'',raw:'',color:'blue',scale:1}],
+    images: [{blob: '', url: '', x: 0, y:0, width: 0, height: 0}]
   }
 }
 // could notebook not be reactive?
@@ -59,6 +60,7 @@ const background = computed(()=>{return notebook[pages.focus].background});
 const penstrokes = computed(()=>{return notebook[pages.focus].penstrokes});
 const highlighterstrokes = computed(()=>{return notebook[pages.focus].highlighterstrokes})
 const latex = computed(()=>{return notebook[pages.focus].latex});
+const images = computed(()=>{return notebook[pages.focus].images});
 
 const editor = reactive({active: false, text: '', ofs: [0,0], idx: -1});
 function reset_editor() {
@@ -77,6 +79,7 @@ export default {
   penstrokes,
   highlighterstrokes,
   latex,
+  images,
   editor,
   layers,
   selection,
