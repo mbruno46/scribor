@@ -26,7 +26,7 @@ const viewport = reactive({
   scale: 1
 });
 
-const layers = ref({penstrokes: true, highlighterstrokes: true, latex: true});
+const layers = ref({penstrokes: true, highlighterstrokes: true, latex: true, images: true});
 const selection = reactive({penstrokes: [], highlighterstrokes: [], latex: []});
 function reset_selection() {
   selection.penstrokes.length = 0;
@@ -49,7 +49,7 @@ function newPage(cover=false) {
     penstrokes: [{id:0, d:'',color:'blue',size:2}],
     highlighterstrokes: [{d:'',color:'orange'}],
     latex: [{d:'',raw:'',color:'blue',scale:1}],
-    images: [{blob: '', url: '', x: 0, y:0, width: 0, height: 0}]
+    images: [{blob: '', url: '', x: 0, y:0, width: 0, height: 0}],
   }
 }
 // could notebook not be reactive?
@@ -58,7 +58,7 @@ const notebook = reactive([newPage(true)]);
 
 const background = computed(()=>{return notebook[pages.focus].background});
 const penstrokes = computed(()=>{return notebook[pages.focus].penstrokes});
-const highlighterstrokes = computed(()=>{return notebook[pages.focus].highlighterstrokes})
+const highlighterstrokes = computed(()=>{return notebook[pages.focus].highlighterstrokes});
 const latex = computed(()=>{return notebook[pages.focus].latex});
 const images = computed(()=>{return notebook[pages.focus].images});
 

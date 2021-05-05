@@ -76,11 +76,12 @@ export default {
     },
     loadImage() {
       const f = this.$refs.file_dialog;
-      let n = f.files.lenght;
+      let n = f.files.length;
       for (var i=0;i<n;i++) {
+        console.log('reading ' + f.files[i])
         fs.loadImage(f.files[i]);
 
-        store.images.push({
+        store.images.value.push({
           blob: '',
           url: '',
           x: 0,
@@ -89,6 +90,7 @@ export default {
           height: 0,
         })
       }
+      console.log(store.images.value)
     }
   }
 }

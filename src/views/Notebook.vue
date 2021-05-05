@@ -5,6 +5,8 @@
 
       <background-layer />
 
+      <image-layer ref="imagelayer"/>
+
       <pen-layer ref="penlayer"/>
       <highlighter-layer ref="highlighterlayer"/>
       <latex-layer ref="latexlayer"/>
@@ -14,8 +16,6 @@
       <drag-layer ref="draglayer"/>
 
       <laser-layer ref="laserlayer"/>
-
-      <image-layer ref="image-layer"/>
     </svg>
 
     <splash/>
