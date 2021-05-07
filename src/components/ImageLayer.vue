@@ -13,6 +13,8 @@
 
 <script>
 import store from '@/hooks/store'
+import Drag from '@/hooks/dragtools'
+import pointertools from '@/hooks/pointertools';
 
 export default {
   data() {
@@ -24,13 +26,24 @@ export default {
     const images = store.images;
     const selection = store.selection.images;
 
-    function on() {
-      console.log('on');
+    const {start, move, end, moveto} = Drag();
+
+    function resize() {
+      let t = document.elementsFromPoint(moveto.x0, moveto.y0)
+
+      for (var i=0;i<t.length;i++) {
+        let tags = t[i].id.split(':');
+        if (tags[0]=='images') {
+          let img = images.value[tags[1]];
+          img.width += moveto.dx;
+          img.height = Math.round(img.ratio * img.width);
+        }
+      }
     }
 
-    function off() {
-      console.log('off');
-    }
+    function move_callback(e) {move(e,resize);}
+
+    const { on, off } = pointertools.layer(start, move_callback, end);
 
     return {
       images,
@@ -44,8 +57,6 @@ export default {
 
 <style scoped>
 .selected {
-  /* fill: grey; */
-  /* stroke-dasharray: 4; */
   filter: drop-shadow(0px 0px 8px black);
 }
 </style>

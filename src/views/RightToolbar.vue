@@ -90,6 +90,17 @@
         @click="()=>{bg.style='grid'}"
       />
     </div>
+
+    <div v-if="mode=='image'">
+      <input ref="file_dialog" type="file" accept="image/png, image/jpeg" 
+        style="display: none" @change="loadImage">
+
+      <app-button icon="fa-plus" 
+          aria-label="load-image"
+          @click="openImageDialog"
+        />
+    </div>
+
   </div>
 </template>
 
@@ -100,6 +111,7 @@ import store from '../hooks/store'
 import history from '@/hooks/history'
 import { toRaw } from 'vue'
 import _ from 'lodash'
+import fs from '@/hooks/filesystem'
 
 const layers = ['penstrokes','highlighterstrokes','latex'];
 var clipboard = {}
@@ -207,6 +219,36 @@ export default {
         })
       });
       history.checkpoint();       
+    },
+    openImageDialog() {
+      const f = this.$refs.file_dialog;
+      f.setAttribute('style','display:block');
+      f.focus();
+      f.click();
+      f.setAttribute('style','display: none');
+    },
+    loadImage() {
+      var debounce_push = _.debounce(function() {
+        store.images.value.push({
+          blob: '',
+          type: '',
+          url: '',
+          x: 0,
+          y: 0,
+          width: 0,
+          height: 0,
+          ratio: 0
+        });
+      }, 40);
+
+      const f = this.$refs.file_dialog;
+      let n = f.files.length;
+      for (var i=0;i<n;i++) {
+        console.log('reading ' + f.files[i])
+        fs.loadImage(f.files[i]);
+
+        debounce_push();
+      }
     }
   }
 }

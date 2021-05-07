@@ -154,6 +154,7 @@ export function loadImage(file) {
     images[n-1].y = 20;
 
     getImageBBox(images[n-1].url).then(resolve => {
+      images[n-1].ratio = resolve.ratio;
       images[n-1].width = (resolve.width > 250) ? 250 : resolve.width;
       images[n-1].height = Math.round(resolve.ratio * images[n-1].width);
   })

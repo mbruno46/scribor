@@ -2,12 +2,11 @@
 import store from '../hooks/store'
 import { newSVGNode, flattenSVG } from '../hooks/utils'
 import pointertools from '@/hooks/pointertools'
-import history from '@/hooks/history'
+import Drag from '@/hooks/dragtools'
 
 export default {
   setup() {
-    var moving;
-    var moveto = {x0:0, y0:0, dx:0, dy:0};
+    const {start, move, end, moveto} = Drag();
 
     function moveSelected() {
       for (var k in store.selection) {
@@ -26,34 +25,9 @@ export default {
       }
     }
 
-    function start(e) {
-      if (!pointertools.safedown(e)) {return;}
+    function move_callback(e) {move(e,moveSelected);}
 
-      moving = true;
-      let p = pointertools.position(e);
-      moveto.x0 = p.x;
-      moveto.y0 = p.y; 
-    }
-
-    function move(e) {
-      if (!moving) {return}
-      let p = pointertools.safemove(e);
-      moveto.dx = p.x - moveto.x0;
-      moveto.dy = p.y - moveto.y0;
-      moveto.x0 = p.x;
-      moveto.y0 = p.y;
-      moveSelected();
-    }
-
-    function end(e) {
-      if (!moving) {return}
-      e.preventDefault();
-      history.checkpoint();
-      moving=false;
-      moveto = {x0:0, y0:0, dx:0, dy:0};
-    }
-
-    const {on, off} = pointertools.layer(start, move, end);
+    const {on, off} = pointertools.layer(start, move_callback, end);
 
     return {
       on,

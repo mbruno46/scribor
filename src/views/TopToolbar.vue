@@ -6,7 +6,9 @@
       <app-button icon="fa-save" title="Save notebook" @click="save"/>
       <app-button icon="fa-file-pdf" title="Export as PDF" @click="savePDF"/>
 
-      <input ref="file_dialog" type="file" style="display: none" @change="loadNotebook">
+      <input ref="file_dialog" type="file" 
+        accept=".nbs" 
+        style="display: none" @change="loadNotebook">
     </div>
 
     <div class="group-center">
@@ -60,7 +62,7 @@ export default {
       store.viewport.scale = (h/store.viewport.height);
     },
     save() {
-      fs.saveNotebook('notebook.json');
+      fs.saveNotebook('notebook.nbs');
     },
     load() {
       const f = this.$refs.file_dialog;
