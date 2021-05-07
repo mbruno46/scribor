@@ -5,7 +5,9 @@
       :id="'images:' + index"
       :href="img.url"
       :x="img.x" :y="img.y"
-      :width="img.width" :height="img.height" />
+      :width="img.width" :height="img.height" 
+      :class="(selection.includes(index)) ? 'selected' : ''"
+      />
   </g>
 </template>
 
@@ -20,6 +22,7 @@ export default {
   },
   setup() {
     const images = store.images;
+    const selection = store.selection.images;
 
     function on() {
       console.log('on');
@@ -31,9 +34,17 @@ export default {
 
     return {
       images,
+      selection,
       on,
       off,
     }
   },
 }
 </script>
+
+<style scoped>
+.selected {
+  stroke: grey;
+  stroke-dasharray: 4;
+}
+</style>

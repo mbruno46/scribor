@@ -27,11 +27,12 @@ const viewport = reactive({
 });
 
 const layers = ref({penstrokes: true, highlighterstrokes: true, latex: true, images: true});
-const selection = reactive({penstrokes: [], highlighterstrokes: [], latex: []});
+const selection = reactive({penstrokes: [], highlighterstrokes: [], latex: [], images: []});
 function reset_selection() {
   selection.penstrokes.length = 0;
   selection.highlighterstrokes.length = 0;
   selection.latex.length = 0;
+  selection.images.length = 0;
 }
 watch(
   ()=>pages.focus,
@@ -49,7 +50,7 @@ function newPage(cover=false) {
     penstrokes: [{id:0, d:'',color:'blue',size:2}],
     highlighterstrokes: [{d:'',color:'orange'}],
     latex: [{d:'',raw:'',color:'blue',scale:1}],
-    images: [{blob: '', url: '', x: 0, y:0, width: 0, height: 0}],
+    images: [{blob: '', type: '', url: '', x: 0, y:0, width: 0, height: 0}],
   }
 }
 // could notebook not be reactive?

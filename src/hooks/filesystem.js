@@ -19,25 +19,69 @@ function saveBlob(blob, dest) {
   debounce_revoke();
 }
 
-export function saveNotebook(name) {
-  var content = JSON.stringify(store.notebook,null,2);
-  const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
-  saveBlob(blob, name);
+function uint2buffer(i) {
+  let out = new ArrayBuffer(4);
+  let view = new Uint32Array(out);
+  view[0] = i;
+  return out;
 }
+
+function buffer2uint(b) {
+  let out = new Uint32Array(b);
+  return out[0];
+}
+
+export function saveNotebook(name) {
+  let tmp = JSON.stringify(store.notebook, null, 2)
+  var content = [uint2buffer(tmp.length), tmp];
+  store.notebook.forEach(page => {
+    for (var i=0;i<page.images.length-1;i++) {
+      page.images[i].blob.arrayBuffer().then(buffer => {
+        content.push(uint2buffer(buffer.byteLength));
+        content.push(buffer);
+      });
+    }
+  });
+
+  var debounce_saveBlob = _.debounce(function(content,name) {
+    const blob = new Blob(content);
+    saveBlob(blob, name);
+  }, 400); //4secs
+
+  debounce_saveBlob(content, name);
+}
+
 
 export function loadNotebook(file) {
   const reader = new FileReader();
-  reader.readAsText(file,"UTF-8");
+  reader.readAsArrayBuffer(file);
 
   reader.onloadend = function() {
-    const tmp = JSON.parse(reader.result);
+    let res = reader.result;
+    let len = buffer2uint(res.slice(0,4));
+    const tmp = JSON.parse(String.fromCharCode.apply(null, new Uint8Array(res.slice(4,4+len))));
     store.notebook.length = 0;
     tmp.forEach(page => {
       store.notebook.push(page);
-    })
+    });
+    
+    let ofs = 4+len;
+    store.notebook.forEach(page => {
+      for (var i=0;i<page.images.length-1;i++) {
+        len = buffer2uint(res.slice(ofs,ofs+4));
+        let buf = res.slice(ofs+4,ofs+4+len);
+
+        page.images[i].blob = new Blob([buf], {type: page.images[i].type});
+        page.images[i].url = URL.createObjectURL(page.images[i].blob);
+
+        ofs += 4+len;
+      }
+    });
+    console.log(store)
+
     store.pages.focus = 0;
-    store.pages.total = store.notebook.length;
-  };
+    store.pages.total = store.notebook.length;    
+  }
 }
 
 export function saveNotebookAsPDF(dest) {
@@ -55,21 +99,43 @@ export function saveNotebookAsPDF(dest) {
   });
 }
 
+function getImageBBox(url) {
+  return new Promise((resolve) => {
+    const img = new Image();
+
+    img.onload = function() {
+      let bbox = {
+        width: this.width, 
+        height: this.height, 
+        ratio: this.height/this.width,
+      };
+      resolve(bbox);
+    }
+  
+    img.src = url;  
+  });
+}
+
 export function loadImage(file) {
   const reader = new FileReader();
   reader.readAsArrayBuffer(file);
-  console.log(file)
   
   const images = store.notebook[store.pages.focus].images;
 
   reader.onloadend = function() {
     let n = images.length;
     images[n-1].blob = new Blob([reader.result], {type: file.type});
+    images[n-1].type = file.type;
     images[n-1].url = URL.createObjectURL(images[n-1].blob);
-    images[n-1].x = 0;
-    images[n-1].y = 0;
-    images[n-1].width = 200;
-    images[n-1].height = 200;
+
+    images[n-1].x = 20;
+    images[n-1].y = 20;
+
+    getImageBBox(images[n-1].url).then(resolve => {
+      images[n-1].width = (resolve.width > 250) ? 250 : resolve.width;
+      images[n-1].height = Math.round(resolve.ratio * images[n-1].width);
+  })
+
   };
 }
 

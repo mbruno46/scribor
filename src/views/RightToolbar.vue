@@ -124,7 +124,8 @@ export default {
       layerMap: [
         ['penstrokes','fa-pen-fancy'],
         ['highlighterstrokes','fa-highlighter'],
-        ['latex','fa-i-cursor']
+        ['latex','fa-i-cursor'],
+        ['images','fa-file-image']
       ],
       scaleMap: [
         ['thin', 'fa-xs', 1],

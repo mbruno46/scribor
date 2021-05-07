@@ -1,3 +1,10 @@
+v1.1.0
+ - image support: png/jpeg can be loaded and are properly exported in pdf
+
+v1.0.1 
+ - bugfix for eraser
+ - pointerevent alone handles all touches/mouse events
+
 v1.0.0
  - rewritten with Vue 3, with core functionalities taken from v0.x.y
  - new interface, with primitive responsiveness to device

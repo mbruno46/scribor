@@ -13,9 +13,15 @@ export default {
       for (var k in store.selection) {
         store.selection[k].forEach((idx) => {
           let el = store[k].value[idx];
-          let newel = flattenSVG(newSVGNode('path', {d: el.d}),
-            ['translate(' + moveto.dx + ',' + moveto.dy + ')']);
-          el.d = newel[0].getAttribute('d');
+          if (k!='images') {
+            let newel = flattenSVG(newSVGNode('path', {d: el.d}),
+              ['translate(' + moveto.dx + ',' + moveto.dy + ')']);
+            el.d = newel[0].getAttribute('d');
+          }
+          else {
+            el.x += moveto.dx;
+            el.y += moveto.dy;
+          }
         })
       }
     }

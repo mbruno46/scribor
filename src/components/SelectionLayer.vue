@@ -12,7 +12,13 @@ import { pathBBox } from '../hooks/utils'
 
 function select(array, selbox, sel) {
   array.forEach((element,index) => {
-    let bbox = pathBBox(element.d);
+    var bbox;
+    if ("d" in element) {
+      bbox = pathBBox(element.d);
+    }
+    else {
+      bbox = element;
+    }
 
     if (bbox.x>=selbox.x && bbox.y>=selbox.y &&
       (bbox.width+bbox.x)<=(selbox.width+selbox.x) &&

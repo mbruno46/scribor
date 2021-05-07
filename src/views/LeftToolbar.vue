@@ -18,6 +18,7 @@
 import AppButton from '../components/AppButton'
 import store from '../hooks/store'
 import fs from '@/hooks/filesystem'
+import _ from 'lodash'
 
 export default {
   components: {
@@ -75,20 +76,33 @@ export default {
       f.setAttribute('style','display: none');
     },
     loadImage() {
+      var debounce_push = _.debounce(function() {
+        store.images.value.push({
+          blob: '',
+          type: '',
+          url: '',
+          x: 0,
+          y: 0,
+          width: 0,
+          height: 0,
+        });
+      }, 40);
+
       const f = this.$refs.file_dialog;
       let n = f.files.length;
       for (var i=0;i<n;i++) {
         console.log('reading ' + f.files[i])
         fs.loadImage(f.files[i]);
 
-        store.images.value.push({
-          blob: '',
-          url: '',
-          x: 0,
-          y: 0,
-          width: 0,
-          height: 0,
-        })
+        debounce_push();
+        // store.images.value.push({
+        //   blob: '',
+        //   url: '',
+        //   x: 0,
+        //   y: 0,
+        //   width: 0,
+        //   height: 0,
+        // })
       }
       console.log(store.images.value)
     }
