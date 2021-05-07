@@ -3,7 +3,7 @@
     <div v-if="splash" class="splash" @click="splash = false">
       <a href="https://github.com/mbruno46/scribor" target="_blank"><img src="@/assets/logo.png"/></a>
       <h1>Scribor</h1>
-      <p>Version 1.0.1 (1.0.1)</p>
+      <p>Version {{ version }} ({{ version}})</p>
       <p>Copyright © 2021 Mattia Bruno </p>
       <p>(click splash to start)</p>
     </div>
@@ -11,11 +11,17 @@
 </template>
 
 <script>
+import { version } from '../../package.json'
+
 export default {
   data() {
     return {
-      splash: true
+      splash: true,
+      version: version
     }
+  },
+  setup() {
+    console.log(process.env)
   }
 }
 </script>
