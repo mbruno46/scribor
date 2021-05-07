@@ -44,7 +44,8 @@ export default {
 
 <style scoped>
 .selected {
-  stroke: grey;
-  stroke-dasharray: 4;
+  /* fill: grey; */
+  /* stroke-dasharray: 4; */
+  filter: drop-shadow(0px 0px 8px black);
 }
 </style>

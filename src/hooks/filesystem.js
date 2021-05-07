@@ -34,14 +34,36 @@ function buffer2uint(b) {
 export function saveNotebook(name) {
   let tmp = JSON.stringify(store.notebook, null, 2)
   var content = [uint2buffer(tmp.length), tmp];
-  store.notebook.forEach(page => {
-    for (var i=0;i<page.images.length-1;i++) {
-      page.images[i].blob.arrayBuffer().then(buffer => {
-        content.push(uint2buffer(buffer.byteLength));
-        content.push(buffer);
-      });
+
+  let i=0;
+  let j=0;
+
+  // despite async blob.arrayBuffer() this guarantees images are written with proper order
+  function next() {
+    let m = store.notebook.length;
+    let n = store.notebook[i].images.length;
+    
+    if (j==n-1) {
+      if (i==m-1) {return;}
+      else {
+        i++;
+        j=0;
+      }
     }
-  });
+
+    console.log(i,m-1,j,n-1,store.notebook[i].images[j])
+
+    store.notebook[i].images[j].blob.arrayBuffer().then(buffer => {
+      content.push(uint2buffer(buffer.byteLength));
+      content.push(buffer);
+
+      j++;
+      next();
+    });
+
+    return;
+  }
+  next();
 
   var debounce_saveBlob = _.debounce(function(content,name) {
     const blob = new Blob(content);
