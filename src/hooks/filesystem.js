@@ -48,10 +48,10 @@ export function saveNotebook(name) {
       else {
         i++;
         j=0;
+        next();
+        return;
       }
     }
-
-    console.log(i,m-1,j,n-1,store.notebook[i].images[j])
 
     store.notebook[i].images[j].blob.arrayBuffer().then(buffer => {
       content.push(uint2buffer(buffer.byteLength));
