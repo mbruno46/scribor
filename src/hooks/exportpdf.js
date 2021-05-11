@@ -53,6 +53,12 @@ function path2pdf(doc,path,stroke=null) {
   doc.stroke()
 }
 
+async function img2pdf(doc, img) {
+  let buffer = await img.blob.arrayBuffer();
+  doc.image(buffer, img.x, img.y, {fit: [img.width, img.height+1]});
+}
+
+
 function bg2pdf(doc, bg, size, cover) {
   let key = ((cover) ? '--cover-page-' : '--page-') + bg.color;
   doc.rect(0,0,size.width,size.height)
@@ -77,7 +83,7 @@ function bg2pdf(doc, bg, size, cover) {
   }
 }
 
-export function exportPDF(notebook, size) {
+export async function exportPDF(notebook, size) {
   var doc = new PDFDocument({size: "A4"});
   var stream = doc.pipe(blobStream());
 
@@ -88,6 +94,11 @@ export function exportPDF(notebook, size) {
     }
     bg2pdf(doc,notebook[i].background,size,i==0);
 
+    let img = notebook[i].images;
+    for (j=0;j<img.length-1;j++) {
+      await img2pdf(doc, img[j]);
+    }
+    
     let ps = notebook[i].penstrokes;
     for (j=0;j<ps.length;j++) {
       stroke2pdf(doc,ps[j]);
