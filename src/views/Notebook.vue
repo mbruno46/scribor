@@ -7,8 +7,8 @@
 
       <image-layer ref="imagelayer"/>
 
-      <pen-layer ref="penlayer"/>
       <highlighter-layer ref="highlighterlayer"/>
+      <pen-layer ref="penlayer"/>
       <latex-layer ref="latexlayer"/>
 
       <eraser-layer ref="eraserlayer"/>
