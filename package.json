@@ -1,85 +1,66 @@
 {
   "name": "scribor",
-  "productName": "Scribor",
-  "description": "Note-taking app with LaTeX support",
-  "version": "0.1.2",
+  "version": "1.1.0",
+  "private": true,
+  "author": {
+    "name": "Mattia Bruno",
+    "email": "38449948+mbruno46@users.noreply.github.com"
+  },
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.3",
+    "@types/lodash": "^4.14.168",
+    "blob-stream": "^0.1.3",
+    "mathjax-full": "^3.1.2",
+    "pdfkit": "^0.12.0",
+    "register-service-worker": "^1.7.1",
+    "svgpath": "^2.3.1"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-plugin-pwa": "^4.5.12",
+    "@vue/cli-service": "~4.5.0",
+    "@vue/compiler-sfc": "^3.0.0",
+    "babel-eslint": "^10.1.0",
+    "core-js": "^3.6.5",
+    "eslint": "^6.7.2",
+    "eslint-plugin-vue": "^7.0.0",
+    "lodash": "^4.17.21",
+    "raw-loader": "^4.0.2",
+    "vue": "^3.0.0"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/vue3-essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "rules": {}
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ],
+  "bugs": {
+    "url": "https://github.com/mbruno46/scribor/issues"
+  },
+  "homepage": "https://mbruno46.github.io/scribor/",
   "keywords": [
     "Note-taking",
     "Stylus",
     "LaTex"
   ],
-  "author": {
-    "name": "Mattia Bruno",
-    "email": "38449948+mbruno46@users.noreply.github.com"
-  },
-  "homepage": "https://mbruno46.github.io/scribor/",
-  "bugs": {
-    "url": "https://github.com/mbruno46/scribor/issues"
-  },
-  "license": "GPL-2.0-only",
-  "main": "src/main.js",
-  "scripts": {
-    "start": "electron .",
-    "pack": "electron-builder --dir",
-    "dist": "electron-builder",
-    "release": "electron-builder"
-  },
-  "build": {
-    "appId": "com.electron.scribor",
-    "copyright": "Copyright © 2021 ${author}",
-    "files": [
-      "src",
-      "public",
-      "!doc"
-    ],
-    "directories": {
-      "output": "release-builds"
-    },
-    "dmg": {
-      "background": null,
-      "backgroundColor": "#e4d4a3",
-      "title": "${productName} ${version}",
-      "window": {
-         "width": "400",
-         "height": "300"
-      },
-      "contents": [
-	 {
-           "x": 100,
-           "y": 100
-         },
-         {
-           "x": 300,
-           "y": 100,
-           "type": "link",
-           "path": "/Applications"
-	 }
-      ]
-    },
-    "mac": {
-      "target": "dmg",
-      "category": "public.app-category.productivity",
-      "artifactName": "${productName}-${version}-${platform}-${arch}.${ext}"
-    },
-    "win": {
-      "target": "nsis"
-    },
-    "linux": {
-      "target": [
-        "AppImage",
-        "deb"
-      ],
-      "category": "Utility",
-      "artifactName": "${productName}-${version}-${platform}-${arch}.${ext}"
-    }
-  },
-  "dependencies": {
-    "mathjax-full": "^3.1.2",
-    "pdfkit": "^0.11.0",
-    "svgpath": "^2.3.1"
-  },
-  "devDependencies": {
-    "electron": "^11.2.1",
-    "electron-builder": "^22.9.1"
-  }
+  "license": "GPL-2.0-only"
 }

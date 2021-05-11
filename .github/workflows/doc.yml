@@ -16,6 +16,15 @@ jobs:
         with:
           node-version: 11
 
+      - name: Build app
+        run: |
+          npm install
+          npm run build
+          cd doc
+          mkdir build
+          cp -r ../dist build/
+        shell: bash
+
       - name: Deploy website
         uses: mbruno46/websmith.js@main
         with:

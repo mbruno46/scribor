@@ -1,3 +1,16 @@
+v1.1.0
+ - image support: png/jpeg can be loaded and are properly exported in pdf
+
+v1.0.1 
+ - bugfix for eraser
+ - pointerevent alone handles all touches/mouse events
+
+v1.0.0
+ - rewritten with Vue 3, with core functionalities taken from v0.x.y
+ - new interface, with primitive responsiveness to device
+ - works primarily as Progressive Web App, compatible with Tablets/Phones
+ - improved performances, reduced program size
+
 v0.1.2
  - faster and better drawing engine with smoother
  - bug fix undo/redo conflicts with zoom

@@ -1,0 +1,17 @@
+<% layout('./layout') %>
+
+<div class="page-header">
+  <div class="row">
+    <div class="col-lg-2" style="text-align: right;">
+      <img src="<%= it.logo %>" style="height: 64px">
+    </div>
+    <div class="col-lg-8 col-md-7 col-sm-6">
+      <h1><%= it.title %></h1>
+      <p class="lead"><%= it.desc %></p>
+    </div>
+  </div>
+</div>
+
+<div class="bs-docs-section clearfix">
+  <%~ it.body %>
+</div>
