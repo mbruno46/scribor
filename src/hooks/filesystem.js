@@ -81,7 +81,7 @@ export function loadNotebook(file) {
   reader.onloadend = function() {
     let res = reader.result;
     let len = buffer2uint(res.slice(0,4));
-    const tmp = JSON.parse(String.fromCharCode.apply(null, new Uint8Array(res.slice(4,4+len))));
+    const tmp = JSON.parse(new TextDecoder().decode(new Uint8Array(res.slice(4,4+len))));
     store.notebook.length = 0;
     tmp.forEach(page => {
       store.notebook.push(page);
