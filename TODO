@@ -1,7 +1,0 @@
-Bugs:
- - edit latex: after click apply new text shifted due to incorrect position
-
-Features:
- - latex: add \displaystyle vs inline math option
-          consider if worth replacing scale factor with \small\medium\Large...
- - latex: add dropdown with mathmode (display) vs plain text mode
