@@ -4,6 +4,7 @@ import history from '@/hooks/history'
 export default function Drag() {
   var moving;
   var moveto = {x0:0, y0:0, x:0, y:0, dx:0, dy:0};
+  var t;
 
   function start(e) {
     if (!pointertools.safedown(e)) {return;}
@@ -14,6 +15,8 @@ export default function Drag() {
     moveto.y0 = p.y;
     moveto.x = p.x;
     moveto.y = p.y;
+
+    t = pointertools.safetargets(e);
   }
 
   function move(e, callback) {
@@ -32,12 +35,18 @@ export default function Drag() {
     history.checkpoint();
     moving=false;
     moveto = {x0:0, y0:0, x:0, y:0, dx:0, dy:0};
+    t = []
   }
+
+  function shift() {return {dx: moveto.dx, dy: moveto.dy}}
+
+  function targets() {return t;}
 
   return {
     start,
     move,
     end,
-    moveto
+    shift,
+    targets
   }
 }

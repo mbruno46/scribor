@@ -6,12 +6,13 @@ import Drag from '@/hooks/dragtools'
 
 export default {
   setup() {
-    const {start, move, end, moveto} = Drag();
+    const {start, move, end, shift} = Drag();
 
     function moveSelected() {
       for (var k in store.selection) {
         store.selection[k].forEach((idx) => {
           let el = store[k].value[idx];
+          let moveto = shift();
           if (k!='images') {
             let newel = flattenSVG(newSVGNode('path', {d: el.d}),
               ['translate(' + moveto.dx + ',' + moveto.dy + ')']);

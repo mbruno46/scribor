@@ -26,16 +26,16 @@ export default {
     const images = store.images;
     const selection = store.selection.images;
 
-    const {start, move, end, moveto} = Drag();
+    const {start, move, end, shift, targets} = Drag();
 
     function resize() {
-      let t = document.elementsFromPoint(moveto.x0, moveto.y0)
+      let t = targets();
 
       for (var i=0;i<t.length;i++) {
         let tags = t[i].id.split(':');
         if (tags[0]=='images') {
           let img = images.value[tags[1]];
-          img.width += moveto.dx;
+          img.width += shift().dx;
           img.height = Math.round(img.ratio * img.width);
         }
       }
