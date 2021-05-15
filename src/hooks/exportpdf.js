@@ -1,5 +1,6 @@
 import PDFDocument from 'pdfkit/js/pdfkit.standalone';
 import blobStream from 'blob-stream';
+import store from '@/hooks/store'
 
 function rgb2hex(rgb) {
     rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
@@ -87,6 +88,10 @@ export async function exportPDF(notebook, size) {
   var doc = new PDFDocument({size: "A4"});
   var stream = doc.pipe(blobStream());
 
+  let pb = store.progressbar.value;
+  pb.status = true;
+  pb.value = 0;
+
   var i, j;
   for (i=0;i<notebook.length;i++) {
     if (i>0) {
@@ -113,7 +118,12 @@ export async function exportPDF(notebook, size) {
     for (j=0;j<l.length;j++) {
       path2pdf(doc, l[j]);
     }
+
+    pb.value = Math.round(i / notebook.length * 100);
   }
+  pb.status = false;
+  pb.value = 0;
+
   doc.end();
 
   return stream;

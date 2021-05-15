@@ -19,6 +19,7 @@
     </svg>
 
     <splash/>
+    <progress-bar/>
   </div>
 </template>
 
@@ -36,6 +37,7 @@ import LatexLayer from '../components/LatexLayer.vue';
 import LaserLayer from '../components/LaserLayer.vue';
 import Splash from '../components/Splash.vue';
 import ImageLayer from '../components/ImageLayer.vue';
+import ProgressBar from '../components/ProgressBar.vue';
 
 export default {
   components: {
@@ -48,7 +50,8 @@ export default {
     DragLayer,
     LaserLayer,
     ImageLayer,
-    Splash
+    Splash,
+    ProgressBar
   },
   setup() {
     const page = ref(null);

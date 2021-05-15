@@ -74,6 +74,8 @@ watch(
   ()=>{reset_editor();}
 );
 
+const progressbar = ref({status: false, value:0 });
+
 export default {
   mode,
   background,
@@ -88,5 +90,6 @@ export default {
   newPage,
   reset_selection,
   pages,
-  viewport
+  viewport,
+  progressbar
 }
