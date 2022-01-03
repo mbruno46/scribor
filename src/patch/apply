@@ -1,0 +1,4 @@
+#!/bin/bash
+
+CWD="$(dirname "${BASH_SOURCE[0]}")"
+cp "${CWD}/pdfkit.standalone.js.patch" ./node_modules/pdfkit/js/pdfkit.standalone.js
