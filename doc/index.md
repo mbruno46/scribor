@@ -7,7 +7,7 @@
 The application is written as a Progressive Web App (PWA) and therefore is 
 OS independent. You can try it [here](./dist/index.html)
 
-### Local insstallation: Chrome
+**Local installation: Chrome**
 
 Open the link 
 [https://mbruno46.github.io/scribor/dist/index.html](https://mbruno46.github.io/scribor/dist/index.html) 
