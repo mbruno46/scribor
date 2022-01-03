@@ -1,4 +1,4 @@
-name: Build doc
+name: Deploy app
 
 on: [push]
 
